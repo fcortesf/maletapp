@@ -15,7 +15,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trip'
+              $ref: '#/components/schemas/NewTrip'
       responses:
         201:
           description: Trip created successfully
@@ -34,12 +34,9 @@ security:
 
 components:
   schemas:
-    Trip:
+    NewTrip: 
       type: object
       properties:
-        id:
-          type: string
-          description: The unique identifier for the trip
         destination:
           type: string
           description: The destination of the trip
@@ -51,3 +48,11 @@ components:
           type: string
           format: date
           description: The end date of the trip
+    Trip:
+      allOf:
+        - $ref: '#/components/schemas/NewTrip'
+        - type: object
+          properties:        
+            id:
+              type: string
+              description: The unique identifier for the trip
