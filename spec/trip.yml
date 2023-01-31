@@ -5,10 +5,28 @@ info:
   version: 0.0.1
 paths:
   /trips:
+    get:
+      tags:
+        - Trips
+      summary: Get a list of the user trips
+      operationId: getTrips
+      responses:
+        200:
+          description: Trip list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trip'
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
     post:
       tags:
         - Trips
-      summary: Create a new trip
+      summary: Create a new trip for the user
       operationId: createTrip
       requestBody:
         required: true
@@ -29,6 +47,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
+  
 security:
   - bearerAuth: []
 
