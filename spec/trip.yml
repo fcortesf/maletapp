@@ -82,8 +82,24 @@ security:
 components:
   schemas:
     NewTrip: 
+      allOf:
+        - $ref: '#/components/schemas/TripProperties'
+        - required:
+          - destination
+    Trip:
+      allOf:
+        - $ref: '#/components/schemas/TripProperties'
+        - required:
+          - id
+          - destination
+    TripProperties: 
       type: object
       properties:
+        id:
+          readOnly: true
+          type: string
+          format: uuid
+          description: The unique identifier for the trip
         destination:
           type: string
           description: The destination of the trip
@@ -95,12 +111,3 @@ components:
           type: string
           format: date
           description: The end date of the trip
-    Trip:
-      allOf:
-        - $ref: '#/components/schemas/NewTrip'
-        - type: object
-          properties:        
-            id:
-              type: string
-              format: uuid
-              description: The unique identifier for the trip
