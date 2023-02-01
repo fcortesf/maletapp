@@ -131,20 +131,32 @@ components:
   schemas:
     NewBaggage: 
       type: object
+      allOf:
+        - $ref: '#/components/schemas/BaggageProperties'
+        - required:
+          - name
+    Baggage:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaggageProperties'
+        - required:
+          - id 
+          - tripId
+          - name
+    BaggageProperties:
+      type: object
       properties:
+        id:
+          readOnly: true
+          type: string
+          format: uuid
+          description: The unique identifier for the baggage
+        tripId:
+          readOnly: true
+          type: string
+          format: uuid
+          description: The unique identifier for the trip that contains the baggage
         name:
           type: string
           description: The name for the baggage
-    Baggage:
-      allOf:
-        - $ref: '#/components/schemas/NewBaggage'
-        - type: object
-          properties:        
-            id:
-              type: string
-              format: uuid
-              description: The unique identifier for the baggage
-            tripId:
-              type: string
-              format: uuid
-              description: The unique identifier for the trip that contains the baggage
+      
