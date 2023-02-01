@@ -21,7 +21,7 @@ paths:
       - name: baggageId
         in: path
         required: true
-        description: ID of the baggage to retrieve
+        description: ID of the baggage
         schema:
           type: string
           format: uuid
@@ -51,7 +51,7 @@ paths:
     get:
       tags:
         - items
-      summary: Get a Item by ID
+      summary: Get Items by baggage
       operationId: getItemByBaggage
       parameters:
       - name: tripId
@@ -64,7 +64,52 @@ paths:
       - name: baggageId
         in: path
         required: true
-        description: ID of the baggage to retrieve
+        description: ID of the baggage
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: Item retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+  /trips/{tripId}/baggages/{baggageId}/items/{itemId}:
+    get:
+      tags:
+        - items
+      summary: Get an Item by ID
+      operationId: getItemById
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        description: ID of the trip
+        schema:
+          type: string
+          format: uuid
+      - name: baggageId
+        in: path
+        required: true
+        description: ID of the baggage
+        schema:
+          type: string
+          format: uuid
+      - name: itemId
+        in: path
+        required: true
+        description: ID of the item to retrieve
         schema:
           type: string
           format: uuid
@@ -75,6 +120,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - items
+      summary: Update Item 
+      operationId: patchItem
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        description: ID of the trip
+        schema:
+          type: string
+          format: uuid
+      - name: baggageId
+        in: path
+        required: true
+        description: ID of the baggage
+        schema:
+          type: string
+          format: uuid
+      - name: itemId
+        in: path
+        required: true
+        description: ID of the item
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchItem'
+      responses:
+        200:
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        400:
+          description: Bad request
         401:
           description: Unauthorized
         403:
