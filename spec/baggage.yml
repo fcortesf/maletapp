@@ -23,7 +23,7 @@ paths:
           description: Unauthorized
         500:
           description: Internal server error
-  /trips/{tripId}/baggage:
+  /trips/{tripId}/baggages:
     get:
       tags:
         - baggages
@@ -90,7 +90,7 @@ paths:
           description: Not Found
         500:
           description: Internal server error
-  /trips/{tripId}/baggage/{baggageId}:
+  /trips/{tripId}/baggages/{baggageId}:
     get:
       tags:
         - baggages
