@@ -197,6 +197,8 @@ components:
         - $ref: '#/components/schemas/ItemProperties'
         - required:
           - id
+          - tripId
+          - baggageId
           - name
           - checkCount
     ItemProperties:
@@ -207,6 +209,16 @@ components:
           type: string
           format: uuid
           description: The unique identifier for the item
+        tripId:
+          readOnly: true
+          type: string
+          format: uuid
+          description: The unique identifier for the trip
+        baggageId:
+          readOnly: true
+          type: string
+          format: uuid
+          description: The unique identifier for the baggage
         name:
           type: string
           description: The name of the item
