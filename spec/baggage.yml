@@ -7,7 +7,7 @@ paths:
   /baggages:
     get:
       tags:
-        - baggages
+        - Baggages
       summary: Get a list of the user baggages
       operationId: getBaggages
       responses:
@@ -26,7 +26,7 @@ paths:
   /trips/{tripId}/baggages:
     get:
       tags:
-        - baggages
+        - Baggages
       summary: Get a list of the trip baggages
       operationId: getBaggagesByTrip
       parameters:
@@ -56,7 +56,7 @@ paths:
           description: Internal server error
     post:
       tags:
-        - baggages
+        - Baggages
       summary: Create a new baggage
       operationId: createBaggage
       parameters:
@@ -93,7 +93,7 @@ paths:
   /trips/{tripId}/baggages/{baggageId}:
     get:
       tags:
-        - baggages
+        - Baggages
       summary: Get a baggage by ID
       operationId: getBaggageById
       parameters:
