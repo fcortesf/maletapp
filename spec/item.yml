@@ -7,7 +7,7 @@ paths:
   /trips/{tripId}/baggages/{baggageId}/items:
     post:
       tags:
-        - items
+        - Items
       summary: Create a new item on a baggage
       operationId: createItem
       parameters:
@@ -50,8 +50,8 @@ paths:
           description: Internal server error
     get:
       tags:
-        - items
-      summary: Get Items by baggage
+        - Items
+      summary: Get the items contained on a baggage
       operationId: getItemByBaggage
       parameters:
       - name: tripId
@@ -88,8 +88,8 @@ paths:
   /trips/{tripId}/baggages/{baggageId}/items/{itemId}:
     get:
       tags:
-        - items
-      summary: Get an Item by ID
+        - Items
+      summary: Get an item by ID
       operationId: getItemById
       parameters:
       - name: tripId
@@ -130,8 +130,8 @@ paths:
           description: Internal server error
     patch:
       tags:
-        - items
-      summary: Update Item 
+        - Items
+      summary: Update item 
       operationId: patchItem
       parameters:
       - name: tripId
