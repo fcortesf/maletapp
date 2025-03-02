@@ -1,7 +1,8 @@
 using Trip.API.Domain.ValueObjects;
+using Trip.API.SeedWork;
 namespace Trip.API.Domain.Trips;
 
-public sealed class Item
+public sealed class Item : IEntity
 {
     private Item() { }
 

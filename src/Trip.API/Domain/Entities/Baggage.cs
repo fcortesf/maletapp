@@ -1,7 +1,8 @@
 using Trip.API.Domain.ValueObjects;
+using Trip.API.SeedWork;
 namespace Trip.API.Domain.Trips;
 
-public sealed class Baggage
+public sealed class Baggage : IEntity
 {
     private readonly List<Item> _items = new();
 
