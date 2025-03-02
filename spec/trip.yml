@@ -103,11 +103,14 @@ components:
         destination:
           type: string
           description: The destination of the trip
+          nullable: true
         startDate:
           type: string
           format: date
           description: The start date of the trip
+          nullable: true
         endDate:
           type: string
           format: date
           description: The end date of the trip
+          nullable: true

@@ -1,30 +1,55 @@
 openapi: 3.0.0
 info:
   title: Items API
-  description: Maletapp Items api
-  version: 0.0.1
+  description: Maletapp Items API
+  version: 0.0.2
+
 paths:
-  /trips/{tripId}/baggages/{baggageId}/items:
+  /baggages/{baggageId}/items:
+    get:
+      tags:
+        - Items
+      summary: List items in a specific baggage
+      operationId: listItemsByBaggage
+      parameters:
+        - name: baggageId
+          in: path
+          required: true
+          description: The unique identifier of the baggage
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+
     post:
       tags:
         - Items
-      summary: Create a new item on a baggage
-      operationId: createItem
+      summary: Create a new item inside a specific baggage
+      operationId: createItemInBaggage
       parameters:
-      - name: tripId
-        in: path
-        required: true
-        description: ID of the trip
-        schema:
-          type: string
-          format: uuid
-      - name: baggageId
-        in: path
-        required: true
-        description: ID of the baggage
-        schema:
-          type: string
-          format: uuid
+        - name: baggageId
+          in: path
+          required: true
+          description: The unique identifier of the baggage
+          schema:
+            type: string
+            format: uuid
       requestBody:
         required: true
         content:
@@ -32,129 +57,136 @@ paths:
             schema:
               $ref: '#/components/schemas/NewItem'
       responses:
-        201:
+        '201':
           description: Item created successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
-        400:
+        '400':
           description: Bad request
-        401:
+        '401':
           description: Unauthorized
-        403:
+        '403':
           description: Forbidden
-        404:
+        '404':
           description: Not Found
-        500:
+        '500':
           description: Internal server error
+
+  /trips/{tripId}/items:
     get:
       tags:
         - Items
-      summary: Get the items contained on a baggage
-      operationId: getItemByBaggage
+      summary: List items for a specific trip
+      operationId: listItemsByTrip
       parameters:
-      - name: tripId
-        in: path
-        required: true
-        description: ID of the trip
-        schema:
-          type: string
-          format: uuid
-      - name: baggageId
-        in: path
-        required: true
-        description: ID of the baggage
-        schema:
-          type: string
-          format: uuid
+        - name: tripId
+          in: path
+          required: true
+          description: The unique identifier of the trip
+          schema:
+            type: string
+            format: uuid
       responses:
-        200:
-          description: Item retrieved successfully
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Item'
-        401:
+        '401':
           description: Unauthorized
-        403:
+        '403':
           description: Forbidden
-        404:
+        '404':
           description: Not Found
-        500:
+        '500':
           description: Internal server error
-  /trips/{tripId}/baggages/{baggageId}/items/{itemId}:
-    get:
+
+    post:
       tags:
         - Items
-      summary: Get an item by ID
-      operationId: getItemById
+      summary: Create a new item directly under a trip
+      description: Internally, the item will be assigned to a default baggage for this trip
+      operationId: createItemInTrip
       parameters:
-      - name: tripId
-        in: path
+        - name: tripId
+          in: path
+          required: true
+          description: The unique identifier of the trip
+          schema:
+            type: string
+            format: uuid
+      requestBody:
         required: true
-        description: ID of the trip
-        schema:
-          type: string
-          format: uuid
-      - name: baggageId
-        in: path
-        required: true
-        description: ID of the baggage
-        schema:
-          type: string
-          format: uuid
-      - name: itemId
-        in: path
-        required: true
-        description: ID of the item to retrieve
-        schema:
-          type: string
-          format: uuid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewItem'
       responses:
-        200:
-          description: Item retrieved successfully
+        '201':
+          description: Item created successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
-        401:
+        '400':
+          description: Bad request
+        '401':
           description: Unauthorized
-        403:
+        '403':
           description: Forbidden
-        404:
+        '404':
           description: Not Found
-        500:
+        '500':
           description: Internal server error
+
+  /items/{itemId}:
+    get:
+      tags:
+        - Items
+      summary: Get an item by ID
+      operationId: getItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          description: The unique identifier of the item
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Item found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: Not Found
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+
     patch:
       tags:
         - Items
-      summary: Update item 
+      summary: Partially update item (e.g., rename it)
       operationId: patchItem
       parameters:
-      - name: tripId
-        in: path
-        required: true
-        description: ID of the trip
-        schema:
-          type: string
-          format: uuid
-      - name: baggageId
-        in: path
-        required: true
-        description: ID of the baggage
-        schema:
-          type: string
-          format: uuid
-      - name: itemId
-        in: path
-        required: true
-        description: ID of the item
-        schema:
-          type: string
-          format: uuid
+        - name: itemId
+          in: path
+          required: true
+          description: The unique identifier of the item
+          schema:
+            type: string
+            format: uuid
       requestBody:
         required: true
         content:
@@ -162,67 +194,112 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchItem'
       responses:
-        200:
+        '200':
           description: Item updated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
-        400:
+        '400':
           description: Bad request
-        401:
+        '401':
           description: Unauthorized
-        403:
+        '403':
           description: Forbidden
-        404:
+        '404':
           description: Not Found
-        500:
+        '500':
+          description: Internal server error
+
+  /items/{itemId}/check-item:
+    post:
+      tags:
+        - Items
+      summary: Check (increment checkCount) for a specific item
+      operationId: checkItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          description: The unique identifier of the item to check
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Item check success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
           description: Internal server error
 
 components:
   schemas:
     NewItem:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/ItemProperties'
-        - required:
-          - name
+      properties:
+        name:
+          type: string
+          description: The name of the item
+        defaultItemId:
+          type: string
+          format: uuid
+          description: Optional reference to a predefined item from another API
+      required:
+        - name
+
     PatchItem:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/ItemProperties'
+      properties:
+        name:
+          type: string
+          description: The name of the item
+        defaultItemId:
+          type: string
+          format: uuid
+          description: Optional reference to a predefined item from another API
+
     Item:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/ItemProperties'
-        - required:
-          - id
-          - tripId
-          - baggageId
-          - name
-          - checkCount
-    ItemProperties:
       type: object
       properties:
         id:
-          readOnly: true
           type: string
           format: uuid
+          readOnly: true
           description: The unique identifier for the item
         tripId:
-          readOnly: true
           type: string
           format: uuid
+          readOnly: true
           description: The unique identifier for the trip
         baggageId:
-          readOnly: true
           type: string
           format: uuid
+          readOnly: true
           description: The unique identifier for the baggage
         name:
           type: string
           description: The name of the item
         checkCount:
           type: integer
-          description: Number of times this item has been checked
           minimum: 0
+          readOnly: true
+          description: Number of times this item has been checked
+        defaultItemId:
+          type: string
+          format: uuid
+          description: Optional reference to a predefined item from another API
+      required:
+        - id
+        - name
+        - checkCount

@@ -1,0 +1,68 @@
+# Archivos de compilación y carpetas de salida
+bin/
+obj/
+
+# Configuración local de Visual Studio (opcional)
+.vs/
+
+# Configuración de VS Code
+.vscode/* 
+# ...si deseas ignorar por completo tu carpeta .vscode, descomenta la línea anterior.
+# Pero a veces conviene versionar archivos como launch.json o tasks.json si trabajas en equipo
+# y quieres compartir configuraciones de depuración y tareas.
+
+# Paquetes de NuGet descargados globalmente (sobretodo en versiones antiguas de .NET)
+packages/
+# Si usas paquetes “restaurados” en carpeta local, puedes ignorar 'packages/'.
+
+# Cachés y archivos temporales
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+*.log*
+
+# Publicaciones (al publicar con dotnet publish)
+publish/
+PublishOutput/
+out/
+
+# Archivos de base de datos local o migration logs (Entity Framework, etc.)
+*.mdf
+*.ldf
+
+# Secretos de usuario, configuración local
+appsettings.*.local.json
+UserSecrets/
+
+# Cobertura de pruebas
+coverage/
+*.coverage
+*.coveragexml
+
+# Herramientas de generación (si las usas)
+*.cake
+*.cakebuild
+
+# File de lock de NPM si hubiera un frontend integrado
+package-lock.json
+npm-debug.log
+yarn.lock
+
+# ReSharper (JetBrains)
+_ReSharper*/
+*.DotSettings.user
+
+# Rider (JetBrains)
+.idea/
+*.sln.iml
+
+# StyleCop
+StyleCopCache/
+
+# Otros ajustes o IDEs
+*.DS_Store
+Thumbs.db
