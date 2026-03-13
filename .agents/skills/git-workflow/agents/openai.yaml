@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Branch, commit, push, and PR rules"
+  default_prompt: "Use $git-workflow to apply this repository's branch, commit, push, and PR conventions."
