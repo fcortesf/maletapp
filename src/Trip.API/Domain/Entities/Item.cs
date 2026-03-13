@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.SeedWork;
 namespace Trip.API.Domain.Trips;
@@ -6,6 +7,7 @@ public sealed class Item : IEntity
 {
     private Item() { }
 
+    [SetsRequiredMembers]
     public Item(ItemId id, BaggageId baggageId, string name, Guid? defaultItemId = null)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -18,9 +20,9 @@ public sealed class Item : IEntity
         CheckCount = 0;
     }
 
-    public ItemId Id { get; private set; }
-    public BaggageId BaggageId { get; private set; }
-    public string Name { get; private set; }
+    public required ItemId Id { get; init; }
+    public required BaggageId BaggageId { get; init; }
+    public required string Name { get; set; }
     public Guid? DefaultItemId { get; private set; }
     public int CheckCount { get; private set; }
 

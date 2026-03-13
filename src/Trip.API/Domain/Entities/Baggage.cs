@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.SeedWork;
 namespace Trip.API.Domain.Trips;
@@ -8,6 +9,7 @@ public sealed class Baggage : IEntity
 
     private Baggage() { }
 
+    [SetsRequiredMembers]
     public Baggage(BaggageId id, TripId tripId, string name, bool isDefaultBaggage = false)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -19,9 +21,9 @@ public sealed class Baggage : IEntity
         IsDefaultBaggage = isDefaultBaggage;
     }
 
-    public BaggageId Id { get; private set; }
-    public TripId TripId { get; private set; }
-    public string Name { get; private set; }
+    public required BaggageId Id { get; init; }
+    public required TripId TripId { get; init; }
+    public required string Name { get; init; }
     public bool IsDefaultBaggage { get; private set; }
 
     public IReadOnlyCollection<Item> Items => _items.AsReadOnly();

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.SeedWork;
 namespace Trip.API.Domain.Trips;
@@ -8,6 +9,7 @@ public sealed class Trip : IEntity
 
     private Trip() { }
 
+    [SetsRequiredMembers]
     public Trip(TripId id, UserId ownerId, string? destination, DateOnly? startDate, DateOnly? endDate)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -20,8 +22,8 @@ public sealed class Trip : IEntity
         ValidateDates();
     }
 
-    public TripId Id { get; private set; }
-    public UserId OwnerId { get; private set; }
+    public required TripId Id { get; init; }
+    public required UserId OwnerId { get; init; }
     public string? Destination { get; private set; }
     public DateOnly? StartDate { get; private set; }
     public DateOnly? EndDate { get; private set; }
