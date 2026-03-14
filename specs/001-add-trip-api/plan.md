@@ -5,7 +5,7 @@
 
 ## Summary
 
-Implement the first Trips API slice for creating trips, listing the current user's trips, and retrieving a trip by identifier. The implementation will use Minimal API endpoints over a repository-based application structure, Entity Framework with an in-memory database provider for this phase, a current-user accessor abstraction for ownership, and both unit and integration tests.
+Implement the first Trips API slice for creating trips, listing the current user's trips, and retrieving a trip by identifier. The implementation will use Minimal API endpoints over a repository-based application structure, Entity Framework with an in-memory database provider for this phase, a current-user accessor abstraction for ownership, explicit `CancellationToken` propagation across endpoints, handlers, and repositories, structured logging for trip operations and failures, and both unit and integration tests.
 
 ## Technical Context
 
@@ -16,7 +16,7 @@ Implement the first Trips API slice for creating trips, listing the current user
 **Target Platform**: Linux-hosted ASP.NET Core web service  
 **Project Type**: Web service  
 **Performance Goals**: Support local development and automated test execution for the trip bootstrap flows with no perceptible latency in manual verification  
-**Constraints**: Preserve trip/item domain separation, use repository abstractions, rely on current-user accessor instead of implementing authentication flow, and keep warnings at zero  
+**Constraints**: Preserve trip/item domain separation, use repository abstractions, rely on current-user accessor instead of implementing authentication flow, propagate `CancellationToken` from Minimal API endpoints through handlers and repositories, use structured logging instead of console output, and keep warnings at zero  
 **Scale/Scope**: Initial MVP for one sub-API with 3 trip endpoints, one aggregate root, and isolated ownership rules
 
 ## Constitution Check
@@ -27,7 +27,7 @@ Implement the first Trips API slice for creating trips, listing the current user
 - `Domain Separation`: Pass. This phase touches only Trips and does not introduce item-domain dependencies.
 - `Repository and Persistence Discipline`: Pass. The design uses repository abstractions with Entity Framework and an in-memory provider.
 - `Testable by Default`: Pass. The plan includes both unit and integration test suites.
-- `Operational Consistency`: Pass. The design uses Minimal API behavior, current-user access checks, and problem-details-oriented failures.
+- `Operational Consistency`: Pass. The design uses Minimal API behavior, explicit `CancellationToken` propagation, structured logging, current-user access checks, and problem-details-oriented failures.
 
 Post-design re-check: Pass. The generated research, data model, contracts, and quickstart artifacts do not introduce constitutional violations.
 

@@ -68,7 +68,6 @@
 - Do not add production dependencies to `.csproj` without asking first
 - Changes to `openapi.yml` require updating `speckit.spec` in the same session
 - Commit work in smaller increments during task execution instead of waiting for a large final commit
-- Push the branch after completing each `speckit.tasks` task and verifying the required checks
 
 ## Active Technologies
 - C# with .NET 10 (`net10.0`) + ASP.NET Core Minimal API, Entity Framework Core, EF Core InMemory provider, OpenAPI/Swagger tooling (001-add-trip-api)
