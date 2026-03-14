@@ -1,21 +1,26 @@
 using System.Diagnostics.CodeAnalysis;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.SeedWork;
-namespace Trip.API.Domain.Trips;
-    
+
+namespace Trip.API.Domain.Entities;
+
 public sealed class Trip : IEntity
 {
     private readonly List<Baggage> _baggages = new();
 
-    private Trip() { }
+    private Trip()
+    {
+    }
 
     [SetsRequiredMembers]
-    public Trip(TripId id, UserId ownerId, string? destination, DateOnly? startDate, DateOnly? endDate)
+    public Trip(TripId id, UserId ownerId, string destination, DateOnly? startDate, DateOnly? endDate)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         OwnerId = ownerId ?? throw new ArgumentNullException(nameof(ownerId));
-        
-        Destination = destination;
+
+        Destination = !string.IsNullOrWhiteSpace(destination)
+            ? destination.Trim()
+            : throw new ArgumentException("Trip destination cannot be null or empty.", nameof(destination));
         StartDate = startDate;
         EndDate = endDate;
 
@@ -24,7 +29,7 @@ public sealed class Trip : IEntity
 
     public required TripId Id { get; init; }
     public required UserId OwnerId { get; init; }
-    public string? Destination { get; private set; }
+    public string Destination { get; private set; } = string.Empty;
     public DateOnly? StartDate { get; private set; }
     public DateOnly? EndDate { get; private set; }
 
