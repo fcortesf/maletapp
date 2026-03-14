@@ -17,10 +17,10 @@
 
 **Purpose**: Create the project and test scaffolding required by the plan
 
-- [ ] T001 Add Entity Framework and testing package references in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.csproj`
-- [ ] T002 [P] Create the unit test project definition in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Trip.API.UnitTests.csproj`
-- [ ] T003 [P] Create the integration test project definition in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trip.API.IntegrationTests.csproj`
-- [ ] T004 Add the API and test projects to `/home/sicor/local-repos/maletapp/Maletapp.sln`
+- [X] T001 Add Entity Framework and testing package references in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.csproj`
+- [X] T002 [P] Create the unit test project definition in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Trip.API.UnitTests.csproj`
+- [X] T003 [P] Create the integration test project definition in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trip.API.IntegrationTests.csproj`
+- [X] T004 Add the API and test projects to `/home/sicor/local-repos/maletapp/Maletapp.sln`
 
 ---
 
@@ -30,18 +30,18 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create repository and current-user abstraction interfaces in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/IUserContextAccessor.cs`
-- [ ] T006 [P] Create shared trip DTOs in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/TripDto.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/NewTripDto.cs`
-- [ ] T007 [P] Create typed application exceptions in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/NotFoundException.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/ForbiddenException.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/UnauthorizedException.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/ValidationException.cs`
-- [ ] T008 Align the trip domain entity rules in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Trip.cs`
-- [ ] T009 [P] Create Entity Framework persistence primitives in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDbContext.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/Configurations/TripConfiguration.cs`
-- [ ] T010 [P] Create the Entity Framework trip repository in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
-- [ ] T011 [P] Create the request user-context implementation in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/UserContext/HttpUserContextAccessor.cs`
-- [ ] T012 Replace the starter bootstrap with service registration, problem details, and trip endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
-- [ ] T013 [P] Add OpenAPI endpoint naming constants or verification notes for `createTrip`, `getTrips`, and `getTripById` in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
-- [ ] T014 [P] Add explicit `CancellationToken` support to repository interfaces, application handlers, and endpoint signatures in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
-- [ ] T015 [P] Add structured logging dependencies and shared logging patterns for trip operations in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
-- [ ] T016 [P] Add integration test infrastructure helpers in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TestUserContextHeaderNames.cs`
+- [X] T005 Create repository and current-user abstraction interfaces in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/IUserContextAccessor.cs`
+- [X] T006 [P] Create shared trip DTOs in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/TripDto.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/NewTripDto.cs`
+- [X] T007 [P] Create typed application exceptions in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/NotFoundException.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/ForbiddenException.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/UnauthorizedException.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Exceptions/ValidationException.cs`
+- [X] T008 Align the trip domain entity rules in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Trip.cs`
+- [X] T009 [P] Create Entity Framework persistence primitives in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDbContext.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/Configurations/TripConfiguration.cs`
+- [X] T010 [P] Create the Entity Framework trip repository in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
+- [X] T011 [P] Create the request user-context implementation in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/UserContext/HttpUserContextAccessor.cs`
+- [X] T012 Replace the starter bootstrap with service registration, problem details, and trip endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
+- [X] T013 [P] Add OpenAPI endpoint naming constants or verification notes for `createTrip`, `getTrips`, and `getTripById` in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
+- [X] T014 [P] Add explicit `CancellationToken` support to repository interfaces, application handlers, and endpoint signatures in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
+- [X] T015 [P] Add structured logging dependencies and shared logging patterns for trip operations in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/`
+- [X] T016 [P] Add integration test infrastructure helpers in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TestUserContextHeaderNames.cs`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -55,16 +55,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T017 [P] [US1] Add trip domain validation unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/TripTests.cs`
-- [ ] T018 [P] [US1] Add create-trip application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/CreateTripHandlerTests.cs`
-- [ ] T019 [P] [US1] Add create-trip integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/CreateTripEndpointTests.cs`
+- [X] T017 [P] [US1] Add trip domain validation unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/TripTests.cs`
+- [X] T018 [P] [US1] Add create-trip application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/CreateTripHandlerTests.cs`
+- [X] T019 [P] [US1] Add create-trip integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/CreateTripEndpointTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Create the create-trip request and response models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/CreateTripRequest.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/TripResponse.cs`
-- [ ] T021 [P] [US1] Create create-trip application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripResult.cs`
-- [ ] T022 [US1] Implement create-trip application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripHandler.cs`
-- [ ] T023 [US1] Implement the `createTrip` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/CreateTripEndpoint.cs`
+- [X] T020 [P] [US1] Create the create-trip request and response models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/CreateTripRequest.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/TripResponse.cs`
+- [X] T021 [P] [US1] Create create-trip application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripResult.cs`
+- [X] T022 [US1] Implement create-trip application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/CreateTrip/CreateTripHandler.cs`
+- [X] T023 [US1] Implement the `createTrip` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/CreateTripEndpoint.cs`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -78,14 +78,14 @@
 
 ### Tests for User Story 2
 
-- [ ] T024 [P] [US2] Add list-trips application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/GetTripsHandlerTests.cs`
-- [ ] T025 [P] [US2] Add list-trips integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/GetTripsEndpointTests.cs`
+- [X] T024 [P] [US2] Add list-trips application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/GetTripsHandlerTests.cs`
+- [X] T025 [P] [US2] Add list-trips integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/GetTripsEndpointTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Create list-trips application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsResult.cs`
-- [ ] T027 [US2] Implement list-trips application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsHandler.cs`
-- [ ] T028 [US2] Implement the `getTrips` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/GetTripsEndpoint.cs`
+- [X] T026 [P] [US2] Create list-trips application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsResult.cs`
+- [X] T027 [US2] Implement list-trips application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTrips/GetTripsHandler.cs`
+- [X] T028 [US2] Implement the `getTrips` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/GetTripsEndpoint.cs`
 
 **Checkpoint**: User Stories 1 and 2 should both work independently
 
@@ -99,14 +99,14 @@
 
 ### Tests for User Story 3
 
-- [ ] T029 [P] [US3] Add get-trip-detail application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/GetTripByIdHandlerTests.cs`
-- [ ] T030 [P] [US3] Add get-trip-detail integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/GetTripByIdEndpointTests.cs`
+- [X] T029 [P] [US3] Add get-trip-detail application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Trips/GetTripByIdHandlerTests.cs`
+- [X] T030 [P] [US3] Add get-trip-detail integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trips/GetTripByIdEndpointTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T031 [P] [US3] Create get-trip-detail application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdResult.cs`
-- [ ] T032 [US3] Implement get-trip-detail application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdHandler.cs`
-- [ ] T033 [US3] Implement the `getTripById` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/GetTripByIdEndpoint.cs`
+- [X] T031 [P] [US3] Create get-trip-detail application models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdResult.cs`
+- [X] T032 [US3] Implement get-trip-detail application logic with `CancellationToken` support and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Trips/GetTripById/GetTripByIdHandler.cs`
+- [X] T033 [US3] Implement the `getTripById` endpoint with the exact OpenAPI `operationId` name, `CancellationToken` parameter, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Trips/GetTripByIdEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -116,9 +116,9 @@
 
 **Purpose**: Final cross-story cleanup and verification
 
-- [ ] T034 [P] Add unit test shared fixtures in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs`
-- [ ] T035 Update API example configuration for current-user testing in `/home/sicor/local-repos/maletapp/src/Trip.API/appsettings.Development.json`
-- [ ] T036 Run the full verification flow from `/home/sicor/local-repos/maletapp/specs/001-add-trip-api/quickstart.md`
+- [X] T034 [P] Add unit test shared fixtures in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs`
+- [X] T035 Update API example configuration for current-user testing in `/home/sicor/local-repos/maletapp/src/Trip.API/appsettings.Development.json`
+- [X] T036 Run the full verification flow from `/home/sicor/local-repos/maletapp/specs/001-add-trip-api/quickstart.md`
 
 ---
 
