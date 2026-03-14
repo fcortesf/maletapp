@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trip.API", "src\Trip.API\Trip.API.csproj", "{EFEE31A3-A29E-4F8C-8D74-237EF7E41266}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trip.API.UnitTests", "tests\Trip.API.UnitTests\Trip.API.UnitTests.csproj", "{D5D0175A-5EA4-4938-85FA-AF27DC2036EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trip.API.IntegrationTests", "tests\Trip.API.IntegrationTests\Trip.API.IntegrationTests.csproj", "{BEE6E3B0-9903-472F-A1F4-14F34914811B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{EFEE31A3-A29E-4F8C-8D74-237EF7E41266}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFEE31A3-A29E-4F8C-8D74-237EF7E41266}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFEE31A3-A29E-4F8C-8D74-237EF7E41266}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D0175A-5EA4-4938-85FA-AF27DC2036EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D0175A-5EA4-4938-85FA-AF27DC2036EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D0175A-5EA4-4938-85FA-AF27DC2036EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D0175A-5EA4-4938-85FA-AF27DC2036EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEE6E3B0-9903-472F-A1F4-14F34914811B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEE6E3B0-9903-472F-A1F4-14F34914811B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEE6E3B0-9903-472F-A1F4-14F34914811B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEE6E3B0-9903-472F-A1F4-14F34914811B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
