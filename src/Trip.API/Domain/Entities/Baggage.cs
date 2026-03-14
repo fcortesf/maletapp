@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.SeedWork;
-namespace Trip.API.Domain.Trips;
+namespace Trip.API.Domain.Entities;
 
 public sealed class Baggage : IEntity
 {
@@ -14,8 +14,8 @@ public sealed class Baggage : IEntity
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         TripId = tripId ?? throw new ArgumentNullException(nameof(tripId));
-        Name = !string.IsNullOrWhiteSpace(name) 
-            ? name 
+        Name = !string.IsNullOrWhiteSpace(name)
+            ? name
             : throw new ArgumentException("Baggage name cannot be null or empty.", nameof(name));
 
         IsDefaultBaggage = isDefaultBaggage;

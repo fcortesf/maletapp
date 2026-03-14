@@ -1,50 +1,39 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Maletapp Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Contract-First Delivery
+All externally visible behavior for Items and Trips starts from the domain contract files in `spec/item.yml` and `spec/trip.yml` and their corresponding feature specifications and plans. Implementation must match the contract, and contract changes must be documented in the related specification work in the same session.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Domain Separation
+Items and Trips are separate sub-APIs. Cross-domain dependencies, shared persistence models, or endpoint behavior that couples the domains are not allowed unless this constitution is amended first.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Repository and Persistence Discipline
+Application code must depend on repository abstractions rather than direct persistence calls. Persistence implementations must use Entity Framework, with an in-memory provider acceptable for the current stage until a persistent store is intentionally introduced. Domain behavior remains isolated from infrastructure concerns.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Testable by Default
+Every feature must include automated unit tests for domain and application rules and integration tests for API behavior, contract conformance, and persistence wiring. New work is not complete unless both test layers cover the primary flow and relevant failure paths.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Operational Consistency
+Minimal API endpoints must propagate cancellation, return structured problem details for failures, and avoid leaking unhandled exceptions. Build, test, and formatting checks are required quality gates, and new warnings are treated as failures.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Delivery Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Use C# on .NET 10 with nullable reference types enabled.
+- Public endpoint names must match the relevant OpenAPI `operationId` values exactly.
+- Use typed domain exceptions and structured logging; do not use `Console.WriteLine`.
+- Do not introduce production dependencies in project files without explicit user approval.
+- Authentication flow design is outside the current trip bootstrap scope, but request handling may rely on a current-user accessor abstraction.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Workflow and Quality Gates
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- One `speckit.tasks` task per session; avoid unrelated scope.
+- Before implementation or commit readiness, `dotnet build --no-incremental`, `dotnet test --no-build`, and `dotnet format --verify-no-changes` must pass with zero new warnings.
+- Planning artifacts must resolve major architectural questions before implementation tasks are generated.
+- Repository changes must preserve clean separation between domain, application, infrastructure, and API concerns where those layers exist.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes conflicting local habits for this repository. Amendments must be reflected in this file before implementation relies on them. Every plan and review must explicitly check compliance with these principles and document any justified exception.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-03-14 | **Last Amended**: 2026-03-14
