@@ -24,7 +24,7 @@ Implement the Items API slice for listing all items in an owned trip, creating a
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 - `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/specs/002-trip-items-api/spec.md) and remains aligned with [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml).
-- `Domain Separation`: Pass. The implementation stays within the existing API boundary and does not introduce cross-sub-API behavior beyond trip ownership used to authorize item access.
+- `Domain Separation`: Pass. The implementation keeps Items and Trips separate at the contract surface while using the current trip-owned aggregate and persistence boundary for baggages and items, which is allowed by the amended constitution for this single-service phase.
 - `Repository and Persistence Discipline`: Pass. The design extends repository abstractions and Entity Framework persistence rather than using direct endpoint-to-database access.
 - `Testable by Default`: Pass. The plan includes unit tests for item domain and application rules plus integration tests for all 4 endpoints and failure paths.
 - `Operational Consistency`: Pass. The design keeps Minimal API handlers, explicit `CancellationToken` propagation, structured logging, typed failures, and problem-details-friendly exception handling.
@@ -79,7 +79,7 @@ tests/
     └── Items/
 ```
 
-**Structure Decision**: Keep a single deployable API project and add item-specific application and endpoint folders inside `src/Trip.API`, while extending the existing domain and persistence layers for baggages and items. Keep separate unit and integration test projects under `tests/` so item rules, ownership behavior, and HTTP contract conformance can evolve independently.
+**Structure Decision**: Keep a single deployable API project and add item-specific application and endpoint folders inside `src/Trip.API`, while extending the existing trip-owned domain and persistence layers for baggages and items. This preserves separate item contracts without introducing a premature split away from the current ownership aggregate. Keep separate unit and integration test projects under `tests/` so item rules, ownership behavior, and HTTP contract conformance can evolve independently.
 
 ## Complexity Tracking
 

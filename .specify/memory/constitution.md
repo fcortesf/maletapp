@@ -6,7 +6,7 @@
 All externally visible behavior for Items and Trips starts from the domain contract files in `spec/item.yml` and `spec/trip.yml` and their corresponding feature specifications and plans. Implementation must match the contract, and contract changes must be documented in the related specification work in the same session.
 
 ### II. Domain Separation
-Items and Trips are separate sub-APIs. Cross-domain dependencies, shared persistence models, or endpoint behavior that couples the domains are not allowed unless this constitution is amended first.
+Items and Trips are separate sub-APIs at the contract and endpoint surface. For the current single-service architecture, trip-owned baggages and items may share the same domain aggregate and persistence model when the relationship is strictly containment and ownership-based. Cross-domain behavior beyond that ownership boundary, including independent workflows that couple item behavior to unrelated trip concerns, is not allowed unless this constitution is amended first.
 
 ### III. Repository and Persistence Discipline
 Application code must depend on repository abstractions rather than direct persistence calls. Persistence implementations must use Entity Framework, with an in-memory provider acceptable for the current stage until a persistent store is intentionally introduced. Domain behavior remains isolated from infrastructure concerns.
@@ -36,4 +36,4 @@ Minimal API endpoints must propagate cancellation, return structured problem det
 
 This constitution supersedes conflicting local habits for this repository. Amendments must be reflected in this file before implementation relies on them. Every plan and review must explicitly check compliance with these principles and document any justified exception.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-14 | **Last Amended**: 2026-03-14
+**Version**: 1.1.0 | **Ratified**: 2026-03-14 | **Last Amended**: 2026-03-15
