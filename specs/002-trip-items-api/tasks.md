@@ -47,20 +47,20 @@
 
 **Goal**: Return all items for one owned trip and deny access to foreign trips
 
-**Independent Test**: Seed multiple trips and items for different users, request `GET /trips/{tripId}/items`, and verify the response contains only the selected owned trip's items, returns an empty list for an owned empty trip, and returns forbidden for a foreign trip
+**Independent Test**: Seed multiple trips and items for different users, request `GET /trips/{tripId}/items`, and verify the response contains only the selected owned trip's items, returns an empty list for an owned empty trip, returns `404 Not Found` for a missing trip, and returns forbidden for a foreign trip
 
 ### Tests for User Story 1
 
 - [ ] T013 [P] [US1] Add item domain and aggregate tests for trip-scoped item listing behavior in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs`
-- [ ] T014 [P] [US1] Add list-items application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/ListItemsByTripHandlerTests.cs`
-- [ ] T015 [P] [US1] Add list-items integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
+- [ ] T014 [P] [US1] Add list-items application unit tests covering owned-trip, foreign-trip, and missing-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/ListItemsByTripHandlerTests.cs`
+- [ ] T015 [P] [US1] Add list-items integration tests covering owned-trip, empty-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
 
 ### Implementation for User Story 1
 
 - [ ] T016 [P] [US1] Create list-items query and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripResult.cs`
 - [ ] T017 [P] [US1] Create list-items response mapping models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemResponse.cs`
-- [ ] T018 [US1] Implement list-items application logic with ownership enforcement in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
-- [ ] T019 [US1] Implement the `listItemsByTrip` endpoint with exact OpenAPI naming and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ListItemsByTripEndpoint.cs`
+- [ ] T018 [US1] Implement list-items application logic with ownership enforcement and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
+- [ ] T019 [US1] Implement the `listItemsByTrip` endpoint with exact OpenAPI naming, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ListItemsByTripEndpoint.cs`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -70,20 +70,20 @@
 
 **Goal**: Create a new item directly under an owned trip and assign it to the trip's default baggage
 
-**Independent Test**: Submit `POST /trips/{tripId}/items` for an owned trip and verify the created item has a new UUID, the correct trip id, a resolved default baggage id, and forbidden or validation failures for foreign trips and bad requests
+**Independent Test**: Submit `POST /trips/{tripId}/items` for an owned trip and verify the created item has a new UUID, the correct trip id, a resolved default baggage id, and that missing-trip, forbidden, or validation failures are returned for invalid scenarios
 
 ### Tests for User Story 2
 
 - [ ] T020 [P] [US2] Add default-baggage item creation domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T021 [P] [US2] Add create-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CreateItemInTripHandlerTests.cs`
-- [ ] T022 [P] [US2] Add create-item integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CreateItemInTripEndpointTests.cs`
+- [ ] T021 [P] [US2] Add create-item application unit tests covering owned-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CreateItemInTripHandlerTests.cs`
+- [ ] T022 [P] [US2] Add create-item integration tests covering success, missing-trip, foreign-trip, and bad-request outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CreateItemInTripEndpointTests.cs`
 
 ### Implementation for User Story 2
 
 - [ ] T023 [P] [US2] Create create-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripResult.cs`
 - [ ] T024 [P] [US2] Create create-item request models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripRequest.cs`
-- [ ] T025 [US2] Implement create-item application logic with ownership checks and default baggage assignment in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripHandler.cs`
-- [ ] T026 [US2] Implement the `createItemInTrip` endpoint with exact OpenAPI naming, validation handling, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripEndpoint.cs`
+- [ ] T025 [US2] Implement create-item application logic with ownership checks, default baggage assignment, and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripHandler.cs`
+- [ ] T026 [US2] Implement the `createItemInTrip` endpoint with exact OpenAPI naming, validation handling, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripEndpoint.cs`
 
 **Checkpoint**: User Stories 1 and 2 should both work independently
 

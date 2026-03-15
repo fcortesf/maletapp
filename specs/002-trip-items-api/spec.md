@@ -57,7 +57,7 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 ### Edge Cases
 
 - A user supplies an identifier that is not a valid UUID for a trip or item request.
-- A trip exists but has no default baggage available when the user attempts to add an item directly to the trip.
+- A trip exists but has no default baggage yet when the user attempts to add an item directly to the trip.
 - A user submits a partial update that changes none of the item fields.
 - A user submits a partial update with an empty item name.
 - The system cannot determine the current authenticated user for the request.
@@ -72,9 +72,10 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 - **FR-004**: The system MUST allow the current authenticated user to create a new item under a trip owned by that user using the item creation fields defined for this feature.
 - **FR-005**: The system MUST assign each newly created item a UUID.
 - **FR-006**: The system MUST associate each newly created item with the requested trip and with that trip's default baggage.
+- **FR-006a**: The system MUST create the trip's default baggage during direct trip item creation when no default baggage exists yet.
 - **FR-007**: The system MUST allow the current authenticated user to retrieve a single item by UUID when that item is associated with a trip owned by that user.
 - **FR-008**: The system MUST allow the current authenticated user to partially update a single item by UUID when that item is associated with a trip owned by that user.
-- **FR-009**: The system MUST limit item updates in this feature to the fields defined as updateable by the item contract for partial updates.
+- **FR-009**: The system MUST limit item updates in this feature to `name` and `defaultItemId` during partial updates.
 - **FR-010**: The system MUST apply an ownership check before completing any of the four supported item operations and MUST deny access when the related trip is not owned by the current authenticated user.
 - **FR-011**: The system MUST return a forbidden outcome for list, create, retrieve, and update requests when the related trip belongs to a different user.
 - **FR-012**: The system MUST report when the requested trip or item does not exist.
@@ -93,8 +94,8 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 
 - The feature scope is limited to listing trip items, creating an item directly under a trip, retrieving one item, and partially updating one item.
 - A valid authenticated user identity is expected to be available for each authorized request, but the authentication mechanism itself is outside this feature's scope.
-- Each trip has exactly one default baggage available for direct item creation; if that baggage cannot be resolved, item creation fails clearly rather than assigning the item elsewhere.
-- Item updates in this phase are limited to fields explicitly allowed by the existing item contract for partial updates.
+- Direct trip item creation reuses the trip's default baggage when it already exists and creates that default baggage on demand when it does not yet exist.
+- Item updates in this phase are limited to `name` and `defaultItemId`.
 - No item deletion, item check action, baggage-specific item creation, item sharing, or cross-user collaboration behavior is included in this phase.
 
 ## Success Criteria *(mandatory)*
