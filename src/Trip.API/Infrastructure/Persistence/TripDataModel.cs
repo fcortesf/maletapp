@@ -11,4 +11,6 @@ public sealed class TripDataModel
     public DateOnly? StartDate { get; set; }
 
     public DateOnly? EndDate { get; set; }
+
+    public List<BaggageDataModel> Baggages { get; set; } = new();
 }

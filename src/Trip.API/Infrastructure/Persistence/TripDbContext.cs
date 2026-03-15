@@ -10,6 +10,8 @@ public sealed class TripDbContext : DbContext
     }
 
     public DbSet<TripDataModel> Trips => Set<TripDataModel>();
+    public DbSet<BaggageDataModel> Baggages => Set<BaggageDataModel>();
+    public DbSet<ItemDataModel> Items => Set<ItemDataModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
