@@ -33,4 +33,9 @@ public static class TripFixtures
             startDate,
             endDate);
     }
+
+    public static NewItemDto CreateNewItemDto(string name = "Passport", Guid? defaultItemId = null)
+    {
+        return new NewItemDto(name, defaultItemId);
+    }
 }

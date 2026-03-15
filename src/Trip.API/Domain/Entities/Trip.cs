@@ -35,6 +35,10 @@ public sealed class Trip : IEntity
 
     public IReadOnlyCollection<Baggage> Baggages => _baggages.AsReadOnly();
 
+    public IReadOnlyCollection<Item> Items => _baggages
+        .SelectMany(baggage => baggage.Items)
+        .ToArray();
+
     public Baggage AddBaggage(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -76,6 +80,31 @@ public sealed class Trip : IEntity
         }
 
         return defaultBaggage.AddItem(itemName, defaultItemId);
+    }
+
+    public Item? FindItem(ItemId itemId)
+    {
+        return _baggages
+            .SelectMany(baggage => baggage.Items)
+            .SingleOrDefault(item => item.Id == itemId);
+    }
+
+    public static Trip Rehydrate(
+        TripId id,
+        UserId ownerId,
+        string destination,
+        DateOnly? startDate,
+        DateOnly? endDate,
+        IEnumerable<Baggage>? baggages = null)
+    {
+        var trip = new Trip(id, ownerId, destination, startDate, endDate);
+
+        if (baggages is not null)
+        {
+            trip._baggages.AddRange(baggages);
+        }
+
+        return trip;
     }
 
     private void ValidateDates()

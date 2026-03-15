@@ -11,5 +11,10 @@ public sealed class TripConfiguration : IEntityTypeConfiguration<TripDataModel>
 
         builder.Property(trip => trip.Destination)
             .IsRequired();
+
+        builder.HasMany(trip => trip.Baggages)
+            .WithOne(baggage => baggage.Trip)
+            .HasForeignKey(baggage => baggage.TripId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

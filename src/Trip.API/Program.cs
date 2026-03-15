@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Trip.API.Api.ErrorHandling;
+using Trip.API.Api.Items;
 using Trip.API.Api.Trips;
 using Trip.API.Application.Abstractions;
+using Trip.API.Application.Items.CreateItemInTrip;
+using Trip.API.Application.Items.GetItem;
+using Trip.API.Application.Items.ListItemsByTrip;
+using Trip.API.Application.Items.PatchItem;
 using Trip.API.Application.Trips.CreateTrip;
 using Trip.API.Application.Trips.GetTripById;
 using Trip.API.Application.Trips.GetTrips;
@@ -25,6 +30,10 @@ builder.Services.AddScoped<IUserContextAccessor, HttpUserContextAccessor>();
 builder.Services.AddScoped<CreateTripHandler>();
 builder.Services.AddScoped<GetTripsHandler>();
 builder.Services.AddScoped<GetTripByIdHandler>();
+builder.Services.AddScoped<ListItemsByTripHandler>();
+builder.Services.AddScoped<CreateItemInTripHandler>();
+builder.Services.AddScoped<GetItemHandler>();
+builder.Services.AddScoped<PatchItemHandler>();
 
 var app = builder.Build();
 
@@ -38,6 +47,7 @@ app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 app.MapTripEndpoints();
+app.MapItemEndpoints();
 
 app.Run();
 
