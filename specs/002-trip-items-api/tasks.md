@@ -17,10 +17,10 @@
 
 **Purpose**: Prepare solution and test scaffolding for the item feature
 
-- [ ] T001 Add any required item-feature package or project reference updates in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.csproj`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Trip.API.UnitTests.csproj`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trip.API.IntegrationTests.csproj`
-- [ ] T002 [P] Create item test folders and placeholder coverage files in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/`
-- [ ] T003 [P] Create item application and API folders in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/`
-- [ ] T004 Confirm the new item files are included in `/home/sicor/local-repos/maletapp/Maletapp.sln` where needed for build and test discovery
+- [X] T001 Add any required item-feature package or project reference updates in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.csproj`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Trip.API.UnitTests.csproj`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Trip.API.IntegrationTests.csproj`
+- [X] T002 [P] Create item test folders and placeholder coverage files in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/`
+- [X] T003 [P] Create item application and API folders in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/`
+- [X] T004 Confirm the new item files are included in `/home/sicor/local-repos/maletapp/Maletapp.sln` where needed for build and test discovery
 
 ---
 
@@ -30,14 +30,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Extend repository abstractions for trip item list, create, item lookup, and item update flows in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`
-- [ ] T006 [P] Create shared item DTOs for contract-aligned read and write models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/ItemDto.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/NewItemDto.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/PatchItemDto.cs`
-- [ ] T007 [P] Align the item and baggage domain behaviors for rename, default baggage assignment, and UUID-backed references in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Baggage.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Trip.cs`
-- [ ] T008 [P] Expand EF Core persistence models and configuration to store trips with nested baggages and items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDbContext.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDataModel.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/BaggageDataModel.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/ItemDataModel.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/Configurations/TripConfiguration.cs`
-- [ ] T009 [P] Implement repository mapping and persistence support for nested baggages and items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
-- [ ] T010 [P] Create shared item endpoint naming and logging helpers in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointNames.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemLogMessages.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointRouteBuilderExtensions.cs`
-- [ ] T011 [P] Register item handlers and endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
-- [ ] T012 [P] Extend integration test infrastructure for owned-trip and foreign-trip item scenarios in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TestUserContextHeaderNames.cs`
+- [X] T005 Extend repository abstractions for trip item list, create, item lookup, and item update flows in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`
+- [X] T006 [P] Create shared item DTOs for contract-aligned read and write models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/ItemDto.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/NewItemDto.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Dtos/PatchItemDto.cs`
+- [X] T007 [P] Align the item and baggage domain behaviors for rename, default baggage assignment, and UUID-backed references in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Baggage.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Trip.cs`
+- [X] T008 [P] Expand EF Core persistence models and configuration to store trips with nested baggages and items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDbContext.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/TripDataModel.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/BaggageDataModel.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/ItemDataModel.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/Configurations/TripConfiguration.cs`
+- [X] T009 [P] Implement repository mapping and persistence support for nested baggages and items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
+- [X] T010 [P] Create shared item endpoint naming and logging helpers in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointNames.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemLogMessages.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointRouteBuilderExtensions.cs`
+- [X] T011 [P] Register item handlers and endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
+- [X] T012 [P] Extend integration test infrastructure for owned-trip and foreign-trip item scenarios in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TestUserContextHeaderNames.cs`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -51,16 +51,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T013 [P] [US1] Add item domain and aggregate tests for trip-scoped item listing behavior in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs`
-- [ ] T014 [P] [US1] Add list-items application unit tests covering owned-trip, foreign-trip, and missing-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/ListItemsByTripHandlerTests.cs`
-- [ ] T015 [P] [US1] Add list-items integration tests covering owned-trip, empty-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
+- [X] T013 [P] [US1] Add item domain and aggregate tests for trip-scoped item listing behavior in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs`
+- [X] T014 [P] [US1] Add list-items application unit tests covering owned-trip, foreign-trip, and missing-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/ListItemsByTripHandlerTests.cs`
+- [X] T015 [P] [US1] Add list-items integration tests covering owned-trip, empty-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Create list-items query and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripResult.cs`
-- [ ] T017 [P] [US1] Create list-items response mapping models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemResponse.cs`
-- [ ] T018 [US1] Implement list-items application logic with ownership enforcement and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
-- [ ] T019 [US1] Implement the `listItemsByTrip` endpoint with exact OpenAPI naming, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ListItemsByTripEndpoint.cs`
+- [X] T016 [P] [US1] Create list-items query and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripResult.cs`
+- [X] T017 [P] [US1] Create list-items response mapping models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemResponse.cs`
+- [X] T018 [US1] Implement list-items application logic with ownership enforcement and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
+- [X] T019 [US1] Implement the `listItemsByTrip` endpoint with exact OpenAPI naming, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ListItemsByTripEndpoint.cs`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -74,16 +74,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T020 [P] [US2] Add default-baggage item creation domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T021 [P] [US2] Add create-item application unit tests covering owned-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CreateItemInTripHandlerTests.cs`
-- [ ] T022 [P] [US2] Add create-item integration tests covering success, missing-trip, foreign-trip, and bad-request outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CreateItemInTripEndpointTests.cs`
+- [X] T020 [P] [US2] Add default-baggage item creation domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
+- [X] T021 [P] [US2] Add create-item application unit tests covering owned-trip, missing-trip, and foreign-trip outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CreateItemInTripHandlerTests.cs`
+- [X] T022 [P] [US2] Add create-item integration tests covering success, missing-trip, foreign-trip, and bad-request outcomes in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CreateItemInTripEndpointTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T023 [P] [US2] Create create-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripResult.cs`
-- [ ] T024 [P] [US2] Create create-item request models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripRequest.cs`
-- [ ] T025 [US2] Implement create-item application logic with ownership checks, default baggage assignment, and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripHandler.cs`
-- [ ] T026 [US2] Implement the `createItemInTrip` endpoint with exact OpenAPI naming, validation handling, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripEndpoint.cs`
+- [X] T023 [P] [US2] Create create-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripResult.cs`
+- [X] T024 [P] [US2] Create create-item request models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripRequest.cs`
+- [X] T025 [US2] Implement create-item application logic with ownership checks, default baggage assignment, and missing-trip `404 Not Found` handling in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CreateItemInTrip/CreateItemInTripHandler.cs`
+- [X] T026 [US2] Implement the `createItemInTrip` endpoint with exact OpenAPI naming, validation handling, structured logging, and missing-trip failure mapping in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CreateItemInTripEndpoint.cs`
 
 **Checkpoint**: User Stories 1 and 2 should both work independently
 
@@ -97,20 +97,20 @@
 
 ### Tests for User Story 3
 
-- [ ] T027 [P] [US3] Add single-item retrieval and patch domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T028 [P] [US3] Add get-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/GetItemHandlerTests.cs`
-- [ ] T029 [P] [US3] Add patch-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/PatchItemHandlerTests.cs`
-- [ ] T030 [P] [US3] Add get-item and patch-item integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/GetItemEndpointTests.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/PatchItemEndpointTests.cs`
+- [X] T027 [P] [US3] Add single-item retrieval and patch domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
+- [X] T028 [P] [US3] Add get-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/GetItemHandlerTests.cs`
+- [X] T029 [P] [US3] Add patch-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/PatchItemHandlerTests.cs`
+- [X] T030 [P] [US3] Add get-item and patch-item integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/GetItemEndpointTests.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/PatchItemEndpointTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T031 [P] [US3] Create get-item query and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemResult.cs`
-- [ ] T032 [P] [US3] Create patch-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemResult.cs`
-- [ ] T033 [P] [US3] Create patch-item request models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/PatchItemRequest.cs`
-- [ ] T034 [US3] Implement get-item application logic with ownership enforcement in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemHandler.cs`
-- [ ] T035 [US3] Implement patch-item application logic for allowed item fields in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemHandler.cs`
-- [ ] T036 [US3] Implement the `getItem` endpoint with exact OpenAPI naming and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/GetItemEndpoint.cs`
-- [ ] T037 [US3] Implement the `patchItem` endpoint with exact OpenAPI naming, validation handling, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/PatchItemEndpoint.cs`
+- [X] T031 [P] [US3] Create get-item query and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemQuery.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemResult.cs`
+- [X] T032 [P] [US3] Create patch-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemResult.cs`
+- [X] T033 [P] [US3] Create patch-item request models in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/PatchItemRequest.cs`
+- [X] T034 [US3] Implement get-item application logic with ownership enforcement in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemHandler.cs`
+- [X] T035 [US3] Implement patch-item application logic for allowed item fields in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/PatchItem/PatchItemHandler.cs`
+- [X] T036 [US3] Implement the `getItem` endpoint with exact OpenAPI naming and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/GetItemEndpoint.cs`
+- [X] T037 [US3] Implement the `patchItem` endpoint with exact OpenAPI naming, validation handling, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/PatchItemEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -120,9 +120,9 @@
 
 **Purpose**: Final cross-story cleanup and verification
 
-- [ ] T038 [P] Update Swagger and HTTP examples for the item endpoints in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.http`
-- [ ] T039 [P] Add any missing shared test helpers for item scenarios in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs`
-- [ ] T040 Run the full verification flow from `/home/sicor/local-repos/maletapp/specs/002-trip-items-api/quickstart.md`
+- [X] T038 [P] Update Swagger and HTTP examples for the item endpoints in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.http`
+- [X] T039 [P] Add any missing shared test helpers for item scenarios in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Testing/TripFixtures.cs` and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Infrastructure/TripApiFactory.cs`
+- [X] T040 Run the full verification flow from `/home/sicor/local-repos/maletapp/specs/002-trip-items-api/quickstart.md`
 
 ---
 
