@@ -17,8 +17,8 @@
 
 **Purpose**: Prepare the solution for the new item check workflow
 
-- [ ] T001 Create the `CheckItem` application folder and scaffold files in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemCommand.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemResult.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs`
-- [ ] T002 [P] Create the endpoint and test scaffold files for item checking in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
+- [X] T001 Create the `CheckItem` application folder and scaffold files in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemCommand.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemResult.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs`
+- [X] T002 [P] Create the endpoint and test scaffold files for item checking in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`, `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
 
 ---
 
@@ -28,10 +28,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Extend the item repository contract for owned-item check operations in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`
-- [ ] T004 [P] Add check-item endpoint naming, routing, and logging constants in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointNames.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointRouteBuilderExtensions.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemLogMessages.cs`
-- [ ] T005 [P] Register the check-item handler and endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
-- [ ] T006 Implement repository persistence support for loading and saving checked items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
+- [X] T003 Extend the item repository contract for owned-item check operations in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Abstractions/ITripRepository.cs`
+- [X] T004 [P] Add check-item endpoint naming, routing, and logging constants in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointNames.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemEndpointRouteBuilderExtensions.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemLogMessages.cs`
+- [X] T005 [P] Register the check-item handler and endpoint wiring in `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
+- [X] T006 Implement repository persistence support for loading and saving checked items in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -45,16 +45,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T007 [P] [US1] Add item increment domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T008 [P] [US1] Add check-item application unit tests covering owned-item success and unauthorized access in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
-- [ ] T009 [P] [US1] Add check-item integration tests covering successful first-time packing and unauthorized requests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
+- [X] T007 [P] [US1] Add item increment domain tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
+- [X] T008 [P] [US1] Add check-item application unit tests covering owned-item success and unauthorized access in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
+- [X] T009 [P] [US1] Add check-item integration tests covering successful first-time packing and unauthorized requests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Implement increment-only item behavior in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs`
-- [ ] T011 [US1] Implement the check-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemResult.cs`
-- [ ] T012 [US1] Implement check-item application logic with current-user resolution and ownership enforcement in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs`
-- [ ] T013 [US1] Implement the `checkItem` endpoint with exact OpenAPI naming, cancellation propagation, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`
+- [X] T010 [US1] Implement increment-only item behavior in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs`
+- [X] T011 [US1] Implement the check-item command and result models in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemCommand.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemResult.cs`
+- [X] T012 [US1] Implement check-item application logic with current-user resolution and ownership enforcement in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs`
+- [X] T013 [US1] Implement the `checkItem` endpoint with exact OpenAPI naming, cancellation propagation, and structured logging in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -68,14 +68,14 @@
 
 ### Tests for User Story 2
 
-- [ ] T014 [P] [US2] Add repeated-check domain tests for cumulative packing history in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T015 [P] [US2] Add repeated-check application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
-- [ ] T016 [P] [US2] Add repeated-check and retrieval-visibility integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`, `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/GetItemEndpointTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
+- [X] T014 [P] [US2] Add repeated-check domain tests for cumulative packing history in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
+- [X] T015 [P] [US2] Add repeated-check application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
+- [X] T016 [P] [US2] Add repeated-check and retrieval-visibility integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`, `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/GetItemEndpointTests.cs`, and `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/ListItemsByTripEndpointTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Preserve cumulative `checkCount` mapping across persistence reads and writes in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/ItemDataModel.cs`
-- [ ] T018 [US2] Ensure item response mapping continues exposing the latest `checkCount` in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemResponse.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemHandler.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
+- [X] T017 [US2] Preserve cumulative `checkCount` mapping across persistence reads and writes in `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Persistence/ItemDataModel.cs`
+- [X] T018 [US2] Ensure item response mapping continues exposing the latest `checkCount` in `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/ItemResponse.cs`, `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/GetItem/GetItemHandler.cs`, and `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/ListItemsByTrip/ListItemsByTripHandler.cs`
 
 **Checkpoint**: User Stories 1 and 2 should both work independently
 
@@ -89,14 +89,14 @@
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Add item integrity domain tests to confirm check actions do not mutate non-counter fields in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
-- [ ] T020 [P] [US3] Add missing-item and foreign-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
-- [ ] T021 [P] [US3] Add missing-item, forbidden-item, and field-integrity integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
+- [X] T019 [P] [US3] Add item integrity domain tests to confirm check actions do not mutate non-counter fields in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Domain/ItemTests.cs`
+- [X] T020 [P] [US3] Add missing-item and foreign-item application unit tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.UnitTests/Application/Items/CheckItemHandlerTests.cs`
+- [X] T021 [P] [US3] Add missing-item, forbidden-item, and field-integrity integration tests in `/home/sicor/local-repos/maletapp/tests/Trip.API.IntegrationTests/Items/CheckItemEndpointTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T022 [US3] Enforce not-found and forbidden check-item outcomes through repository lookup and typed exceptions in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
-- [ ] T023 [US3] Preserve immutable item fields during check actions in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`
+- [X] T022 [US3] Enforce not-found and forbidden check-item outcomes through repository lookup and typed exceptions in `/home/sicor/local-repos/maletapp/src/Trip.API/Application/Items/CheckItem/CheckItemHandler.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/Repositories/TripRepository.cs`
+- [X] T023 [US3] Preserve immutable item fields during check actions in `/home/sicor/local-repos/maletapp/src/Trip.API/Domain/Entities/Item.cs` and `/home/sicor/local-repos/maletapp/src/Trip.API/Api/Items/CheckItemEndpoint.cs`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -106,8 +106,8 @@
 
 **Purpose**: Final cross-story cleanup and verification
 
-- [ ] T024 [P] Update item-check examples and manual verification requests in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.http` and `/home/sicor/local-repos/maletapp/specs/003-item-check-counter/quickstart.md`
-- [ ] T025 Run the full verification flow documented in `/home/sicor/local-repos/maletapp/specs/003-item-check-counter/quickstart.md` with `dotnet build --no-incremental`, `dotnet test --no-build`, and `dotnet format --verify-no-changes`
+- [X] T024 [P] Update item-check examples and manual verification requests in `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.http` and `/home/sicor/local-repos/maletapp/specs/003-item-check-counter/quickstart.md`
+- [X] T025 Run the full verification flow documented in `/home/sicor/local-repos/maletapp/specs/003-item-check-counter/quickstart.md` with `dotnet build --no-incremental`, `dotnet test --no-build`, and `dotnet format --verify-no-changes`
 
 ---
 
