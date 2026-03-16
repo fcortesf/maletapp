@@ -56,6 +56,7 @@ public sealed class ListItemsByTripHandlerTests
         }
 
         public Task AddAsync(TripEntity trip, CancellationToken cancellationToken) => throw new NotSupportedException();
+        public Task DeleteAsync(TripId tripId, CancellationToken cancellationToken) => throw new NotSupportedException();
         public Task UpdateAsync(TripEntity trip, CancellationToken cancellationToken) => throw new NotSupportedException();
 
         public Task<TripEntity?> GetByIdAsync(TripId tripId, CancellationToken cancellationToken)

@@ -78,3 +78,9 @@
 
 ## Recent Changes
 - 001-add-trip-api: Added C# with .NET 10 (`net10.0`) + ASP.NET Core Minimal API, Entity Framework Core, EF Core InMemory provider, OpenAPI/Swagger tooling
+
+## Self-Improvement loop
+- After ANY correction from the user: update `memory/lessons.md` with the pattern
+- Write rules for yourself that prevent the same mistake prevent the same mistake
+- Ruthlessly iterate on these lessons until mistake rate drops
+- Review lessons at session start for relevant project 

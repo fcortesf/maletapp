@@ -10,4 +10,7 @@ internal static partial class TripLogMessages
 
     [LoggerMessage(EventId = 1002, Level = LogLevel.Information, Message = "Received get trip detail request for user {UserId} and trip {TripId}")]
     public static partial void GetTripByIdRequestReceived(this ILogger logger, Guid userId, Guid tripId);
+
+    [LoggerMessage(EventId = 1003, Level = LogLevel.Information, Message = "Received delete trip request for user {UserId} and trip {TripId}")]
+    public static partial void DeleteTripRequestReceived(this ILogger logger, Guid userId, Guid tripId);
 }

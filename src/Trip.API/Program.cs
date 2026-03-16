@@ -9,6 +9,7 @@ using Trip.API.Application.Items.GetItem;
 using Trip.API.Application.Items.ListItemsByTrip;
 using Trip.API.Application.Items.PatchItem;
 using Trip.API.Application.Trips.CreateTrip;
+using Trip.API.Application.Trips.DeleteTrip;
 using Trip.API.Application.Trips.GetTripById;
 using Trip.API.Application.Trips.GetTrips;
 using Trip.API.Infrastructure.Persistence;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<ITripRepository, TripRepository>();
 // independent from HTTP transport details and any future auth provider choice.
 builder.Services.AddScoped<IUserContextAccessor, HttpUserContextAccessor>();
 builder.Services.AddScoped<CreateTripHandler>();
+builder.Services.AddScoped<DeleteTripHandler>();
 builder.Services.AddScoped<GetTripsHandler>();
 builder.Services.AddScoped<GetTripByIdHandler>();
 builder.Services.AddScoped<ListItemsByTripHandler>();

@@ -34,6 +34,19 @@ public static class TripFixtures
             endDate);
     }
 
+    public static TripEntity CreateTripWithItem(
+        UserId? ownerId = null,
+        string destination = "Madrid",
+        string baggageName = "Carry On",
+        string itemName = "Passport",
+        Guid? defaultItemId = null)
+    {
+        var trip = CreateTrip(ownerId, destination);
+        var baggage = trip.AddBaggage(baggageName);
+        trip.AddItemToBaggage(baggage.Id, itemName, defaultItemId);
+        return trip;
+    }
+
     public static NewItemDto CreateNewItemDto(string name = "Passport", Guid? defaultItemId = null)
     {
         return new NewItemDto(name, defaultItemId);

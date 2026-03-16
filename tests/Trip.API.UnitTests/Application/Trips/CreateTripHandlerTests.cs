@@ -63,6 +63,11 @@ public sealed class CreateTripHandlerTests
             return Task.CompletedTask;
         }
 
+        public Task DeleteAsync(TripId tripId, CancellationToken cancellationToken)
+        {
+            throw new NotSupportedException();
+        }
+
         public Task<TripEntity?> GetByIdAsync(TripId tripId, CancellationToken cancellationToken)
         {
             return Task.FromResult(Trips.SingleOrDefault(trip => trip.Id == tripId));
