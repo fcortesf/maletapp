@@ -23,6 +23,26 @@ public sealed class TripRepository : ITripRepository
         await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task DeleteAsync(TripId tripId, CancellationToken cancellationToken)
+    {
+        var existingTrip = await _dbContext.Trips
+            .Include(model => model.Baggages)
+            .ThenInclude(model => model.Items)
+            .SingleOrDefaultAsync(model => model.Id == tripId.Value, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (existingTrip is null)
+        {
+            throw new InvalidOperationException($"Trip {tripId.Value} was not found for deletion.");
+        }
+
+        _dbContext.Items.RemoveRange(existingTrip.Baggages.SelectMany(baggage => baggage.Items).ToList());
+        _dbContext.Baggages.RemoveRange(existingTrip.Baggages.ToList());
+        _dbContext.Trips.Remove(existingTrip);
+
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
     public async Task UpdateAsync(TripEntity trip, CancellationToken cancellationToken)
     {
         var existingTrip = await _dbContext.Trips

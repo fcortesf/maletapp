@@ -8,6 +8,8 @@ public interface ITripRepository
 {
     Task AddAsync(TripEntity trip, CancellationToken cancellationToken);
 
+    Task DeleteAsync(TripId tripId, CancellationToken cancellationToken);
+
     Task UpdateAsync(TripEntity trip, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<TripEntity>> GetByOwnerIdAsync(UserId ownerId, CancellationToken cancellationToken);

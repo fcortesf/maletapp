@@ -19,6 +19,11 @@ X-Test-User-Id: {{TestUserId}}
   "endDate": "2026-06-04"
 }
 
+### Delete trip
+DELETE {{Trip.API_HostAddress}}/trips/{{TripId}}
+Accept: application/json
+X-Test-User-Id: {{TestUserId}}
+
 ### List items by trip
 GET {{Trip.API_HostAddress}}/trips/{{TripId}}/items
 Accept: application/json
