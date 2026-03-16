@@ -4,6 +4,8 @@ Maletapp is a travel-planning API for organizing trips and the packing items ass
 
 The current implementation is an ASP.NET Core Minimal API on .NET 10 with Entity Framework Core and an in-memory database. It exposes a Trips sub-API and an Items sub-API, with ownership enforced through a request-scoped current user.
 
+In the target architecture, this service is a private-by-default domain-oriented API. Public authentication is expected to happen at trusted edges, with the core receiving only trusted current-user context.
+
 ## Purpose
 
 Based on the current specifications, the API is intended to let a traveler:
@@ -16,7 +18,7 @@ Based on the current specifications, the API is intended to let a traveler:
 - retrieve one owned item
 - partially update an owned item
 
-The authentication mechanism is intentionally out of scope for now. In the current local setup, user identity is usually supplied through the `X-Test-User-Id` request header.
+The authentication mechanism is intentionally out of scope for now. In the current local and integration-test setup, user identity is usually supplied through the `X-Test-User-Id` request header. That header is a development-only shortcut, not a public production authentication contract.
 
 ## Current API Scope
 
@@ -70,6 +72,13 @@ dotnet run --project src/Trip.API
 
 The app enables Swagger UI in Development. The sample HTTP requests in `src/Trip.API/Trip.API.http` use the default local address `http://localhost:5110`.
 
+## Access Model
+
+- The current HTTP service should be treated as a private-by-default core API in the target architecture.
+- Ownership and authorization remain inside the application layer and are expressed in business terms using the current user and resource ownership.
+- Public consumers such as a frontend, MCP server, or LLM tool host should authenticate at a trusted edge and then invoke the core with trusted identity.
+- `X-Test-User-Id` exists only for local development and integration testing until a production-facing auth edge is introduced.
+
 ## Example Requests
 
 Create a trip:
@@ -98,6 +107,8 @@ Content-Type: application/json
   "defaultItemId": null
 }
 ```
+
+These examples use the development-only test header for local execution. They are not a recommended production exposure model.
 
 ## Verification
 

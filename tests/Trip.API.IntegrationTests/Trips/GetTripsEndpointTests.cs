@@ -46,5 +46,16 @@ public sealed class GetTripsEndpointTests
         Assert.Empty(trips);
     }
 
+    [Fact]
+    public async Task GetTrips_ReturnsUnauthorized_WhenCurrentUserIsMissing()
+    {
+        await using var factory = new TripApiFactory();
+        using var client = factory.CreateApiClient();
+
+        var response = await client.GetAsync("/trips");
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
 }

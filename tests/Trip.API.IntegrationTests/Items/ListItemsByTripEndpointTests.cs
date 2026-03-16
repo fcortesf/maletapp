@@ -68,6 +68,20 @@ public sealed class ListItemsByTripEndpointTests
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
+    [Fact]
+    public async Task ListItemsByTrip_ReturnsUnauthorized_WhenCurrentUserIsMissing()
+    {
+        await using var factory = new TripApiFactory();
+        using var ownerClient = factory.CreateApiClient();
+        ownerClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(ownerClient, "Madrid");
+
+        using var anonymousClient = factory.CreateApiClient();
+        var response = await anonymousClient.GetAsync($"/trips/{trip.Id}/items");
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
     private static async Task<TripResponseContract> CreateTripAsync(HttpClient client, string destination)
     {
         var response = await client.PostAsJsonAsync("/trips", new { destination });

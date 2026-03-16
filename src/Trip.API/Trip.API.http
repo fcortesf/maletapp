@@ -3,6 +3,10 @@
 @TripId = 22222222-2222-2222-2222-222222222222
 @ItemId = 33333333-3333-3333-3333-333333333333
 
+### Development-only note
+# `X-Test-User-Id` is only for local/manual testing before a production auth edge exists.
+# The target architecture treats this API as a private-by-default core service.
+
 ### Create trip
 POST {{Trip.API_HostAddress}}/trips
 Accept: application/json

@@ -21,12 +21,15 @@ public sealed class HttpUserContextAccessor : IUserContextAccessor
             return null;
         }
 
+        // This header is a development/test-only shortcut so local and integration
+        // workflows can exercise ownership rules before a production auth edge exists.
         if (httpContext.Request.Headers.TryGetValue(UserContextHeaderNames.TestUserId, out var values)
             && Guid.TryParse(values.SingleOrDefault(), out var testUserId))
         {
             return UserId.FromGuid(testUserId);
         }
 
+        // Production-facing identity should arrive as validated claims from a trusted edge.
         var claimValue = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         return Guid.TryParse(claimValue, out var claimUserId)
             ? UserId.FromGuid(claimUserId)
