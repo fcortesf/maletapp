@@ -51,6 +51,20 @@ public sealed class CreateItemInTripEndpointTests
     }
 
     [Fact]
+    public async Task CreateItemInTrip_ReturnsUnauthorized_WhenCurrentUserIsMissing()
+    {
+        await using var factory = new TripApiFactory();
+        using var ownerClient = factory.CreateApiClient();
+        ownerClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(ownerClient, "Munich");
+
+        using var anonymousClient = factory.CreateApiClient();
+        var response = await anonymousClient.PostAsJsonAsync($"/trips/{trip.Id}/items", new { name = "Passport" });
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
     public async Task CreateItemInTrip_ReturnsBadRequest_WhenNameIsBlank()
     {
         await using var factory = new TripApiFactory();

@@ -27,6 +27,8 @@ builder.Services.AddDbContext<TripDbContext>(options =>
     options.UseInMemoryDatabase("maletapp-trips"));
 
 builder.Services.AddScoped<ITripRepository, TripRepository>();
+// Keep identity resolution behind the abstraction so application handlers stay
+// independent from HTTP transport details and any future auth provider choice.
 builder.Services.AddScoped<IUserContextAccessor, HttpUserContextAccessor>();
 builder.Services.AddScoped<CreateTripHandler>();
 builder.Services.AddScoped<GetTripsHandler>();
