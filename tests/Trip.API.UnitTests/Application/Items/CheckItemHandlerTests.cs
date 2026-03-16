@@ -1,35 +1,35 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Trip.API.Application.Abstractions;
 using Trip.API.Application.Exceptions;
-using Trip.API.Application.Items.GetItem;
-using Trip.API.Domain.Entities;
+using Trip.API.Application.Items.CheckItem;
 using Trip.API.Domain.ValueObjects;
 using Trip.API.UnitTests.Testing;
 using TripEntity = Trip.API.Domain.Entities.Trip;
 
 namespace Trip.API.UnitTests.Application.Items;
 
-public sealed class GetItemHandlerTests
+public sealed class CheckItemHandlerTests
 {
     [Fact]
-    public async Task HandleAsync_ReturnsItem_WhenOwnedByCurrentUser()
+    public async Task HandleAsync_ReturnsUpdatedItem_WhenOwnedByCurrentUser()
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance);
+        var handler = new CheckItemHandler(new InMemoryTripRepository(trip), NullLogger<CheckItemHandler>.Instance);
 
-        var result = await handler.HandleAsync(new GetItemQuery(trip.OwnerId, item.Id), CancellationToken.None);
+        var result = await handler.HandleAsync(new CheckItemCommand(trip.OwnerId, item.Id), CancellationToken.None);
 
         Assert.Equal(item.Id.Value, result.Item.Id);
+        Assert.Equal(1, result.Item.CheckCount);
     }
 
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenItemDoesNotExist()
     {
-        var handler = new GetItemHandler(new InMemoryTripRepository(), NullLogger<GetItemHandler>.Instance);
+        var handler = new CheckItemHandler(new InMemoryTripRepository(), NullLogger<CheckItemHandler>.Instance);
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
-            new GetItemQuery(TripFixtures.CreateUserId(), ItemId.CreateUnique()),
+            new CheckItemCommand(TripFixtures.CreateUserId(), ItemId.CreateUnique()),
             CancellationToken.None));
     }
 
@@ -38,11 +38,24 @@ public sealed class GetItemHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance);
+        var handler = new CheckItemHandler(new InMemoryTripRepository(trip), NullLogger<CheckItemHandler>.Instance);
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
-            new GetItemQuery(TripFixtures.CreateUserId(), item.Id),
+            new CheckItemCommand(TripFixtures.CreateUserId(), item.Id),
             CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task HandleAsync_CanIncrementSameItemMultipleTimes()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+        var handler = new CheckItemHandler(new InMemoryTripRepository(trip), NullLogger<CheckItemHandler>.Instance);
+
+        await handler.HandleAsync(new CheckItemCommand(trip.OwnerId, item.Id), CancellationToken.None);
+        var result = await handler.HandleAsync(new CheckItemCommand(trip.OwnerId, item.Id), CancellationToken.None);
+
+        Assert.Equal(2, result.Item.CheckCount);
     }
 
     private sealed class InMemoryTripRepository : ITripRepository
@@ -55,7 +68,8 @@ public sealed class GetItemHandlerTests
         }
 
         public Task AddAsync(TripEntity trip, CancellationToken cancellationToken) => throw new NotSupportedException();
-        public Task UpdateAsync(TripEntity trip, CancellationToken cancellationToken) => throw new NotSupportedException();
+
+        public Task UpdateAsync(TripEntity trip, CancellationToken cancellationToken) => Task.CompletedTask;
 
         public Task<TripEntity?> GetByIdAsync(TripId tripId, CancellationToken cancellationToken)
             => Task.FromResult(_trips.SingleOrDefault(trip => trip.Id == tripId));

@@ -91,5 +91,8 @@ public sealed class PatchItemHandlerTests
 
         public Task<TripEntity?> GetTripByItemIdAsync(ItemId itemId, CancellationToken cancellationToken)
             => Task.FromResult(_trips.SingleOrDefault(trip => trip.FindItem(itemId) is not null));
+
+        public Task<TripEntity?> GetTripByItemIdForUpdateAsync(ItemId itemId, CancellationToken cancellationToken)
+            => Task.FromResult(_trips.SingleOrDefault(trip => trip.FindItem(itemId) is not null));
     }
 }

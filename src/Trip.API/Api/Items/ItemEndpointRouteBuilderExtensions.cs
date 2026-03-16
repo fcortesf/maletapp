@@ -8,6 +8,7 @@ public static class ItemEndpointRouteBuilderExtensions
         endpoints.MapCreateItemInTrip();
         endpoints.MapGetItem();
         endpoints.MapPatchItem();
+        endpoints.MapCheckItem();
 
         return endpoints;
     }

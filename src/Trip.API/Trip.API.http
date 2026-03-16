@@ -36,6 +36,11 @@ GET {{Trip.API_HostAddress}}/items/{{ItemId}}
 Accept: application/json
 X-Test-User-Id: {{TestUserId}}
 
+### Check item
+POST {{Trip.API_HostAddress}}/items/{{ItemId}}/check-item
+Accept: application/json
+X-Test-User-Id: {{TestUserId}}
+
 ### Patch item
 PATCH {{Trip.API_HostAddress}}/items/{{ItemId}}
 Accept: application/json

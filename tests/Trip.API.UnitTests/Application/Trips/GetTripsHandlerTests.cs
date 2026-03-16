@@ -59,6 +59,11 @@ public sealed class GetTripsHandlerTests
             return Task.FromResult(_trips.SingleOrDefault(trip => trip.FindItem(itemId) is not null));
         }
 
+        public Task<TripEntity?> GetTripByItemIdForUpdateAsync(ItemId itemId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_trips.SingleOrDefault(trip => trip.FindItem(itemId) is not null));
+        }
+
         public Task<IReadOnlyList<TripEntity>> GetByOwnerIdAsync(UserId ownerId, CancellationToken cancellationToken)
         {
             return Task.FromResult<IReadOnlyList<TripEntity>>(_trips.Where(trip => trip.OwnerId == ownerId).ToArray());

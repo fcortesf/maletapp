@@ -86,16 +86,33 @@ public sealed class TripRepository : ITripRepository
 
     public async Task<TripEntity?> GetTripByItemIdAsync(ItemId itemId, CancellationToken cancellationToken)
     {
-        var trip = await _dbContext.Trips
-            .AsNoTracking()
-            .Include(model => model.Baggages)
-            .ThenInclude(model => model.Items)
-            .SingleOrDefaultAsync(
-                trip => trip.Baggages.Any(baggage => baggage.Items.Any(item => item.Id == itemId.Value)),
-                cancellationToken)
-            .ConfigureAwait(false);
+        var trip = await GetTripByItemIdInternalAsync(itemId, asNoTracking: true, cancellationToken).ConfigureAwait(false);
 
         return trip is null ? null : MapTrip(trip);
+    }
+
+    public async Task<TripEntity?> GetTripByItemIdForUpdateAsync(ItemId itemId, CancellationToken cancellationToken)
+    {
+        var trip = await GetTripByItemIdInternalAsync(itemId, asNoTracking: true, cancellationToken).ConfigureAwait(false);
+
+        return trip is null ? null : MapTrip(trip);
+    }
+
+    private async Task<TripDataModel?> GetTripByItemIdInternalAsync(ItemId itemId, bool asNoTracking, CancellationToken cancellationToken)
+    {
+        var query = _dbContext.Trips
+            .Include(model => model.Baggages)
+            .ThenInclude(model => model.Items)
+            .Where(trip => trip.Baggages.Any(baggage => baggage.Items.Any(item => item.Id == itemId.Value)));
+
+        if (asNoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        return await query
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
     }
 
     private static TripEntity MapTrip(TripDataModel trip)

@@ -65,4 +65,47 @@ public sealed class ItemTests
 
         Assert.Equal(2, item.CheckCount);
     }
+
+    [Fact]
+    public void Check_IncrementsCheckCountByOne()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+
+        item.Check();
+
+        Assert.Equal(1, item.CheckCount);
+    }
+
+    [Fact]
+    public void Check_CanBeCalledMultipleTimes()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+
+        item.Check();
+        item.Check();
+
+        Assert.Equal(2, item.CheckCount);
+    }
+
+    [Fact]
+    public void Check_DoesNotChangeIdentityOrMetadata()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport", Guid.NewGuid());
+        var originalId = item.Id;
+        var originalTripId = item.TripId;
+        var originalBaggageId = item.BaggageId;
+        var originalName = item.Name;
+        var originalDefaultItemId = item.DefaultItemId;
+
+        item.Check();
+
+        Assert.Equal(originalId, item.Id);
+        Assert.Equal(originalTripId, item.TripId);
+        Assert.Equal(originalBaggageId, item.BaggageId);
+        Assert.Equal(originalName, item.Name);
+        Assert.Equal(originalDefaultItemId, item.DefaultItemId);
+    }
 }

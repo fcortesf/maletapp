@@ -13,4 +13,7 @@ internal static partial class ItemLogMessages
 
     [LoggerMessage(EventId = 1103, Level = LogLevel.Information, Message = "Received patch item request for user {UserId} and item {ItemId}")]
     public static partial void PatchItemRequestReceived(this ILogger logger, Guid userId, Guid itemId);
+
+    [LoggerMessage(EventId = 1104, Level = LogLevel.Information, Message = "Received check item request for user {UserId} and item {ItemId}")]
+    public static partial void CheckItemRequestReceived(this ILogger logger, Guid userId, Guid itemId);
 }

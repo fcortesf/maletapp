@@ -15,4 +15,6 @@ public interface ITripRepository
     Task<TripEntity?> GetByIdAsync(TripId tripId, CancellationToken cancellationToken);
 
     Task<TripEntity?> GetTripByItemIdAsync(ItemId itemId, CancellationToken cancellationToken);
+
+    Task<TripEntity?> GetTripByItemIdForUpdateAsync(ItemId itemId, CancellationToken cancellationToken);
 }
