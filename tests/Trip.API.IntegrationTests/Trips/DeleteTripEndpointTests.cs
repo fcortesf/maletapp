@@ -2,83 +2,99 @@ using System.Net;
 using System.Net.Http.Json;
 using Trip.API.IntegrationTests.Infrastructure;
 
-namespace Trip.API.IntegrationTests.Items;
+namespace Trip.API.IntegrationTests.Trips;
 
-public sealed class GetItemEndpointTests
+public sealed class DeleteTripEndpointTests
 {
     [Fact]
-    public async Task GetItem_ReturnsItem_WhenOwnedByCurrentUser()
+    public async Task DeleteTrip_ReturnsNoContent_WhenTripIsOwnedByCurrentUser()
     {
         await using var factory = new TripApiFactory();
         using var client = factory.CreateApiClient();
         client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
-        var trip = await CreateTripAsync(client, "Lisbon");
-        var item = await CreateItemAsync(client, trip.Id, "Passport");
+        var trip = await CreateTripAsync(client, "Helsinki");
 
-        var response = await client.GetAsync($"/items/{item.Id}");
+        var response = await client.DeleteAsync($"/trips/{trip.Id}");
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
     [Fact]
-    public async Task GetItem_ReturnsNotFound_WhenItemDoesNotExist()
+    public async Task DeleteTrip_RemovesTripFromSubsequentGetById_WhenTripIsOwnedByCurrentUser()
     {
         await using var factory = new TripApiFactory();
         using var client = factory.CreateApiClient();
         client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(client, "Tallinn");
 
-        var response = await client.GetAsync($"/items/{Guid.NewGuid()}");
+        await client.DeleteAsync($"/trips/{trip.Id}");
+        var response = await client.GetAsync($"/trips/{trip.Id}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact]
-    public async Task GetItem_ReturnsForbidden_WhenItemBelongsToDifferentUser()
+    public async Task DeleteTrip_ReturnsNotFound_WhenTripDoesNotExist()
+    {
+        await using var factory = new TripApiFactory();
+        using var client = factory.CreateApiClient();
+        client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+
+        var response = await client.DeleteAsync($"/trips/{Guid.NewGuid()}");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task DeleteTrip_ReturnsForbidden_WhenTripBelongsToDifferentUser()
     {
         await using var factory = new TripApiFactory();
         using var ownerClient = factory.CreateApiClient();
         ownerClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
-        var trip = await CreateTripAsync(ownerClient, "Oslo");
-        var item = await CreateItemAsync(ownerClient, trip.Id, "Passport");
+        var trip = await CreateTripAsync(ownerClient, "Athens");
 
         using var otherClient = factory.CreateApiClient();
         otherClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
 
-        var response = await otherClient.GetAsync($"/items/{item.Id}");
+        var response = await otherClient.DeleteAsync($"/trips/{trip.Id}");
 
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
-    public async Task GetItem_ReturnsUnauthorized_WhenCurrentUserIsMissing()
+    public async Task DeleteTrip_ReturnsUnauthorized_WhenCurrentUserIsMissing()
     {
         await using var factory = new TripApiFactory();
         using var ownerClient = factory.CreateApiClient();
         ownerClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
-        var trip = await CreateTripAsync(ownerClient, "Seville");
-        var item = await CreateItemAsync(ownerClient, trip.Id, "Passport");
+        var trip = await CreateTripAsync(ownerClient, "Warsaw");
 
         using var anonymousClient = factory.CreateApiClient();
-        var response = await anonymousClient.GetAsync($"/items/{item.Id}");
+        var response = await anonymousClient.DeleteAsync($"/trips/{trip.Id}");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
-    public async Task GetItem_ReturnsNotFound_WhenOwningTripWasDeleted()
+    public async Task DeleteTrip_DeletesOnlyTargetTrip_WhenMultipleTripsExist()
     {
         await using var factory = new TripApiFactory();
         using var client = factory.CreateApiClient();
         client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
-        var trip = await CreateTripAsync(client, "Riga");
-        var item = await CreateItemAsync(client, trip.Id, "Passport");
+        var deletedTrip = await CreateTripAsync(client, "Bern");
+        var preservedTrip = await CreateTripAsync(client, "Zurich");
+        var preservedItem = await CreateItemAsync(client, preservedTrip.Id, "Passport");
 
-        var deleteResponse = await client.DeleteAsync($"/trips/{trip.Id}");
+        var deleteResponse = await client.DeleteAsync($"/trips/{deletedTrip.Id}");
         Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
 
-        var response = await client.GetAsync($"/items/{item.Id}");
+        var deletedTripResponse = await client.GetAsync($"/trips/{deletedTrip.Id}");
+        var preservedTripResponse = await client.GetAsync($"/trips/{preservedTrip.Id}");
+        var preservedItemResponse = await client.GetAsync($"/items/{preservedItem.Id}");
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, deletedTripResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, preservedTripResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, preservedItemResponse.StatusCode);
     }
 
     private static async Task<TripResponseContract> CreateTripAsync(HttpClient client, string destination)

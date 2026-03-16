@@ -82,6 +82,23 @@ public sealed class ListItemsByTripEndpointTests
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    [Fact]
+    public async Task ListItemsByTrip_ReturnsNotFound_WhenTripWasDeleted()
+    {
+        await using var factory = new TripApiFactory();
+        using var client = factory.CreateApiClient();
+        client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+
+        var trip = await CreateTripAsync(client, "Vilnius");
+        await client.PostAsJsonAsync($"/trips/{trip.Id}/items", new { name = "Passport" });
+        var deleteResponse = await client.DeleteAsync($"/trips/{trip.Id}");
+        Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+
+        var response = await client.GetAsync($"/trips/{trip.Id}/items");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
     private static async Task<TripResponseContract> CreateTripAsync(HttpClient client, string destination)
     {
         var response = await client.PostAsJsonAsync("/trips", new { destination });
