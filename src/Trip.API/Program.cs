@@ -3,6 +3,7 @@ using Trip.API.Api.ErrorHandling;
 using Trip.API.Api.Items;
 using Trip.API.Api.Trips;
 using Trip.API.Application.Abstractions;
+using Trip.API.Application.Items.CheckItem;
 using Trip.API.Application.Items.CreateItemInTrip;
 using Trip.API.Application.Items.GetItem;
 using Trip.API.Application.Items.ListItemsByTrip;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<GetTripsHandler>();
 builder.Services.AddScoped<GetTripByIdHandler>();
 builder.Services.AddScoped<ListItemsByTripHandler>();
 builder.Services.AddScoped<CreateItemInTripHandler>();
+builder.Services.AddScoped<CheckItemHandler>();
 builder.Services.AddScoped<GetItemHandler>();
 builder.Services.AddScoped<PatchItemHandler>();
 
