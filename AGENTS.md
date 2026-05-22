@@ -1,10 +1,7 @@
 # AGENTS.md
 
 ## Source of truth
-- Cross-cutting architecture decisions: `speckit.constitution`
-- Items sub-API spec & plan: `speckit/item.spec`, `speckit/item.plan`
-- Trips sub-API spec & plan: `speckit/trip.spec`, `speckit/trip.plan`
-- Active work: `speckit.tasks` (tasks are tagged [item] or [trip])
+- Cross-cutting architecture decisions: `context/constitution.md`
 - API contracts:
   - `spec/item.yml` — Items contract, source of truth for that domain
   - `spec/trip.yml` — Trips contract, source of truth for that domain
@@ -12,7 +9,7 @@
 
 ## Contract boundary rule
 - Items and Trips are separate sub-APIs — do not introduce cross-domain
-  dependencies in the implementation without updating `speckit.constitution` first
+  dependencies in the implementation without updating `context/constitution.md` first
 
 ## Build & verify
 - Build: `dotnet build --no-incremental`
@@ -64,9 +61,7 @@
 - One responsibility per file; no god classes
 
 ## Scope
-- One task from `speckit.tasks` per session — no scope creep
 - Do not add production dependencies to `.csproj` without asking first
-- Changes to `openapi.yml` require updating `speckit.spec` in the same session
 - Commit work in smaller increments during task execution instead of waiting for a large final commit.
 - Use $git-workflow to apply this repository's branch, commit, push, and PR conventions.
 
@@ -76,11 +71,8 @@
 - Entity Framework in-memory database for the current phase, expanded to persist trips with related baggages and items (002-trip-items-api)
 - Entity Framework in-memory database for the current phase, persisting trips with owned baggages and items including `checkCount` (003-item-check-counter)
 
-## Recent Changes
-- 001-add-trip-api: Added C# with .NET 10 (`net10.0`) + ASP.NET Core Minimal API, Entity Framework Core, EF Core InMemory provider, OpenAPI/Swagger tooling
-
 ## Self-Improvement loop
-- After ANY correction from the user: update `memory/lessons.md` with the pattern
+- After ANY correction from the user: update `.context/memory/lessons.md` with the pattern
 - Write rules for yourself that prevent the same mistake prevent the same mistake
 - Ruthlessly iterate on these lessons until mistake rate drops
 - Review lessons at session start for relevant project 

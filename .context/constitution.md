@@ -27,7 +27,6 @@ Minimal API endpoints must propagate cancellation, return structured problem det
 
 ## Workflow and Quality Gates
 
-- One `speckit.tasks` task per session; avoid unrelated scope.
 - Before implementation or commit readiness, `dotnet build --no-incremental`, `dotnet test --no-build`, and `dotnet format --verify-no-changes` must pass with zero new warnings.
 - Planning artifacts must resolve major architectural questions before implementation tasks are generated.
 - Repository changes must preserve clean separation between domain, application, infrastructure, and API concerns where those layers exist.
