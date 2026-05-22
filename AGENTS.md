@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Source of truth
-- Cross-cutting architecture decisions: `context/constitution.md`
+- Cross-cutting architecture decisions: `.context/constitution.md`
 - API contracts:
   - `spec/item.yml` — Items contract, source of truth for that domain
   - `spec/trip.yml` — Trips contract, source of truth for that domain
@@ -9,7 +9,7 @@
 
 ## Contract boundary rule
 - Items and Trips are separate sub-APIs — do not introduce cross-domain
-  dependencies in the implementation without updating `context/constitution.md` first
+  dependencies in the implementation without updating `.context/constitution.md` first
 
 ## Build & verify
 - Build: `dotnet build --no-incremental`
