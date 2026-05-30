@@ -45,6 +45,7 @@ public sealed class CreateItemInTripHandler
             item.BaggageId.Value,
             item.Name,
             item.CheckCount,
+            item.IsPacked,
             item.DefaultItemId));
     }
 }

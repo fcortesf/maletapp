@@ -40,6 +40,7 @@ public sealed class GetItemHandler
             item.BaggageId.Value,
             item.Name,
             item.CheckCount,
+            item.IsPacked,
             item.DefaultItemId));
     }
 }

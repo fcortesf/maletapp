@@ -49,6 +49,11 @@ public sealed class PatchItemHandler
             item.UpdateDefaultItemId(command.Item.DefaultItemId);
         }
 
+        if (command.Item.HasIsPacked)
+        {
+            item.SetPackedState(command.Item.IsPacked);
+        }
+
         await _tripRepository.UpdateAsync(trip, cancellationToken).ConfigureAwait(false);
 
         return new PatchItemResult(new ItemDto(
@@ -57,6 +62,7 @@ public sealed class PatchItemHandler
             item.BaggageId.Value,
             item.Name,
             item.CheckCount,
+            item.IsPacked,
             item.DefaultItemId));
     }
 }

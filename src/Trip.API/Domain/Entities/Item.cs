@@ -20,6 +20,7 @@ public sealed class Item : IEntity
 
         DefaultItemId = defaultItemId;
         CheckCount = 0;
+        IsPacked = false;
     }
 
     public required ItemId Id { get; init; }
@@ -28,8 +29,16 @@ public sealed class Item : IEntity
     public string Name { get; private set; } = string.Empty;
     public Guid? DefaultItemId { get; private set; }
     public int CheckCount { get; private set; }
+    public bool IsPacked { get; private set; }
 
-    public static Item Rehydrate(ItemId id, TripId tripId, BaggageId baggageId, string name, int checkCount, Guid? defaultItemId = null)
+    public static Item Rehydrate(
+        ItemId id,
+        TripId tripId,
+        BaggageId baggageId,
+        string name,
+        int checkCount,
+        Guid? defaultItemId = null,
+        bool isPacked = false)
     {
         if (checkCount < 0)
         {
@@ -38,7 +47,8 @@ public sealed class Item : IEntity
 
         var item = new Item(id, tripId, baggageId, name, defaultItemId)
         {
-            CheckCount = checkCount
+            CheckCount = checkCount,
+            IsPacked = isPacked
         };
 
         return item;
@@ -60,5 +70,10 @@ public sealed class Item : IEntity
     public void UpdateDefaultItemId(Guid? defaultItemId)
     {
         DefaultItemId = defaultItemId;
+    }
+
+    public void SetPackedState(bool isPacked)
+    {
+        IsPacked = isPacked;
     }
 }

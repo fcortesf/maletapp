@@ -35,6 +35,7 @@ public static class GetItemEndpoint
                         item.BaggageId,
                         item.Name,
                         item.CheckCount,
+                        item.IsPacked,
                         item.DefaultItemId));
                 })
             .WithName(ItemEndpointNames.GetItem)
