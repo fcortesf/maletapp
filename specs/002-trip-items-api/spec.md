@@ -51,8 +51,9 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 
 1. **Given** an authenticated user and an existing item associated with one of that user's trips, **When** the user requests that item by identifier, **Then** the system returns the item details.
 2. **Given** an authenticated user and an existing item associated with one of that user's trips, **When** the user submits a valid partial update for that item, **Then** the system saves the new values and returns the updated item.
-3. **Given** an authenticated user, **When** the user requests or updates an item associated with another user's trip, **Then** the system denies access.
-4. **Given** an authenticated user, **When** the user requests or updates an item that does not exist, **Then** the system reports that the item was not found.
+3. **Given** an authenticated user and an existing item associated with one of that user's trips, **When** the user submits a partial update for that item's packed state, **Then** the system saves the packed state and returns the updated item.
+4. **Given** an authenticated user, **When** the user requests or updates an item associated with another user's trip, **Then** the system denies access.
+5. **Given** an authenticated user, **When** the user requests or updates an item that does not exist, **Then** the system reports that the item was not found.
 
 ### Edge Cases
 
@@ -60,6 +61,7 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 - A trip exists but has no default baggage yet when the user attempts to add an item directly to the trip.
 - A user submits a partial update that changes none of the item fields.
 - A user submits a partial update with an empty item name.
+- A user submits a partial update that changes only whether the item is packed.
 - The system cannot determine the current authenticated user for the request.
 
 ## Requirements *(mandatory)*
@@ -75,18 +77,20 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 - **FR-006a**: The system MUST create the trip's default baggage during direct trip item creation when no default baggage exists yet.
 - **FR-007**: The system MUST allow the current authenticated user to retrieve a single item by UUID when that item is associated with a trip owned by that user.
 - **FR-008**: The system MUST allow the current authenticated user to partially update a single item by UUID when that item is associated with a trip owned by that user.
-- **FR-009**: The system MUST limit item updates in this feature to `name` and `defaultItemId` during partial updates.
+- **FR-009**: The system MUST limit item updates in this feature to `name`, `defaultItemId`, and `isPacked` during partial updates.
 - **FR-010**: The system MUST apply an ownership check before completing any of the four supported item operations and MUST deny access when the related trip is not owned by the current authenticated user.
 - **FR-011**: The system MUST return a forbidden outcome for list, create, retrieve, and update requests when the related trip belongs to a different user.
 - **FR-012**: The system MUST report when the requested trip or item does not exist.
 - **FR-013**: The system MUST reject item creation or update requests that do not satisfy the required item data rules, including a missing required item name on creation.
-- **FR-014**: The system MUST preserve the item data defined for this feature: item identifier, trip identifier, baggage identifier, item name, check count, and optional default item reference.
+- **FR-014**: The system MUST preserve the item data defined for this feature: item identifier, trip identifier, baggage identifier, item name, check count, packed state, and optional default item reference.
 - **FR-015**: The system MUST reject requests that do not have a determinable current authenticated user.
 - **FR-016**: All trip identifiers, item identifiers, baggage identifiers, and default item references used by this feature MUST be UUID values.
+- **FR-017**: The system MUST create new items with `isPacked` set to `false`.
+- **FR-018**: The system MUST expose `isPacked` in every item response.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Item**: A packing-list entry owned indirectly through a trip, identified uniquely, linked to one trip and one baggage, with a name, a check count, and an optional reference to a predefined item.
+- **Item**: A packing-list entry owned indirectly through a trip, identified uniquely, linked to one trip and one baggage, with a name, a check count, packed state, and an optional reference to a predefined item.
 - **Trip**: A travel plan owned by one user that groups items and supplies the default baggage used when an item is created directly under the trip.
 - **Current User Context**: The request-scoped authenticated identity used to determine trip ownership and whether item access is allowed.
 
@@ -95,7 +99,7 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 - The feature scope is limited to listing trip items, creating an item directly under a trip, retrieving one item, and partially updating one item.
 - A valid authenticated user identity is expected to be available for each authorized request, but the authentication mechanism itself is outside this feature's scope.
 - Direct trip item creation reuses the trip's default baggage when it already exists and creates that default baggage on demand when it does not yet exist.
-- Item updates in this phase are limited to `name` and `defaultItemId`.
+- Item updates in this phase are limited to `name`, `defaultItemId`, and `isPacked`.
 - No item deletion, item check action, baggage-specific item creation, item sharing, or cross-user collaboration behavior is included in this phase.
 
 ## Success Criteria *(mandatory)*

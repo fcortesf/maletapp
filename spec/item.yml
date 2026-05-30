@@ -177,7 +177,7 @@ paths:
     patch:
       tags:
         - Items
-      summary: Partially update item (e.g., rename it)
+      summary: Partially update item (e.g., rename it or update packed state)
       operationId: patchItem
       parameters:
         - name: itemId
@@ -268,6 +268,9 @@ components:
           type: string
           format: uuid
           description: Optional reference to a predefined item from another API
+        isPacked:
+          type: boolean
+          description: Whether the item is already packed
 
     Item:
       type: object
@@ -295,6 +298,10 @@ components:
           minimum: 0
           readOnly: true
           description: Number of times this item has been checked
+        isPacked:
+          type: boolean
+          readOnly: true
+          description: Whether the item is already packed
         defaultItemId:
           type: string
           format: uuid
@@ -303,3 +310,4 @@ components:
         - id
         - name
         - checkCount
+        - isPacked

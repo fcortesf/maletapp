@@ -28,7 +28,8 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `defaultItemId`: optional UUID string
 - Success response:
   - `201 Created`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
+  - New items start with `isPacked` set to `false`
 - Failure outcomes:
   - `400 Bad Request` for invalid input
   - `401 Unauthorized` when no current user can be resolved
@@ -43,7 +44,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `itemId`: required UUID string
 - Success response:
   - `200 OK`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
 - Failure outcomes:
   - `401 Unauthorized` when no current user can be resolved
   - `403 Forbidden` when the related trip belongs to a different user
@@ -58,6 +59,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 - Request body:
   - `name`: optional string
   - `defaultItemId`: optional UUID string
+  - `isPacked`: optional boolean
 - Success response:
   - `200 OK`
   - Response body contains the updated item object
@@ -77,6 +79,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 
 ## Response Shape Notes
 
-- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`.
+- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`.
 - `NewItem` requires `name` and allows an optional `defaultItemId`.
 - `PatchItem` supports partial changes and must not allow client control over `id`, `tripId`, `baggageId`, or `checkCount`.
+- `PatchItem` allows the owning user to set `isPacked` to either `true` or `false`.
