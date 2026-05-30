@@ -20,6 +20,44 @@ public sealed class PatchItemEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var updated = await response.Content.ReadFromJsonAsync<ItemResponseContract>();
         Assert.Equal("Updated Passport", updated!.Name);
+        Assert.False(updated.IsPacked);
+    }
+
+    [Fact]
+    public async Task PatchItem_ReturnsUpdatedItem_WhenMarkingItemAsPacked()
+    {
+        await using var factory = new TripApiFactory();
+        using var client = factory.CreateApiClient();
+        client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(client, "Athens");
+        var item = await CreateItemAsync(client, trip.Id, "Passport");
+
+        var response = await client.PatchAsJsonAsync($"/items/{item.Id}", new { isPacked = true });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var updated = await response.Content.ReadFromJsonAsync<ItemResponseContract>();
+        Assert.NotNull(updated);
+        Assert.True(updated!.IsPacked);
+        Assert.Equal("Passport", updated.Name);
+    }
+
+    [Fact]
+    public async Task PatchItem_ReturnsUpdatedItem_WhenMarkingItemAsUnpacked()
+    {
+        await using var factory = new TripApiFactory();
+        using var client = factory.CreateApiClient();
+        client.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(client, "Zurich");
+        var item = await CreateItemAsync(client, trip.Id, "Passport");
+        var packResponse = await client.PatchAsJsonAsync($"/items/{item.Id}", new { isPacked = true });
+        Assert.Equal(HttpStatusCode.OK, packResponse.StatusCode);
+
+        var response = await client.PatchAsJsonAsync($"/items/{item.Id}", new { isPacked = false });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var updated = await response.Content.ReadFromJsonAsync<ItemResponseContract>();
+        Assert.NotNull(updated);
+        Assert.False(updated!.IsPacked);
     }
 
     [Fact]
@@ -49,6 +87,27 @@ public sealed class PatchItemEndpointTests
         var response = await otherClient.PatchAsJsonAsync($"/items/{item.Id}", new { name = "Updated Passport" });
 
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PatchItem_ReturnsForbidden_AndPreservesPackedState_WhenItemBelongsToDifferentUser()
+    {
+        await using var factory = new TripApiFactory();
+        using var ownerClient = factory.CreateApiClient();
+        ownerClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+        var trip = await CreateTripAsync(ownerClient, "Tallinn");
+        var item = await CreateItemAsync(ownerClient, trip.Id, "Passport");
+
+        using var otherClient = factory.CreateApiClient();
+        otherClient.DefaultRequestHeaders.Add(TestUserContextHeaderNames.UserId, Guid.NewGuid().ToString());
+
+        var response = await otherClient.PatchAsJsonAsync($"/items/{item.Id}", new { isPacked = true });
+        var getResponse = await ownerClient.GetAsync($"/items/{item.Id}");
+
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        var unchanged = await getResponse.Content.ReadFromJsonAsync<ItemResponseContract>();
+        Assert.NotNull(unchanged);
+        Assert.False(unchanged!.IsPacked);
     }
 
     [Fact]
@@ -93,5 +152,5 @@ public sealed class PatchItemEndpointTests
     }
 
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
-    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, Guid? DefaultItemId);
+    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, bool IsPacked, Guid? DefaultItemId);
 }

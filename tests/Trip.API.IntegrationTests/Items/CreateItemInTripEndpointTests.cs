@@ -20,6 +20,7 @@ public sealed class CreateItemInTripEndpointTests
         var item = await response.Content.ReadFromJsonAsync<ItemResponseContract>();
         Assert.Equal(trip.Id, item!.TripId);
         Assert.NotEqual(Guid.Empty, item.BaggageId);
+        Assert.False(item.IsPacked);
     }
 
     [Fact]
@@ -84,5 +85,5 @@ public sealed class CreateItemInTripEndpointTests
     }
 
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
-    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, Guid? DefaultItemId);
+    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, bool IsPacked, Guid? DefaultItemId);
 }
