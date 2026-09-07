@@ -26,9 +26,11 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 - Request body:
   - `name`: required string
   - `defaultItemId`: optional UUID string
+  - `notes`: optional nullable string; comments about the item
+  - `itemCount`: optional nullable integer from 1 to 2147483647; number of units to bring
 - Success response:
   - `201 Created`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `isPacked`, nullable `notes` and `itemCount`, and optional `defaultItemId`
   - New items start with `isPacked` set to `false`
 - Failure outcomes:
   - `400 Bad Request` for invalid input
@@ -44,7 +46,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `itemId`: required UUID string
 - Success response:
   - `200 OK`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `isPacked`, nullable `notes` and `itemCount`, and optional `defaultItemId`
 - Failure outcomes:
   - `401 Unauthorized` when no current user can be resolved
   - `403 Forbidden` when the related trip belongs to a different user
@@ -59,6 +61,8 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 - Request body:
   - `name`: optional string
   - `defaultItemId`: optional UUID string
+  - `notes`: optional nullable string; comments about the item
+  - `itemCount`: optional nullable integer from 1 to 2147483647; number of units to bring
   - `isPacked`: optional boolean
 - Success response:
   - `200 OK`
@@ -77,7 +81,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `itemId`: required UUID string
 - Success response:
   - `204 No Content`, with no response body
-  - Only the selected item is deleted; its trip, baggage and other items are preserved, including their `isPacked` state and `checkCount`
+  - Only the selected item is deleted; its trip, baggage and other items are preserved, including their `isPacked` state, notes and quantity
 - Failure outcomes:
   - `401 Unauthorized` when no current user can be resolved
   - `403 Forbidden` when the related trip belongs to a different user
@@ -93,7 +97,11 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 
 ## Response Shape Notes
 
-- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`.
-- `NewItem` requires `name` and allows an optional `defaultItemId`.
-- `PatchItem` supports partial changes and must not allow client control over `id`, `tripId`, `baggageId`, or `checkCount`.
+- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `isPacked`, nullable `notes` and `itemCount`, and optional `defaultItemId`.
+- `NewItem` requires `name` and allows optional `defaultItemId`, `notes`, and `itemCount`.
+- `PatchItem` supports partial changes and must not allow client control over `id`, `tripId`, or `baggageId`.
 - `PatchItem` allows the owning user to set `isPacked` to either `true` or `false`.
+
+- Omitted or null `notes` and `itemCount` on creation are stored as null.
+- PATCH omission preserves existing values; explicit null clears notes or quantity.
+- A null quantity is unspecified, not an implicit 1. Invalid quantities return 400.

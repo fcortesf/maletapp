@@ -25,6 +25,8 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         var (statusCode, title) = exception switch
         {
             ValidationException => (StatusCodes.Status400BadRequest, "Bad Request"),
+            BadHttpRequestException { StatusCode: StatusCodes.Status400BadRequest } => (StatusCodes.Status400BadRequest, "Bad Request"),
+            System.Text.Json.JsonException => (StatusCodes.Status400BadRequest, "Bad Request"),
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
             ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden"),
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),

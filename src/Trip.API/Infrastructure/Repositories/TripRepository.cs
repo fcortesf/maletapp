@@ -163,9 +163,10 @@ public sealed class TripRepository : ITripRepository
             TripId.FromGuid(item.TripId),
             BaggageId.FromGuid(item.BaggageId),
             item.Name,
-            item.CheckCount,
             item.DefaultItemId,
-            item.IsPacked);
+            item.IsPacked,
+            item.Notes,
+            item.ItemCount);
     }
 
     private static TripDataModel MapTripDataModel(TripEntity trip)
@@ -195,8 +196,9 @@ public sealed class TripRepository : ITripRepository
                 TripId = item.TripId.Value,
                 BaggageId = item.BaggageId.Value,
                 Name = item.Name,
-                CheckCount = item.CheckCount,
                 IsPacked = item.IsPacked,
+                Notes = item.Notes,
+                ItemCount = item.ItemCount,
                 DefaultItemId = item.DefaultItemId
             }).ToList()
         });

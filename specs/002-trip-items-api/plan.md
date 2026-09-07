@@ -17,7 +17,7 @@ Implement the Items API slice for listing all items in an owned trip, creating a
 **Project Type**: Web service  
 **Performance Goals**: Support local development, automated test execution, and manual verification of item list, create, retrieve, and patch flows  
 **Constraints**: Preserve Items/Trips contract separation, use repository abstractions rather than direct persistence calls, enforce ownership before all supported item operations, propagate `CancellationToken` from endpoints through handlers and repositories, use structured logging and typed exceptions, keep public endpoint handler names equal to the OpenAPI `operationId` values, and keep warnings at zero  
-**Scale/Scope**: Initial Items API slice with 4 endpoints, 1 existing trip aggregate extended for baggages/items, request-scoped ownership checks, and no deletion or check-item behavior in this phase
+**Scale/Scope**: Initial Items API slice with 4 endpoints, 1 existing trip aggregate extended for baggages/items, request-scoped ownership checks, and no deletion behavior in this phase
 
 ## Constitution Check
 

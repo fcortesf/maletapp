@@ -1,6 +1,6 @@
 ## Context
 
-Items are currently modeled inside trip-owned baggages and exposed through the Items API. Item responses include identity, trip and baggage references, name, `checkCount`, and optional `defaultItemId`, but they do not expose whether the item has been packed.
+Items are currently modeled inside trip-owned baggages and exposed through the Items API. Item responses include identity, trip and baggage references, name and optional `defaultItemId`, but they do not expose whether the item has been packed.
 
 The existing item update surface is `PATCH /items/{itemId}` (`patchItem`), which already resolves the current user, loads the trip by item id, returns `404` for missing items, returns `403` for another user's item, mutates item fields, and returns the updated item.
 
@@ -18,7 +18,6 @@ The existing item update surface is `PATCH /items/{itemId}` (`patchItem`), which
 
 **Non-Goals:**
 
-- Replace or remove `checkCount`.
 - Introduce authentication changes beyond the existing current-user accessor.
 - Add a new production dependency.
 - Change the Items/Trips contract boundary or introduce cross-domain dependencies outside trip-owned containment.
@@ -39,7 +38,7 @@ The existing item update surface is `PATCH /items/{itemId}` (`patchItem`), which
 
 3. Flow `isPacked` through DTOs, responses, and persistence mappings.
 
-   `ItemDto`, `ItemResponse`, `ItemDataModel`, repository mapping, and response construction should include `IsPacked`. All list, create, get, patch, and check-item responses should return the field because they all serialize the shared `Item` contract.
+   `ItemDto`, `ItemResponse`, `ItemDataModel`, repository mapping, and response construction should include `IsPacked`. All list, create, get and patch responses should return the field because they all serialize the shared `Item` contract.
 
    Alternative considered: only return `isPacked` from the update operation. This was rejected because the acceptance criteria require `Item` responses to expose the field, not only one endpoint.
 

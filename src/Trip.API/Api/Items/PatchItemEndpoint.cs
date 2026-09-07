@@ -37,7 +37,11 @@ public static class PatchItemEndpoint
                                 request.DefaultItemId,
                                 request.HasDefaultItemId,
                                 request.IsPacked,
-                                request.HasIsPacked)),
+                                request.HasIsPacked,
+                                request.Notes,
+                                request.HasNotes,
+                                request.ItemCount,
+                                request.HasItemCount)),
                         cancellationToken);
 
                     var item = result.Item;
@@ -46,11 +50,14 @@ public static class PatchItemEndpoint
                         item.TripId,
                         item.BaggageId,
                         item.Name,
-                        item.CheckCount,
                         item.IsPacked,
-                        item.DefaultItemId));
+                        item.DefaultItemId,
+                        item.Notes,
+                        item.ItemCount));
                 })
             .WithName(ItemEndpointNames.PatchItem)
+            .Accepts<PatchItemRequest>("application/json")
+            .Produces<ItemResponse>(200)
             .WithTags("Items");
 
         return endpoints;

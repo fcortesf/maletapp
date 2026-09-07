@@ -46,17 +46,18 @@
   - `TripId`: Identifier of the owning trip exposed in responses.
   - `BaggageId`: Identifier of the baggage containing the item.
   - `Name`: Item name.
-  - `CheckCount`: Number of times the item has been marked as checked.
+  - `Notes`: Nullable free-text comments.
+  - `ItemCount`: Nullable positive integer quantity.
   - `DefaultItemId`: Optional reference to a predefined item identifier.
 - Relationships:
   - One item belongs to one baggage.
   - One item belongs to one trip through its baggage.
 - Validation rules:
   - `Name` is required on creation and cannot be blank on update.
-  - `CheckCount` is non-negative and read-only for this feature.
+  - `ItemCount` must be positive when specified; null means unspecified.
   - `DefaultItemId`, when present, must be a UUID.
 - State transitions:
-  - Created: Item is added to the trip's default baggage with `CheckCount` starting at zero.
+  - Created: Item is added to the trip's default baggage with nullable notes and quantity.
   - Retrieved: Item is returned only if its trip belongs to the current user.
   - Updated: Item name and other patchable contract fields may change without altering ownership or trip association.
 
@@ -97,8 +98,9 @@
   - `TripId`
   - `BaggageId`
   - `Name`
-  - `CheckCount`
+  - `Notes`
+  - `ItemCount`
   - `DefaultItemId`
 - Notes:
   - Ownership is enforced through the related trip and is not returned as a separate field.
-  - `Id`, `TripId`, `BaggageId`, and `CheckCount` are system-controlled values in this feature.
+  - `Id`, `TripId`, and `BaggageId` are system-controlled values in this feature.

@@ -30,7 +30,7 @@ public static class CreateItemInTripEndpoint
                         new CreateItemInTripCommand(
                             userId,
                             TripId.FromGuid(tripId),
-                            new NewItemDto(request.Name, request.DefaultItemId)),
+                            new NewItemDto(request.Name, request.DefaultItemId, request.Notes, request.ItemCount)),
                         cancellationToken);
 
                     var item = result.Item;
@@ -39,11 +39,13 @@ public static class CreateItemInTripEndpoint
                         item.TripId,
                         item.BaggageId,
                         item.Name,
-                        item.CheckCount,
                         item.IsPacked,
-                        item.DefaultItemId));
+                        item.DefaultItemId,
+                        item.Notes,
+                        item.ItemCount));
                 })
             .WithName(ItemEndpointNames.CreateItemInTrip)
+            .Produces<ItemResponse>(201)
             .WithTags("Items");
 
         return endpoints;

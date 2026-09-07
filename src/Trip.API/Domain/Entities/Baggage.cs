@@ -29,12 +29,12 @@ public sealed class Baggage : IEntity
 
     public IReadOnlyCollection<Item> Items => _items.AsReadOnly();
 
-    public Item AddItem(string itemName, Guid? defaultItemId)
+    public Item AddItem(string itemName, Guid? defaultItemId, string? notes = null, int? itemCount = null)
     {
         if (string.IsNullOrWhiteSpace(itemName))
             throw new ArgumentException("Item name cannot be empty.", nameof(itemName));
 
-        var item = new Item(ItemId.CreateUnique(), TripId, Id, itemName, defaultItemId);
+        var item = new Item(ItemId.CreateUnique(), TripId, Id, itemName, defaultItemId, notes, itemCount);
 
         _items.Add(item);
         return item;

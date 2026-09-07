@@ -18,11 +18,10 @@ public sealed class DeleteItemEndpointTests
         var createdItem = await owner.PostAsJsonAsync($"/trips/{trip.Id}/items", new { name = "Remove me" });
         var item = await createdItem.Content.ReadFromJsonAsync<Identifier>();
         Assert.NotNull(item);
-        var createdOther = await owner.PostAsJsonAsync($"/trips/{trip.Id}/items", new { name = "Keep me" });
+        var createdOther = await owner.PostAsJsonAsync($"/trips/{trip.Id}/items", new { name = "Keep me", notes = "Keep this comment", itemCount = 3 });
         var other = await createdOther.Content.ReadFromJsonAsync<Identifier>();
         Assert.NotNull(other);
         await owner.PatchAsJsonAsync($"/items/{other.Id}", new { isPacked = true });
-        await owner.PostAsync($"/items/{other.Id}/check-item", null);
 
         using var anonymous = factory.CreateApiClient();
         Assert.Equal(HttpStatusCode.Unauthorized, (await anonymous.DeleteAsync($"/items/{item.Id}")).StatusCode);
@@ -40,9 +39,10 @@ public sealed class DeleteItemEndpointTests
         var kept = Assert.Single(remaining);
         Assert.Equal(other.Id, kept.Id);
         Assert.True(kept.IsPacked);
-        Assert.Equal(1, kept.CheckCount);
+        Assert.Equal("Keep this comment", kept.Notes);
+        Assert.Equal(3, kept.ItemCount);
     }
 
     private sealed record Identifier(Guid Id);
-    private sealed record ItemContract(Guid Id, bool IsPacked, int CheckCount);
+    private sealed record ItemContract(Guid Id, bool IsPacked, string? Notes, int? ItemCount);
 }

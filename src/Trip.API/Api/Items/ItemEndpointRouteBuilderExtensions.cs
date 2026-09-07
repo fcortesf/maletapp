@@ -9,7 +9,6 @@ public static class ItemEndpointRouteBuilderExtensions
         endpoints.MapGetItem();
         endpoints.MapDeleteItem();
         endpoints.MapPatchItem();
-        endpoints.MapCheckItem();
 
         return endpoints;
     }

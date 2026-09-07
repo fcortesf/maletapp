@@ -48,7 +48,8 @@
   - `TripId`: Identifier of the owning trip.
   - `BaggageId`: Identifier of the baggage that contains the item.
   - `Name`: User-facing item name.
-  - `CheckCount`: Non-negative cumulative packing counter already supported by the item domain.
+  - `Notes`: Nullable item comments.
+  - `ItemCount`: Nullable positive integer quantity.
   - `DefaultItemId`: Optional predefined-item reference.
 - Relationships:
   - One item belongs to one baggage.

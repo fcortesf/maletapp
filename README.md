@@ -129,3 +129,22 @@ Format check:
 ```bash
 dotnet format --verify-no-changes
 ```
+
+## Item comments and quantities
+
+Create items with optional nullable `notes` and `itemCount`:
+
+```json
+{ "name": "Socks", "notes": "Bring two spare pairs", "itemCount": 4 }
+```
+
+`itemCount` is a positive int32 (1–2147483647). Omitted or null values on
+creation remain null; null means unspecified, not one. Both fields are returned
+by item reads and can be edited with PATCH: omission preserves, explicit null
+clears. `isPacked` remains independent of quantity. Swagger exposes the create,
+patch and response fields; the source contract is `spec/item.yml`.
+
+This is a breaking API change: the former check counter and check action have
+been removed. Consumers must use `isPacked` for preparation status. Deploy the
+matching MCP version with this API. No running containers are updated by these
+source changes; recreating the in-memory domain discards its existing data.

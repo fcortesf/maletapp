@@ -34,6 +34,9 @@ public sealed class PatchItemHandler
         var item = trip.FindItem(command.ItemId)
             ?? throw new NotFoundException($"Item {command.ItemId.Value} was not found.");
 
+        if (command.Item.HasItemCount && command.Item.ItemCount is <= 0)
+            throw new ValidationException("Item count must be positive.");
+
         if (command.Item.HasName)
         {
             if (string.IsNullOrWhiteSpace(command.Item.Name))
@@ -54,6 +57,9 @@ public sealed class PatchItemHandler
             item.SetPackedState(command.Item.IsPacked);
         }
 
+        if (command.Item.HasNotes) item.UpdateNotes(command.Item.Notes);
+        if (command.Item.HasItemCount) item.SetItemCount(command.Item.ItemCount);
+
         await _tripRepository.UpdateAsync(trip, cancellationToken).ConfigureAwait(false);
 
         return new PatchItemResult(new ItemDto(
@@ -61,8 +67,9 @@ public sealed class PatchItemHandler
             item.TripId.Value,
             item.BaggageId.Value,
             item.Name,
-            item.CheckCount,
             item.IsPacked,
-            item.DefaultItemId));
+            item.DefaultItemId,
+            item.Notes,
+            item.ItemCount));
     }
 }

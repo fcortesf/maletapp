@@ -110,5 +110,5 @@ public sealed class DeleteTripEndpointTests
     }
 
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
-    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, Guid? DefaultItemId);
+    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, Guid? DefaultItemId);
 }

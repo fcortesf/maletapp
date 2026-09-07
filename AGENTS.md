@@ -69,7 +69,6 @@
 - C# with .NET 10 (`net10.0`) + ASP.NET Core Minimal API, Entity Framework Core, EF Core InMemory provider, OpenAPI/Swagger tooling (001-add-trip-api)
 - Entity Framework in-memory database for the current phase (001-add-trip-api)
 - Entity Framework in-memory database for the current phase, expanded to persist trips with related baggages and items (002-trip-items-api)
-- Entity Framework in-memory database for the current phase, persisting trips with owned baggages and items including `checkCount` (003-item-check-counter)
 
 ## Self-Improvement loop
 - After ANY correction from the user: update `.context/memory/lessons.md` with the pattern

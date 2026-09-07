@@ -5,6 +5,7 @@ public sealed record ItemDto(
     Guid TripId,
     Guid BaggageId,
     string Name,
-    int CheckCount,
     bool IsPacked,
-    Guid? DefaultItemId);
+    Guid? DefaultItemId,
+    string? Notes,
+    int? ItemCount);

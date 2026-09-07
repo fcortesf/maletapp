@@ -6,4 +6,8 @@ public sealed record PatchItemDto(
     Guid? DefaultItemId,
     bool HasDefaultItemId,
     bool IsPacked,
-    bool HasIsPacked);
+    bool HasIsPacked,
+    string? Notes = null,
+    bool HasNotes = false,
+    int? ItemCount = null,
+    bool HasItemCount = false);

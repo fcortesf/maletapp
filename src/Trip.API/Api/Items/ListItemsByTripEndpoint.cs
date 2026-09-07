@@ -34,11 +34,13 @@ public static class ListItemsByTripEndpoint
                             item.TripId,
                             item.BaggageId,
                             item.Name,
-                            item.CheckCount,
                             item.IsPacked,
-                            item.DefaultItemId)));
+                            item.DefaultItemId,
+                            item.Notes,
+                            item.ItemCount)));
                 })
             .WithName(ItemEndpointNames.ListItemsByTrip)
+            .Produces<ItemResponse[]>(200)
             .WithTags("Items");
 
         return endpoints;
