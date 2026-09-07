@@ -12,6 +12,8 @@ public sealed class ItemDataModel
 
     public int CheckCount { get; set; }
 
+    public bool IsPacked { get; set; }
+
     public Guid? DefaultItemId { get; set; }
 
     public BaggageDataModel? Baggage { get; set; }

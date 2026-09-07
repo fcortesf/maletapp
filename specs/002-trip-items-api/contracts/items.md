@@ -28,7 +28,8 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `defaultItemId`: optional UUID string
 - Success response:
   - `201 Created`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
+  - New items start with `isPacked` set to `false`
 - Failure outcomes:
   - `400 Bad Request` for invalid input
   - `401 Unauthorized` when no current user can be resolved
@@ -43,7 +44,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `itemId`: required UUID string
 - Success response:
   - `200 OK`
-  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`
+  - Response body contains item `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`
 - Failure outcomes:
   - `401 Unauthorized` when no current user can be resolved
   - `403 Forbidden` when the related trip belongs to a different user
@@ -58,6 +59,7 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
 - Request body:
   - `name`: optional string
   - `defaultItemId`: optional UUID string
+  - `isPacked`: optional boolean
 - Success response:
   - `200 OK`
   - Response body contains the updated item object
@@ -68,15 +70,30 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `404 Not Found` when the item does not exist
   - `500 Internal Server Error` for unexpected failures
 
+### `DELETE /items/{itemId}` (`deleteItem`)
+
+- Purpose: Delete a single item when its trip is owned by the current user.
+- Path parameter:
+  - `itemId`: required UUID string
+- Success response:
+  - `204 No Content`, with no response body
+  - Only the selected item is deleted; its trip, baggage and other items are preserved, including their `isPacked` state and `checkCount`
+- Failure outcomes:
+  - `401 Unauthorized` when no current user can be resolved
+  - `403 Forbidden` when the related trip belongs to a different user
+  - `404 Not Found` when the item does not exist or has already been deleted
+  - `500 Internal Server Error` for unexpected failures
+
 ## Ownership Rules
 
 - Every supported item endpoint must resolve the current user before performing the requested operation.
 - Trip-scoped item list and create operations are allowed only when the requested trip belongs to the current user.
-- Single-item retrieve and patch operations are allowed only when the item's associated trip belongs to the current user.
+- Single-item retrieve, patch and delete operations are allowed only when the item's associated trip belongs to the current user.
 - Requests for another user's trip or item return `403 Forbidden`.
 
 ## Response Shape Notes
 
-- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `checkCount`, and optional `defaultItemId`.
+- `Item` responses include `id`, `tripId`, `baggageId`, `name`, `checkCount`, `isPacked`, and optional `defaultItemId`.
 - `NewItem` requires `name` and allows an optional `defaultItemId`.
 - `PatchItem` supports partial changes and must not allow client control over `id`, `tripId`, `baggageId`, or `checkCount`.
+- `PatchItem` allows the owning user to set `isPacked` to either `true` or `false`.

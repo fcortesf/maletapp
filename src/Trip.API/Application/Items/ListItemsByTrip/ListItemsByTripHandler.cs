@@ -38,6 +38,7 @@ public sealed class ListItemsByTripHandler
                 item.BaggageId.Value,
                 item.Name,
                 item.CheckCount,
+                item.IsPacked,
                 item.DefaultItemId))
             .ToArray());
     }

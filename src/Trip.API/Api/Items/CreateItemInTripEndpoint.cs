@@ -40,6 +40,7 @@ public static class CreateItemInTripEndpoint
                         item.BaggageId,
                         item.Name,
                         item.CheckCount,
+                        item.IsPacked,
                         item.DefaultItemId));
                 })
             .WithName(ItemEndpointNames.CreateItemInTrip)

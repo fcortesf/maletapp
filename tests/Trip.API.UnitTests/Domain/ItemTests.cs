@@ -17,6 +17,7 @@ public sealed class ItemTests
         Assert.Equal(defaultBaggage.Id, item.BaggageId);
         Assert.Equal(trip.Id, item.TripId);
         Assert.Equal(0, item.CheckCount);
+        Assert.False(item.IsPacked);
     }
 
     [Fact]
@@ -67,6 +68,44 @@ public sealed class ItemTests
     }
 
     [Fact]
+    public void Rehydrate_CreatesItemWithExistingPackedState()
+    {
+        var item = Trip.API.Domain.Entities.Item.Rehydrate(
+            ItemId.CreateUnique(),
+            TripId.CreateUnique(),
+            BaggageId.CreateUnique(),
+            "Passport",
+            2,
+            Guid.NewGuid(),
+            isPacked: true);
+
+        Assert.True(item.IsPacked);
+    }
+
+    [Fact]
+    public void SetPackedState_MarksItemAsPacked()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+
+        item.SetPackedState(true);
+
+        Assert.True(item.IsPacked);
+    }
+
+    [Fact]
+    public void SetPackedState_MarksItemAsUnpacked()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+        item.SetPackedState(true);
+
+        item.SetPackedState(false);
+
+        Assert.False(item.IsPacked);
+    }
+
+    [Fact]
     public void Check_IncrementsCheckCountByOne()
     {
         var trip = TripFixtures.CreateTrip();
@@ -99,6 +138,7 @@ public sealed class ItemTests
         var originalBaggageId = item.BaggageId;
         var originalName = item.Name;
         var originalDefaultItemId = item.DefaultItemId;
+        var originalIsPacked = item.IsPacked;
 
         item.Check();
 
@@ -107,5 +147,6 @@ public sealed class ItemTests
         Assert.Equal(originalBaggageId, item.BaggageId);
         Assert.Equal(originalName, item.Name);
         Assert.Equal(originalDefaultItemId, item.DefaultItemId);
+        Assert.Equal(originalIsPacked, item.IsPacked);
     }
 }

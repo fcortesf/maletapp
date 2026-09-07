@@ -6,4 +6,5 @@ public sealed record ItemResponse(
     Guid BaggageId,
     string Name,
     int CheckCount,
+    bool IsPacked,
     Guid? DefaultItemId);

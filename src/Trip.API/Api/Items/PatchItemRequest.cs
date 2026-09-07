@@ -9,6 +9,8 @@ public sealed class PatchItemRequest
     public bool HasName { get; init; }
     public Guid? DefaultItemId { get; init; }
     public bool HasDefaultItemId { get; init; }
+    public bool IsPacked { get; init; }
+    public bool HasIsPacked { get; init; }
 
     public static async ValueTask<PatchItemRequest?> BindAsync(HttpContext context, ParameterInfo parameter)
     {
@@ -42,12 +44,26 @@ public sealed class PatchItemRequest
             defaultItemId = parsedDefaultItemId;
         }
 
+        var isPacked = false;
+        var hasIsPacked = root.TryGetProperty("isPacked", out var isPackedElement);
+        if (hasIsPacked)
+        {
+            if (isPackedElement.ValueKind is not JsonValueKind.True and not JsonValueKind.False)
+            {
+                throw new BadHttpRequestException("The JSON value could not be converted to System.Boolean.");
+            }
+
+            isPacked = isPackedElement.GetBoolean();
+        }
+
         return new PatchItemRequest
         {
             Name = name,
             HasName = hasName,
             DefaultItemId = defaultItemId,
-            HasDefaultItemId = hasDefaultItemId
+            HasDefaultItemId = hasDefaultItemId,
+            IsPacked = isPacked,
+            HasIsPacked = hasIsPacked
         };
     }
 }

@@ -6,6 +6,7 @@ using Trip.API.Application.Abstractions;
 using Trip.API.Application.Items.CheckItem;
 using Trip.API.Application.Items.CreateItemInTrip;
 using Trip.API.Application.Items.GetItem;
+using Trip.API.Application.Items.DeleteItem;
 using Trip.API.Application.Items.ListItemsByTrip;
 using Trip.API.Application.Items.PatchItem;
 using Trip.API.Application.Trips.CreateTrip;
@@ -39,6 +40,7 @@ builder.Services.AddScoped<ListItemsByTripHandler>();
 builder.Services.AddScoped<CreateItemInTripHandler>();
 builder.Services.AddScoped<CheckItemHandler>();
 builder.Services.AddScoped<GetItemHandler>();
+builder.Services.AddScoped<DeleteItemHandler>();
 builder.Services.AddScoped<PatchItemHandler>();
 
 var app = builder.Build();

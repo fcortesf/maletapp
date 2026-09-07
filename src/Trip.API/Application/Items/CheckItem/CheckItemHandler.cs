@@ -44,6 +44,7 @@ public sealed class CheckItemHandler
             item.BaggageId.Value,
             item.Name,
             item.CheckCount,
+            item.IsPacked,
             item.DefaultItemId));
     }
 }

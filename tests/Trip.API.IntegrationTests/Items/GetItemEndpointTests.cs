@@ -18,6 +18,9 @@ public sealed class GetItemEndpointTests
         var response = await client.GetAsync($"/items/{item.Id}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var retrieved = await response.Content.ReadFromJsonAsync<ItemResponseContract>();
+        Assert.NotNull(retrieved);
+        Assert.False(retrieved!.IsPacked);
     }
 
     [Fact]
@@ -94,5 +97,5 @@ public sealed class GetItemEndpointTests
     }
 
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
-    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, Guid? DefaultItemId);
+    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, bool IsPacked, Guid? DefaultItemId);
 }

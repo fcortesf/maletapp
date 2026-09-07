@@ -35,7 +35,9 @@ public static class PatchItemEndpoint
                                 request.Name,
                                 request.HasName,
                                 request.DefaultItemId,
-                                request.HasDefaultItemId)),
+                                request.HasDefaultItemId,
+                                request.IsPacked,
+                                request.HasIsPacked)),
                         cancellationToken);
 
                     var item = result.Item;
@@ -45,6 +47,7 @@ public static class PatchItemEndpoint
                         item.BaggageId,
                         item.Name,
                         item.CheckCount,
+                        item.IsPacked,
                         item.DefaultItemId));
                 })
             .WithName(ItemEndpointNames.PatchItem)

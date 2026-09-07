@@ -22,11 +22,48 @@ public sealed class PatchItemHandlerTests
         var newDefaultItemId = Guid.NewGuid();
 
         var result = await handler.HandleAsync(
-            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto("Updated Passport", true, newDefaultItemId, true)),
+            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto("Updated Passport", true, newDefaultItemId, true, false, false)),
             CancellationToken.None);
 
         Assert.Equal("Updated Passport", result.Item.Name);
         Assert.Equal(newDefaultItemId, result.Item.DefaultItemId);
+        Assert.False(result.Item.IsPacked);
+        Assert.True(repository.UpdateCalled);
+    }
+
+    [Fact]
+    public async Task HandleAsync_UpdatesPackedState_WhenOwnedByCurrentUser()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+        var repository = new InMemoryTripRepository(trip);
+        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance);
+
+        var result = await handler.HandleAsync(
+            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(null, false, null, false, true, true)),
+            CancellationToken.None);
+
+        Assert.True(result.Item.IsPacked);
+        Assert.Equal("Passport", result.Item.Name);
+        Assert.Null(result.Item.DefaultItemId);
+        Assert.True(repository.UpdateCalled);
+    }
+
+    [Fact]
+    public async Task HandleAsync_CanMarkPackedItemAsUnpacked()
+    {
+        var trip = TripFixtures.CreateTrip();
+        var item = trip.AddItemToDefaultBaggage("Passport");
+        item.SetPackedState(true);
+        var repository = new InMemoryTripRepository(trip);
+        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance);
+
+        var result = await handler.HandleAsync(
+            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(null, false, null, false, false, true)),
+            CancellationToken.None);
+
+        Assert.False(result.Item.IsPacked);
+        Assert.Equal("Passport", result.Item.Name);
         Assert.True(repository.UpdateCalled);
     }
 
@@ -36,7 +73,7 @@ public sealed class PatchItemHandlerTests
         var handler = new PatchItemHandler(new InMemoryTripRepository(), NullLogger<PatchItemHandler>.Instance);
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
-            new PatchItemCommand(TripFixtures.CreateUserId(), ItemId.CreateUnique(), new PatchItemDto("Passport", true, null, false)),
+            new PatchItemCommand(TripFixtures.CreateUserId(), ItemId.CreateUnique(), new PatchItemDto("Passport", true, null, false, false, false)),
             CancellationToken.None));
     }
 
@@ -48,8 +85,10 @@ public sealed class PatchItemHandlerTests
         var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance);
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
-            new PatchItemCommand(TripFixtures.CreateUserId(), item.Id, new PatchItemDto("Passport", true, null, false)),
+            new PatchItemCommand(TripFixtures.CreateUserId(), item.Id, new PatchItemDto("Passport", true, null, false, true, true)),
             CancellationToken.None));
+
+        Assert.False(item.IsPacked);
     }
 
     [Fact]
@@ -60,7 +99,7 @@ public sealed class PatchItemHandlerTests
         var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance);
 
         await Assert.ThrowsAsync<ValidationException>(() => handler.HandleAsync(
-            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(" ", true, null, false)),
+            new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(" ", true, null, false, false, false)),
             CancellationToken.None));
     }
 
