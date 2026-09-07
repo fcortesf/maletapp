@@ -70,11 +70,25 @@ Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
   - `404 Not Found` when the item does not exist
   - `500 Internal Server Error` for unexpected failures
 
+### `DELETE /items/{itemId}` (`deleteItem`)
+
+- Purpose: Delete a single item when its trip is owned by the current user.
+- Path parameter:
+  - `itemId`: required UUID string
+- Success response:
+  - `204 No Content`, with no response body
+  - Only the selected item is deleted; its trip, baggage and other items are preserved, including their `isPacked` state and `checkCount`
+- Failure outcomes:
+  - `401 Unauthorized` when no current user can be resolved
+  - `403 Forbidden` when the related trip belongs to a different user
+  - `404 Not Found` when the item does not exist or has already been deleted
+  - `500 Internal Server Error` for unexpected failures
+
 ## Ownership Rules
 
 - Every supported item endpoint must resolve the current user before performing the requested operation.
 - Trip-scoped item list and create operations are allowed only when the requested trip belongs to the current user.
-- Single-item retrieve and patch operations are allowed only when the item's associated trip belongs to the current user.
+- Single-item retrieve, patch and delete operations are allowed only when the item's associated trip belongs to the current user.
 - Requests for another user's trip or item return `403 Forbidden`.
 
 ## Response Shape Notes
