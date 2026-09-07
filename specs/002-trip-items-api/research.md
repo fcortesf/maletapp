@@ -28,7 +28,7 @@
 
 - Decision: Name the public item endpoint handlers to match `listItemsByTrip`, `createItemInTrip`, `getItem`, and `patchItem`, and keep request and response payloads aligned with `NewItem`, `PatchItem`, and `Item`.
 - Rationale: The constitution requires endpoint names to match the OpenAPI `operationId` values exactly, and the user explicitly asked for schema compliance with the current item contract.
-- Alternatives considered: Reusing file or method names based on internal conventions alone was rejected because it would drift from the contract. Broadening the scope to baggage item endpoints or check-item behavior was rejected because this feature is explicitly limited to four item endpoints.
+- Alternatives considered: Reusing file or method names based on internal conventions alone was rejected because it would drift from the contract. Broadening the scope to baggage item endpoints was rejected because this feature is explicitly limited to four item endpoints.
 
 ## Decision 6: Cover the feature with both unit and integration tests
 

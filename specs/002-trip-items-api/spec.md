@@ -118,6 +118,17 @@ The MCP packing workflow requires DELETE /items/{itemId} (operationId deleteItem
 added to spec/item.yml. Only the owning user can delete an item. Return 204 on
 success, 401 without identity, 403 for another owner's item and 404 for missing
 or already-deleted items. Delete only the selected item; preserve its trip,
-baggage and other items, including their packed state and check counters.
+baggage and other items, including their packed state, notes and quantity.
 Persist through ITripRepository. This extends existing containment ownership,
 with no cross-domain operation or identity mapping change.
+
+## Item notes and quantity — 2026-09-07
+
+Items support nullable `notes` (free-text comments) and nullable `itemCount`
+(positive int32, 1 through 2147483647). Both are accepted by POST creation and
+returned by create/get/list/patch. Omitted and explicit null values on creation
+remain null; no quantity is inferred. PATCH omission preserves a value and
+explicit null clears it. Wrong JSON types and nonpositive/out-of-range quantities
+return 400. Ownership rules apply to all changes. Packed state remains independent.
+The retired check-counter field and action are removed from the API and storage.
+Deletion preserves the other items' notes, quantities and packed states.

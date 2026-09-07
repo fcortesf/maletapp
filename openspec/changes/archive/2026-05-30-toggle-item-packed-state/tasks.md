@@ -7,7 +7,7 @@
 ## 2. Domain And Persistence
 
 - [x] 2.1 Add `IsPacked` to `src/Trip.API/Domain/Entities/Item.cs`, default new items to unpacked, and add a domain method to set packed state.
-- [x] 2.2 Extend item rehydration to restore persisted packed state while preserving existing `checkCount` behavior.
+- [x] 2.2 Extend item rehydration to restore persisted packed state while preserving other item metadata.
 - [x] 2.3 Add `IsPacked` to `src/Trip.API/Infrastructure/Persistence/ItemDataModel.cs`.
 - [x] 2.4 Update repository mapping in `src/Trip.API/Infrastructure/Repositories/TripRepository.cs` so packed state is saved and loaded.
 
