@@ -82,6 +82,11 @@ public sealed class Trip : IEntity
         return defaultBaggage.AddItem(itemName, defaultItemId);
     }
 
+    public bool RemoveItem(ItemId itemId)
+    {
+        return _baggages.Any(baggage => baggage.RemoveItem(itemId));
+    }
+
     public Item? FindItem(ItemId itemId)
     {
         return _baggages

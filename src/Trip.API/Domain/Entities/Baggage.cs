@@ -40,6 +40,11 @@ public sealed class Baggage : IEntity
         return item;
     }
 
+    public bool RemoveItem(ItemId itemId)
+    {
+        return _items.RemoveAll(item => item.Id == itemId) > 0;
+    }
+
     public Item? FindItem(ItemId itemId)
     {
         return _items.SingleOrDefault(item => item.Id == itemId);

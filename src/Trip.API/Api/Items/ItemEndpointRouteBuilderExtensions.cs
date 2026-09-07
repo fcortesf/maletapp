@@ -7,6 +7,7 @@ public static class ItemEndpointRouteBuilderExtensions
         endpoints.MapListItemsByTrip();
         endpoints.MapCreateItemInTrip();
         endpoints.MapGetItem();
+        endpoints.MapDeleteItem();
         endpoints.MapPatchItem();
         endpoints.MapCheckItem();
 

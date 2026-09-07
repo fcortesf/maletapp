@@ -111,3 +111,13 @@ As a traveler, I want to retrieve one item or change its details so I can confir
 - **SC-003**: In validation testing, 100% of successful single-item retrievals and updates return the correct item and preserve its trip association.
 - **SC-004**: In validation testing, 100% of requests involving another user's trip or item are denied with a forbidden outcome.
 - **SC-005**: In validation testing, 100% of requests with missing data, invalid UUIDs, unresolved ownership, or missing records return a clear failure outcome instead of an ambiguous success response.
+
+## Item deletion extension — 2026-09-07
+
+The MCP packing workflow requires DELETE /items/{itemId} (operationId deleteItem),
+added to spec/item.yml. Only the owning user can delete an item. Return 204 on
+success, 401 without identity, 403 for another owner's item and 404 for missing
+or already-deleted items. Delete only the selected item; preserve its trip,
+baggage and other items, including their packed state and check counters.
+Persist through ITripRepository. This extends existing containment ownership,
+with no cross-domain operation or identity mapping change.

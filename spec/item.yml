@@ -145,6 +145,30 @@ paths:
           description: Internal server error
 
   /items/{itemId}:
+    delete:
+      tags:
+        - Items
+      summary: Delete an item owned by the current user
+      operationId: deleteItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Item deleted; trip, baggage and other items preserved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Item not found
+        '500':
+          description: Internal server error
+
     get:
       tags:
         - Items
