@@ -24,6 +24,7 @@ public static class DeleteItemEndpoint
                     return Results.NoContent();
                 })
             .WithName(ItemEndpointNames.DeleteItem)
+            .Produces(204)
             .WithTags("Items");
 
         return endpoints;

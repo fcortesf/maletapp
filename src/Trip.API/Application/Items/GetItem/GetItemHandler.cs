@@ -39,8 +39,9 @@ public sealed class GetItemHandler
             item.TripId.Value,
             item.BaggageId.Value,
             item.Name,
-            item.CheckCount,
             item.IsPacked,
-            item.DefaultItemId));
+            item.DefaultItemId,
+            item.Notes,
+            item.ItemCount));
     }
 }

@@ -37,7 +37,9 @@ X-Test-User-Id: {{TestUserId}}
 
 {
   "name": "Passport",
-  "defaultItemId": null
+  "defaultItemId": null,
+  "notes": "Keep in hand luggage",
+  "itemCount": 2
 }
 
 ### Get item
@@ -45,17 +47,17 @@ GET {{Trip.API_HostAddress}}/items/{{ItemId}}
 Accept: application/json
 X-Test-User-Id: {{TestUserId}}
 
-### Check item
-POST {{Trip.API_HostAddress}}/items/{{ItemId}}/check-item
-Accept: application/json
-X-Test-User-Id: {{TestUserId}}
-
-### Patch item
+### Patch item notes and quantity
 PATCH {{Trip.API_HostAddress}}/items/{{ItemId}}
 Accept: application/json
 Content-Type: application/json
 X-Test-User-Id: {{TestUserId}}
 
 {
-  "name": "Updated Passport"
+  "notes": "Keep in hand luggage",
+  "itemCount": 2
 }
+
+### Delete item
+DELETE {{Trip.API_HostAddress}}/items/{{ItemId}}
+X-Test-User-Id: {{TestUserId}}

@@ -54,16 +54,16 @@ public sealed class Trip : IEntity
         return baggage;
     }
 
-    public Item AddItemToBaggage(BaggageId baggageId, string itemName, Guid? defaultItemId = null)
+    public Item AddItemToBaggage(BaggageId baggageId, string itemName, Guid? defaultItemId = null, string? notes = null, int? itemCount = null)
     {
         var baggage = _baggages.FirstOrDefault(b => b.Id == baggageId);
         if (baggage == null)
             throw new InvalidOperationException($"Baggage with id {baggageId} does not exist in this trip.");
 
-        return baggage.AddItem(itemName, defaultItemId);
+        return baggage.AddItem(itemName, defaultItemId, notes, itemCount);
     }
 
-    public Item AddItemToDefaultBaggage(string itemName, Guid? defaultItemId = null)
+    public Item AddItemToDefaultBaggage(string itemName, Guid? defaultItemId = null, string? notes = null, int? itemCount = null)
     {
         var defaultBaggage = _baggages
             .FirstOrDefault(b => b.IsDefaultBaggage);
@@ -79,7 +79,7 @@ public sealed class Trip : IEntity
             _baggages.Add(defaultBaggage);
         }
 
-        return defaultBaggage.AddItem(itemName, defaultItemId);
+        return defaultBaggage.AddItem(itemName, defaultItemId, notes, itemCount);
     }
 
     public bool RemoveItem(ItemId itemId)

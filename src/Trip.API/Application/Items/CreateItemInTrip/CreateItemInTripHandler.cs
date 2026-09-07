@@ -24,6 +24,9 @@ public sealed class CreateItemInTripHandler
             throw new ValidationException("Item name is required.");
         }
 
+        if (command.Item.ItemCount is <= 0)
+            throw new ValidationException("Item count must be positive.");
+
         var trip = await _tripRepository.GetByIdAsync(command.TripId, cancellationToken).ConfigureAwait(false);
 
         if (trip is null)
@@ -36,7 +39,7 @@ public sealed class CreateItemInTripHandler
             throw new ForbiddenException($"Trip {command.TripId.Value} is not accessible for the current user.");
         }
 
-        var item = trip.AddItemToDefaultBaggage(command.Item.Name, command.Item.DefaultItemId);
+        var item = trip.AddItemToDefaultBaggage(command.Item.Name, command.Item.DefaultItemId, command.Item.Notes, command.Item.ItemCount);
         await _tripRepository.UpdateAsync(trip, cancellationToken).ConfigureAwait(false);
 
         return new CreateItemInTripResult(new ItemDto(
@@ -44,8 +47,9 @@ public sealed class CreateItemInTripHandler
             item.TripId.Value,
             item.BaggageId.Value,
             item.Name,
-            item.CheckCount,
             item.IsPacked,
-            item.DefaultItemId));
+            item.DefaultItemId,
+            item.Notes,
+            item.ItemCount));
     }
 }

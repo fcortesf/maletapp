@@ -16,7 +16,6 @@ public sealed class ItemTests
         Assert.True(defaultBaggage.IsDefaultBaggage);
         Assert.Equal(defaultBaggage.Id, item.BaggageId);
         Assert.Equal(trip.Id, item.TripId);
-        Assert.Equal(0, item.CheckCount);
         Assert.False(item.IsPacked);
     }
 
@@ -53,19 +52,6 @@ public sealed class ItemTests
         Assert.Equal(item.Id, found!.Id);
     }
 
-    [Fact]
-    public void Rehydrate_CreatesItemWithExistingCheckCount()
-    {
-        var item = Trip.API.Domain.Entities.Item.Rehydrate(
-            ItemId.CreateUnique(),
-            TripId.CreateUnique(),
-            BaggageId.CreateUnique(),
-            "Passport",
-            2,
-            Guid.NewGuid());
-
-        Assert.Equal(2, item.CheckCount);
-    }
 
     [Fact]
     public void Rehydrate_CreatesItemWithExistingPackedState()
@@ -75,7 +61,6 @@ public sealed class ItemTests
             TripId.CreateUnique(),
             BaggageId.CreateUnique(),
             "Passport",
-            2,
             Guid.NewGuid(),
             isPacked: true);
 
@@ -105,48 +90,36 @@ public sealed class ItemTests
         Assert.False(item.IsPacked);
     }
 
+
+
     [Fact]
-    public void Check_IncrementsCheckCountByOne()
+    public void Details_DefaultToNull_AndCanBeChangedOrCleared()
     {
         var trip = TripFixtures.CreateTrip();
-        var item = trip.AddItemToDefaultBaggage("Passport");
-
-        item.Check();
-
-        Assert.Equal(1, item.CheckCount);
+        var item = trip.AddItemToDefaultBaggage("Socks");
+        Assert.Null(item.Notes);
+        Assert.Null(item.ItemCount);
+        item.UpdateNotes("Bring spares");
+        item.SetItemCount(3);
+        item.SetPackedState(true);
+        Assert.Equal("Bring spares", item.Notes);
+        Assert.Equal(3, item.ItemCount);
+        item.UpdateNotes(null);
+        item.SetItemCount(null);
+        Assert.Null(item.Notes);
+        Assert.Null(item.ItemCount);
+        Assert.True(item.IsPacked);
     }
 
-    [Fact]
-    public void Check_CanBeCalledMultipleTimes()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Quantity_RejectsNonpositiveValues(int count)
     {
         var trip = TripFixtures.CreateTrip();
-        var item = trip.AddItemToDefaultBaggage("Passport");
-
-        item.Check();
-        item.Check();
-
-        Assert.Equal(2, item.CheckCount);
-    }
-
-    [Fact]
-    public void Check_DoesNotChangeIdentityOrMetadata()
-    {
-        var trip = TripFixtures.CreateTrip();
-        var item = trip.AddItemToDefaultBaggage("Passport", Guid.NewGuid());
-        var originalId = item.Id;
-        var originalTripId = item.TripId;
-        var originalBaggageId = item.BaggageId;
-        var originalName = item.Name;
-        var originalDefaultItemId = item.DefaultItemId;
-        var originalIsPacked = item.IsPacked;
-
-        item.Check();
-
-        Assert.Equal(originalId, item.Id);
-        Assert.Equal(originalTripId, item.TripId);
-        Assert.Equal(originalBaggageId, item.BaggageId);
-        Assert.Equal(originalName, item.Name);
-        Assert.Equal(originalDefaultItemId, item.DefaultItemId);
-        Assert.Equal(originalIsPacked, item.IsPacked);
+        Assert.Throws<ArgumentOutOfRangeException>(() => trip.AddItemToDefaultBaggage("Socks", itemCount: count));
+        var item = trip.AddItemToDefaultBaggage("Socks", notes: "Keep", itemCount: 2);
+        Assert.Throws<ArgumentOutOfRangeException>(() => item.SetItemCount(count));
+        Assert.Equal(2, item.ItemCount);
     }
 }

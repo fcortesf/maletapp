@@ -97,5 +97,5 @@ public sealed class GetItemEndpointTests
     }
 
     private sealed record TripResponseContract(Guid Id, string Destination, DateOnly? StartDate, DateOnly? EndDate);
-    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, int CheckCount, bool IsPacked, Guid? DefaultItemId);
+    private sealed record ItemResponseContract(Guid Id, Guid TripId, Guid BaggageId, string Name, bool IsPacked, Guid? DefaultItemId);
 }

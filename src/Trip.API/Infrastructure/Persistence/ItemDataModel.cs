@@ -10,7 +10,8 @@ public sealed class ItemDataModel
 
     public string Name { get; set; } = string.Empty;
 
-    public int CheckCount { get; set; }
+    public string? Notes { get; set; }
+    public int? ItemCount { get; set; }
 
     public bool IsPacked { get; set; }
 

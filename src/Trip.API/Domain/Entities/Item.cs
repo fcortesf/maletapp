@@ -9,7 +9,7 @@ public sealed class Item : IEntity
     private Item() { }
 
     [SetsRequiredMembers]
-    public Item(ItemId id, TripId tripId, BaggageId baggageId, string name, Guid? defaultItemId = null)
+    public Item(ItemId id, TripId tripId, BaggageId baggageId, string name, Guid? defaultItemId = null, string? notes = null, int? itemCount = null)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         TripId = tripId ?? throw new ArgumentNullException(nameof(tripId));
@@ -19,7 +19,8 @@ public sealed class Item : IEntity
             : throw new ArgumentException("Item name cannot be null or empty.", nameof(name));
 
         DefaultItemId = defaultItemId;
-        CheckCount = 0;
+        Notes = notes;
+        SetItemCount(itemCount);
         IsPacked = false;
     }
 
@@ -28,7 +29,8 @@ public sealed class Item : IEntity
     public required BaggageId BaggageId { get; init; }
     public string Name { get; private set; } = string.Empty;
     public Guid? DefaultItemId { get; private set; }
-    public int CheckCount { get; private set; }
+    public string? Notes { get; private set; }
+    public int? ItemCount { get; private set; }
     public bool IsPacked { get; private set; }
 
     public static Item Rehydrate(
@@ -36,27 +38,17 @@ public sealed class Item : IEntity
         TripId tripId,
         BaggageId baggageId,
         string name,
-        int checkCount,
         Guid? defaultItemId = null,
-        bool isPacked = false)
+        bool isPacked = false,
+        string? notes = null,
+        int? itemCount = null)
     {
-        if (checkCount < 0)
+        var item = new Item(id, tripId, baggageId, name, defaultItemId, notes, itemCount)
         {
-            throw new ArgumentOutOfRangeException(nameof(checkCount), "Item check count cannot be negative.");
-        }
-
-        var item = new Item(id, tripId, baggageId, name, defaultItemId)
-        {
-            CheckCount = checkCount,
             IsPacked = isPacked
         };
 
         return item;
-    }
-
-    public void Check()
-    {
-        CheckCount++;
     }
 
     public void Rename(string newName)
@@ -70,6 +62,15 @@ public sealed class Item : IEntity
     public void UpdateDefaultItemId(Guid? defaultItemId)
     {
         DefaultItemId = defaultItemId;
+    }
+
+    public void UpdateNotes(string? notes) => Notes = notes;
+
+    public void SetItemCount(int? itemCount)
+    {
+        if (itemCount is <= 0)
+            throw new ArgumentOutOfRangeException(nameof(itemCount), "Item count must be positive.");
+        ItemCount = itemCount;
     }
 
     public void SetPackedState(bool isPacked)
