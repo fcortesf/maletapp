@@ -1,6 +1,6 @@
 # Trip API Contract Summary
 
-Source of truth: [trip.yml](/home/sicor/local-repos/maletapp/spec/trip.yml)
+Source of truth: [trip.yml](/home/sicor/local-repos/maletapp/api/spec/trip.yml)
 
 ## Endpoints
 

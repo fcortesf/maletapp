@@ -1,6 +1,6 @@
 # Implementation Plan: User Access Layer Strategy
 
-**Branch**: `004-user-access-layer-strategy` | **Date**: 2026-03-16 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/specs/004-user-access-layer-strategy/spec.md)
+**Branch**: `004-user-access-layer-strategy` | **Date**: 2026-03-16 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/api/specs/004-user-access-layer-strategy/spec.md)
 **Input**: Feature specification from `/specs/004-user-access-layer-strategy/spec.md`
 
 ## Summary
@@ -23,7 +23,7 @@ Define and incrementally implement a user/access-layer architecture that keeps M
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- `Contract-First Delivery`: Pass. The plan is driven by [spec.md](/home/sicor/local-repos/maletapp/specs/004-user-access-layer-strategy/spec.md) and does not change the current Trips or Items contracts in this phase.
+- `Contract-First Delivery`: Pass. The plan is driven by [spec.md](/home/sicor/local-repos/maletapp/api/specs/004-user-access-layer-strategy/spec.md) and does not change the current Trips or Items contracts in this phase.
 - `Domain Separation`: Pass. The plan preserves Items and Trips as separate sub-APIs at the contract surface and treats the access-layer decision as a cross-cutting architectural concern rather than new cross-domain behavior.
 - `Repository and Persistence Discipline`: Pass. The plan does not bypass repository boundaries and keeps authentication concerns out of persistence and domain layers.
 - `Testable by Default`: Pass. The plan includes verification of current-user seams, HTTP behavior, and adapter-facing boundaries where implementation work is introduced.

@@ -47,8 +47,6 @@ coverage/
 *.cake
 *.cakebuild
 
-# File de lock de NPM si hubiera un frontend integrado
-package-lock.json
 npm-debug.log
 yarn.lock
 
@@ -68,3 +66,14 @@ StyleCopCache/
 Thumbs.db
 *.tmp
 *.swp
+
+# JavaScript builds and local credentials
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.local/
+.bun/
+*.tsbuildinfo
+test-results/

@@ -1,6 +1,6 @@
 # Items API Contract Summary
 
-Source of truth: [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml)
+Source of truth: [item.yml](/home/sicor/local-repos/maletapp/api/spec/item.yml)
 
 ## Endpoints
 

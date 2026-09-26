@@ -1,6 +1,6 @@
 # Implementation Plan: Delete Trip
 
-**Branch**: `005-delete-trip` | **Date**: 2026-03-16 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/specs/005-delete-trip/spec.md)
+**Branch**: `005-delete-trip` | **Date**: 2026-03-16 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/api/specs/005-delete-trip/spec.md)
 **Input**: Feature specification from `/specs/005-delete-trip/spec.md`
 
 ## Summary
@@ -23,7 +23,7 @@ Implement trip deletion so the current user can remove one owned trip through th
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/specs/005-delete-trip/spec.md) and stays aligned with the existing delete-trip contract already present in [trip.yml](/home/sicor/local-repos/maletapp/spec/trip.yml).
+- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/api/specs/005-delete-trip/spec.md) and stays aligned with the existing delete-trip contract already present in [trip.yml](/home/sicor/local-repos/maletapp/api/spec/trip.yml).
 - `Domain Separation`: Pass. The feature stays within the Trips API surface and only removes baggages and items as contained trip-owned data already allowed by the constitution's ownership boundary.
 - `Repository and Persistence Discipline`: Pass. The implementation will extend the existing repository abstraction for trip deletion and will not bypass persistence from endpoint or handler code.
 - `Testable by Default`: Pass. The plan includes application-level unit tests and HTTP-level integration tests for successful deletion plus unauthorized, forbidden, and missing-trip outcomes.

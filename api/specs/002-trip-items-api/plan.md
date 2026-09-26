@@ -1,6 +1,6 @@
 # Implementation Plan: Trip Item Access
 
-**Branch**: `002-trip-items-api` | **Date**: 2026-03-15 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/specs/002-trip-items-api/spec.md)
+**Branch**: `002-trip-items-api` | **Date**: 2026-03-15 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/api/specs/002-trip-items-api/spec.md)
 **Input**: Feature specification from `/specs/002-trip-items-api/spec.md`
 
 ## Summary
@@ -23,7 +23,7 @@ Implement the Items API slice for listing all items in an owned trip, creating a
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/specs/002-trip-items-api/spec.md) and remains aligned with [item.yml](/home/sicor/local-repos/maletapp/spec/item.yml).
+- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/api/specs/002-trip-items-api/spec.md) and remains aligned with [item.yml](/home/sicor/local-repos/maletapp/api/spec/item.yml).
 - `Domain Separation`: Pass. The implementation keeps Items and Trips separate at the contract surface while using the current trip-owned aggregate and persistence boundary for baggages and items, which is allowed by the amended constitution for this single-service phase.
 - `Repository and Persistence Discipline`: Pass. The design extends repository abstractions and Entity Framework persistence rather than using direct endpoint-to-database access.
 - `Testable by Default`: Pass. The plan includes unit tests for item domain and application rules plus integration tests for all 4 endpoints and failure paths.

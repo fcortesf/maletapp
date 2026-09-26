@@ -1,6 +1,6 @@
 # Implementation Plan: Trip API Bootstrap
 
-**Branch**: `001-add-trip-api` | **Date**: 2026-03-14 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/specs/001-add-trip-api/spec.md)
+**Branch**: `001-add-trip-api` | **Date**: 2026-03-14 | **Spec**: [spec.md](/home/sicor/local-repos/maletapp/api/specs/001-add-trip-api/spec.md)
 **Input**: Feature specification from `/specs/001-add-trip-api/spec.md`
 
 ## Summary
@@ -23,7 +23,7 @@ Implement the first Trips API slice for creating trips, listing the current user
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/specs/001-add-trip-api/spec.md) and remains aligned with [trip.yml](/home/sicor/local-repos/maletapp/spec/trip.yml).
+- `Contract-First Delivery`: Pass. The plan is derived from [spec.md](/home/sicor/local-repos/maletapp/api/specs/001-add-trip-api/spec.md) and remains aligned with [trip.yml](/home/sicor/local-repos/maletapp/api/spec/trip.yml).
 - `Domain Separation`: Pass. This phase touches only Trips and does not introduce item-domain dependencies.
 - `Repository and Persistence Discipline`: Pass. The design uses repository abstractions with Entity Framework and an in-memory provider.
 - `Testable by Default`: Pass. The plan includes both unit and integration test suites.

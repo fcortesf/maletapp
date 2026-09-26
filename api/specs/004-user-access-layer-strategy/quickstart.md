@@ -41,11 +41,11 @@ Apply a user/access-layer strategy that keeps Maletapp's trip and item capabilit
 2. Run `dotnet test --no-build`.
 3. Run `dotnet format --verify-no-changes`.
 4. Manually review:
-   - `/home/sicor/local-repos/maletapp/README.md`
-   - `/home/sicor/local-repos/maletapp/src/Trip.API/Infrastructure/UserContext/HttpUserContextAccessor.cs`
-   - `/home/sicor/local-repos/maletapp/src/Trip.API/Program.cs`
-   - `/home/sicor/local-repos/maletapp/src/Trip.API/Trip.API.http`
-   - `/home/sicor/local-repos/maletapp/specs/004-user-access-layer-strategy/contracts/access-boundaries.md`
+   - `/home/sicor/local-repos/maletapp/api/README.md`
+   - `/home/sicor/local-repos/maletapp/api/src/Trip.API/Infrastructure/UserContext/HttpUserContextAccessor.cs`
+   - `/home/sicor/local-repos/maletapp/api/src/Trip.API/Program.cs`
+   - `/home/sicor/local-repos/maletapp/api/src/Trip.API/Trip.API.http`
+   - `/home/sicor/local-repos/maletapp/api/specs/004-user-access-layer-strategy/contracts/access-boundaries.md`
 
 ## Notes
 
