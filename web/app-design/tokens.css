@@ -1,0 +1,88 @@
+/* Maletapp / Cuaderno de viaje. Los componentes sólo consumen tokens semánticos. */
+:root {
+  color-scheme: light;
+  --color-background: #f7f5ef;
+  --color-surface: #fffefa;
+  --color-surface-alt: #edece3;
+  --color-text: #293c35;
+  --color-muted: #59675f;
+  --color-primary: #a6442f;
+  --color-primary-hover: #8c3524;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #f6e8df;
+  --color-success: #32604b;
+  --color-success-soft: #e5eddf;
+  --color-warning: #7c5c21;
+  --color-warning-soft: #f6ecd1;
+  --color-danger: #a33335;
+  --color-danger-soft: #fbe9e7;
+  --color-border: #dcded2;
+  --color-border-strong: #7e8b82;
+  --color-focus: #14667a;
+  --color-backdrop: #172c2866;
+  --color-illustration-sky: #e0e9dc;
+  --color-illustration-light: #faf0cd;
+  --color-illustration-mid: #a9bca4;
+  --color-illustration-dark: #526f5d;
+  --color-illustration-clay: #c47856;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-hero: clamp(2.8rem, 6vw, 4.8rem);
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --radius-sm: .375rem;
+  --radius-md: .75rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 99rem;
+  --shadow-sm: 0 4px 12px #293c3508;
+  --shadow-overlay: 0 24px 80px #172c2829;
+  --border-thin: 1px solid var(--color-border);
+  --focus-ring: 3px solid var(--color-focus);
+  --duration-fast: 140ms;
+  --duration-normal: 240ms;
+  --ease-out: cubic-bezier(.2,.7,.3,1);
+  --touch-target: 44px;
+  --content-max: 1160px;
+  /* Breakpoints documentados: 600px / 900px / 1200px.
+     CSS no permite custom properties en condiciones @media. */
+}
+[data-theme="night"] {
+  color-scheme: dark;
+  --color-background: #202e29;
+  --color-surface: #293a32;
+  --color-surface-alt: #34453b;
+  --color-text: #f4f0e5;
+  --color-muted: #b7c2b7;
+  --color-primary: #f0ae8c;
+  --color-primary-hover: #fac4a4;
+  --color-on-primary: #2e251f;
+  --color-primary-soft: #493c32;
+  --color-success: #bdd2ac;
+  --color-success-soft: #354b3a;
+  --color-warning: #e8ce90;
+  --color-warning-soft: #4a4530;
+  --color-danger: #ffa6a0;
+  --color-danger-soft: #503536;
+  --color-border: #45554a;
+  --color-border-strong: #91a08e;
+  --color-focus: #92d6df;
+  --color-backdrop: #0c1719b3;
+  --color-illustration-sky: #354a41;
+  --color-illustration-light: #ddd2a8;
+  --color-illustration-mid: #718a70;
+  --color-illustration-dark: #243d34;
+  --color-illustration-clay: #ae7458;
+}
