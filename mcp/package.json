@@ -1,0 +1,32 @@
+{
+  "name": "maletapp-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --project tsconfig.check.json",
+    "check": "npm run typecheck",
+    "start": "node --env-file-if-exists=.env dist/index.js",
+    "dev": "node --env-file-if-exists=.env --watch src/index.ts",
+    "test": "node --test test/*.test.ts",
+    "smoke": "node --env-file-if-exists=.env scripts/smoke.ts",
+    "login": "node --env-file-if-exists=.env scripts/login.ts",
+    "setup:keycloak": "node scripts/setup-keycloak.ts",
+    "verify:keycloak": "node scripts/verify-keycloak.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "express": "5.2.1",
+    "jose": "6.2.12",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/node": "24.13.3",
+    "typescript": "7.0.2"
+  }
+}

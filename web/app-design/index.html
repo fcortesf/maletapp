@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="Maletapp. Un poco de orden, toda una aventura. Organiza tus viajes y prepara tu maleta con calma.">
+  <title>Maletapp · Tu viaje empieza aquí</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <header class="site-header">
+    <a href="#trips" class="brand" aria-label="Maletapp, mis viajes"><span id="brand-icon"></span>maletapp<span class="brand-dot">.</span></a>
+    <nav aria-label="Navegación principal">
+      <a href="#trips" data-nav="trips">Mis viajes</a>
+      <a href="#design" data-nav="design">Guía de diseño</a>
+    </nav>
+    <button id="theme-toggle" class="icon-button" aria-label="Cambiar a tema nocturno" title="Cambiar tema"></button>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="site-footer"><span>Menos olvidos. Más aventuras.</span><span>Maletapp · Prototipo local <span class="footer-mark" aria-hidden="true">↗</span></span></footer>
+  <dialog id="form-dialog" aria-labelledby="dialog-title"></dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-title"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="sr-only" id="announcer" role="status" aria-live="polite" aria-atomic="true"></div>
+  <noscript><p class="notice">Activa JavaScript para navegar y preparar tu maleta en este prototipo.</p></noscript>
+</body>
+</html>
