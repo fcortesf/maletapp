@@ -168,18 +168,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    NewTrip: 
+    NewTrip:
+      type: object
       allOf:
         - $ref: '#/components/schemas/TripProperties'
-        - required:
-          - destination
+      required: [destination]
     Trip:
+      type: object
       allOf:
         - $ref: '#/components/schemas/TripProperties'
-        - required:
-          - id
-          - isFinished
-          - destination
+      required: [id, destination, isFinished]
     TripProperties: 
       type: object
       properties:

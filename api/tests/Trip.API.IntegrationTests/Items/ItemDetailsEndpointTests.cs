@@ -62,6 +62,8 @@ public sealed class ItemDetailsEndpointTests
     [InlineData("\"itemCount\":2147483648")]
     [InlineData("\"itemCount\":\"2\"")]
     [InlineData("\"itemCount\":true")]
+    [InlineData("\"name\":42")]
+    [InlineData("\"name\":[]")]
     [InlineData("\"notes\":42")]
     [InlineData("\"notes\":[]")]
     public async Task InvalidDetails_Return400_WithoutChangingExistingItemAsync(string field)

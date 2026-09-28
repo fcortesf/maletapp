@@ -123,3 +123,6 @@ default baggage uniqueness is observed through item baggageIds.
 Constitution 1.1.0: compliant, contract-first; containment-only coupling, repository
 and gate abstractions, EF persistence, typed errors and cancellation. No new
 production dependency or exception is required.
+
+Required fields are declared on typed NewTrip/Trip object schemas so TypeScript
+generation retains required destination/id/isFinished through allOf composition.

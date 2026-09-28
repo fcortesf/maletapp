@@ -53,6 +53,8 @@ public sealed class PatchItemRequest
         var hasName = root.TryGetProperty("name", out var nameElement);
         if (hasName && nameElement.ValueKind != JsonValueKind.Null)
         {
+            if (nameElement.ValueKind != JsonValueKind.String)
+                throw new BadHttpRequestException("Name must be a string.");
             name = nameElement.GetString();
         }
 

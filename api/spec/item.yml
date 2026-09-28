@@ -241,6 +241,7 @@ components:
       type: object
       properties:
         category:
+          default: other
           type: string
           enum: [documents, clothing, toiletries, electronics, health, accessories, other]
           description: Non-null lowercase code. Creation omission defaults to other; PATCH omission preserves. Null or invalid codes return 400 problem details without partial mutation.
