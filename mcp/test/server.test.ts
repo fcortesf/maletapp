@@ -103,7 +103,12 @@ test('missing, expired, wrong audience, wrong issuer, ID tokens and tampering re
 });
 test('SDK initialization, tools and prompt discovery, strict schemas and useful guidance', async () => {
   const c = await client(); assert.match(c.getInstructions()!, /Recommendations alone do not authorize writes/);
-  const tools = (await c.listTools()).tools; assert.equal(tools.length, 9);
+  const tools = (await c.listTools()).tools; assert.equal(tools.length, 11);
+  for (const toolName of ['finish_trip', 'reopen_trip']) {
+    const tool = tools.find(t => t.name === toolName)!;
+    assert.equal(tool.annotations?.idempotentHint, true);
+    assert.equal(tool.annotations?.readOnlyHint, false);
+  }
   assert(!tools.some(t => t.name === 'check_item'));
   assert.match(c.getInstructions()!, /notes/); assert.match(c.getInstructions()!, /itemCount/);
   for (const t of tools) assert.equal(t.inputSchema.additionalProperties, false);
@@ -123,6 +128,10 @@ test('SDK initialization, tools and prompt discovery, strict schemas and useful 
   assert.equal((await c.callTool({ name: 'add_item', arguments: { tripId: userA, name: 'Socks', notes: 42 } })).isError, true);
   assert.equal((await c.callTool({ name: 'edit_item', arguments: { itemId: userA, checkCount: 1 } })).isError, true);
   assert.equal((await c.callTool({ name: 'check_item', arguments: { itemId: userA } })).isError, true);
+  for (const category of [null, '', 42, 'Clothing', 'unknown']) {
+    assert.equal((await c.callTool({ name: 'add_item', arguments: { tripId: userA, name: 'Phone', category } })).isError, true);
+    assert.equal((await c.callTool({ name: 'edit_item', arguments: { itemId: userA, category } })).isError, true);
+  }
   assert.equal(gatewayCalls, before);
 });
 test('tools adapt exact HTTP contracts and delegate separately for concurrent users', async () => {
@@ -139,6 +148,10 @@ test('tools adapt exact HTTP contracts and delegate separately for concurrent us
     ['edit_item', { itemId: userA, defaultItemId: null }, 'PATCH', `/items/${userA}`, { defaultItemId: null }],
     ['set_item_packed', { itemId: userA, isPacked: true }, 'PATCH', `/items/${userA}`, { isPacked: true }],
     ['set_item_packed', { itemId: userA, isPacked: false }, 'PATCH', `/items/${userA}`, { isPacked: false }],
+    ['finish_trip', { tripId: userA }, 'POST', `/trips/${userA}/finish`, null],
+    ['reopen_trip', { tripId: userA }, 'POST', `/trips/${userA}/reopen`, null],
+    ['add_item', { tripId: userA, name: 'Phone', category: 'electronics' }, 'POST', `/trips/${userA}/items`, { name: 'Phone', category: 'electronics' }],
+    ['edit_item', { itemId: userA, category: 'other' }, 'PATCH', `/items/${userA}`, { category: 'other' }],
     ['delete_item', { itemId: userA }, 'DELETE', `/items/${userA}`, null],
   ];
   for (const [name, args, method, path, body] of cases) {

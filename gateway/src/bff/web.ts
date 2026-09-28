@@ -1,7 +1,19 @@
 import type { MiddlewareHandler } from 'hono'
 import type { GatewayEnv } from '../auth.ts'
 
-// Future hook: resolve an HttpOnly session to server-held credentials here.
-// Cookie sessions require CSRF protection before enabling mutating requests.
-// Today the common authentication layer still requires a Bearer token.
-export const webSession: MiddlewareHandler<GatewayEnv> = async (_c, next) => { await next() }
+export function webCors(origins: readonly string[]): MiddlewareHandler<GatewayEnv> {
+  return async (c, next) => {
+    c.header('Vary', 'Origin', { append: true })
+    const origin = c.req.header('Origin')
+    if (origin && origins.includes(origin)) {
+      c.header('Access-Control-Allow-Origin', origin)
+      c.header('Access-Control-Expose-Headers', 'Retry-After, WWW-Authenticate')
+      if (c.req.method === 'OPTIONS') {
+        c.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+        c.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, Accept')
+      }
+    }
+    if (c.req.method === 'OPTIONS') return c.body(null, 204)
+    await next()
+  }
+}

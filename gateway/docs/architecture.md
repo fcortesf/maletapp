@@ -18,7 +18,7 @@ The gateway runs Hono and TypeScript on Node.js 24. The `api/` component owns th
 
 ## Request pipeline
 
-1. The web route group has a passthrough session middleware hook. All groups currently require Bearer authentication.
+1. Exact-origin CORS/preflight applies to /web/* before shared Bearer authentication.
 2. Shared authentication discovers `jwks_uri` from `KEYCLOAK_AUTHORITY` and validates the signature with Hono's `verifyWithJwks`, allowing RS256 only. It checks the exact issuer, configured audience, expiry and applicable time claims, and requires a nonempty subject.
 3. The current domain contract requires a GUID subject. Missing or invalid authentication returns JSON 401; an otherwise valid non-GUID subject returns JSON 403. Both use `{ "error": "unauthorized" }` and stop before the domain request.
 4. The proxy removes client-supplied credentials, cookies, forwarded headers, user identity headers and hop-by-hop headers. It injects the validated GUID into `X-Test-User-Id`.
@@ -31,11 +31,11 @@ The exact header is defined in the domain's `src/Trip.API/Infrastructure/UserCon
 | Gateway routes | Domain routes | Current behavior |
 |---|---|---|
 | `/trips`, `/items`, and other raw paths | Same path | Authenticated proxy |
-| `/web/*` | Client prefix removed | Session hook, then Bearer authentication |
+| `/web/*` | Client prefix removed | Exact-origin CORS, then Bearer authentication |
 | `/mobile/*` | Client prefix removed | Bearer authentication |
 | `/mcp/*` | Client prefix removed | Bearer authentication; no MCP protocol server |
 
-The development Swagger UI is served from the gateway origin. There is no application frontend, cookie session implementation, or API CORS configuration. Local browser clients can use a same-origin frontend development proxy.
+The development Swagger UI is served from the gateway origin. The web SPA uses memory-only Bearer tokens and gateway-only business requests. Exact-origin CORS supports split origins; local Vite proxies /web. No cookie session is implemented.
 
 ## Deployment and trust
 
@@ -66,9 +66,16 @@ Outside development, the `/docs` namespace and upstream `/swagger` paths (includ
 - [JWT authentication](../src/auth.ts) and [OIDC discovery](../src/oidc.ts)
 - [Development Swagger](../src/docs.ts)
 - [Proxy and identity injection](../src/proxy.ts)
-- [Web session hook](../src/bff/web.ts)
+- [Web CORS](../src/bff/web.ts) and [live updates](web-realtime.md)
 - [Configuration](../src/config.ts)
 - [Compose topology](../docker-compose.yml)
 - [Integration tests](../test/gateway.test.ts)
 
 TypeScript build/typecheck and all 18 tests passed using local OIDC/JWKS and upstream HTTP servers plus a VM check of UI initialization. Docker startup and live schema/discovery checks pass. Browser tools are unavailable; real interactive login/callback/API requests remain unverified.
+
+## Browser invalidations
+
+Exact GET /web/events precedes proxy aliases after auth. Process-local user-scoped
+subscriptions receive versioned best-effort invalidations after confirmed writes
+through every alias. Token expiry and five-minute lifetimes bound authorization.
+See [web-realtime.md](web-realtime.md) for status table, frames, caps and cleanup.

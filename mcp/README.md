@@ -299,3 +299,18 @@ retrying because the write may have succeeded.
 
 The notes/quantity API replaces the retired check-counter action. The matching
 domain and MCP versions are deployed locally as of 2026-09-09.
+
+## Shared browser/agent product behavior
+
+Items expose category codes documents/clothing/toiletries/electronics/health/
+accessories/other. add_item omission defaults to other; edit_item omission
+preserves, including category-only edits. Reads return category and isFinished.
+finish_trip and reopen_trip delegate the same user through bodyless API routes;
+both are idempotent desired-state commands and require user-authorized intent.
+Dates or packing completion never authorize finishing. Finished trips stay editable.
+Only intended fields are written. The single API instance serializes complete
+operations; disjoint fields accumulate, same-field stale intent is last-executed
+wins without version conflicts. No durable rollback is guaranteed. Never blindly
+retry uncertain writes: read authoritative state before deliberate resubmission.
+Same-user gateway SSE invalidations support browser synchronization; delivery is
+best effort and the browser must reconcile authoritative reads.
