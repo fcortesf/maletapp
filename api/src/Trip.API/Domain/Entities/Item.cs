@@ -31,6 +31,9 @@ public sealed class Item : IEntity
     public Guid? DefaultItemId { get; private set; }
     public string? Notes { get; private set; }
     public int? ItemCount { get; private set; }
+    public ItemCategory Category { get; private set; } = ItemCategory.Other;
+    public void SetCategory(ItemCategory category) => Category = category ?? throw new ArgumentNullException(nameof(category));
+
     public bool IsPacked { get; private set; }
 
     public static Item Rehydrate(
@@ -41,10 +44,12 @@ public sealed class Item : IEntity
         Guid? defaultItemId = null,
         bool isPacked = false,
         string? notes = null,
-        int? itemCount = null)
+        int? itemCount = null,
+        ItemCategory? category = null)
     {
         var item = new Item(id, tripId, baggageId, name, defaultItemId, notes, itemCount)
         {
+            Category = category ?? ItemCategory.Other,
             IsPacked = isPacked
         };
 

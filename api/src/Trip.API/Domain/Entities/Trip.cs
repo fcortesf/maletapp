@@ -31,6 +31,9 @@ public sealed class Trip : IEntity
     public required UserId OwnerId { get; init; }
     public string Destination { get; private set; } = string.Empty;
     public DateOnly? StartDate { get; private set; }
+    public bool IsFinished { get; private set; }
+    public void SetFinishedState(bool isFinished) => IsFinished = isFinished;
+
     public DateOnly? EndDate { get; private set; }
 
     public IReadOnlyCollection<Baggage> Baggages => _baggages.AsReadOnly();
@@ -100,9 +103,12 @@ public sealed class Trip : IEntity
         string destination,
         DateOnly? startDate,
         DateOnly? endDate,
-        IEnumerable<Baggage>? baggages = null)
+        IEnumerable<Baggage>? baggages = null,
+        bool isFinished = false)
     {
         var trip = new Trip(id, ownerId, destination, startDate, endDate);
+
+        trip.SetFinishedState(isFinished);
 
         if (baggages is not null)
         {

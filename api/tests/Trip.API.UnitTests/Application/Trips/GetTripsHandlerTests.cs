@@ -17,7 +17,7 @@ public sealed class GetTripsHandlerTests
         var repository = new InMemoryTripRepository(
             TripFixtures.CreateTrip(userId, "Seville"),
             TripFixtures.CreateTrip(TripFixtures.CreateUserId(), "Paris"));
-        var handler = new GetTripsHandler(repository, NullLogger<GetTripsHandler>.Instance);
+        var handler = new GetTripsHandler(repository, NullLogger<GetTripsHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(new GetTripsQuery(userId), CancellationToken.None);
 
@@ -28,7 +28,7 @@ public sealed class GetTripsHandlerTests
     [Fact]
     public async Task HandleAsync_ReturnsEmptyCollection_WhenUserHasNoTrips()
     {
-        var handler = new GetTripsHandler(new InMemoryTripRepository(), NullLogger<GetTripsHandler>.Instance);
+        var handler = new GetTripsHandler(new InMemoryTripRepository(), NullLogger<GetTripsHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(new GetTripsQuery(TripFixtures.CreateUserId()), CancellationToken.None);
 

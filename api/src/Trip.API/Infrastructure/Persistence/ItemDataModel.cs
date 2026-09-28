@@ -8,6 +8,8 @@ public sealed class ItemDataModel
 
     public Guid BaggageId { get; set; }
 
+    public string Category { get; set; } = "other";
+
     public string Name { get; set; } = string.Empty;
 
     public string? Notes { get; set; }

@@ -152,3 +152,20 @@ This is a breaking API change: the former check counter and check action have
 been removed. Consumers must use `isPacked` for preparation status. Deploy the
 matching MCP version with this API. No running containers are updated by these
 source changes; recreating the in-memory domain discards its existing data.
+
+## Web PoC domain extensions
+
+Items 0.0.3 adds required category, creation default other, strict lowercase
+validation and PATCH presence semantics. Trips 0.0.2 adds read-only isFinished
+and bodyless idempotent finishTrip/reopenTrip operations. Lifecycle is explicit,
+independent of dates and packing; finished trips remain editable. Baggage routes
+in the source Items contract remain unimplemented.
+
+One singleton IDomainOperationGate serializes every trip/item handler from first
+read through ownership, SaveChanges and DTO snapshot. Response transport is
+outside. Disjoint writes accumulate; same-field stale intent is last-executed
+wins, without ETags/409 or durable rollback. Delete-first gives queued work 404;
+update-first followed by deletion leaves the resource absent. Cancellation and
+exceptions release acquired leases. Cross-endpoint deterministic tests are in
+tests/Trip.API.IntegrationTests/Concurrency/. EF InMemory remains single-instance
+and loses data on restart; this is not durable storage or multi-instance support.

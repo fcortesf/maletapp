@@ -11,15 +11,18 @@ public sealed class CreateTripHandler
 {
     private readonly ILogger<CreateTripHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public CreateTripHandler(ITripRepository tripRepository, ILogger<CreateTripHandler> logger)
+    public CreateTripHandler(ITripRepository tripRepository, ILogger<CreateTripHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<CreateTripResult> HandleAsync(CreateTripCommand command, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(command.NewTrip.Destination))
         {
             throw new ValidationException("Trip destination is required.");
@@ -56,6 +59,6 @@ public sealed class CreateTripHandler
             trip.Id.Value,
             trip.Destination,
             trip.StartDate,
-            trip.EndDate);
+            trip.EndDate, trip.IsFinished);
     }
 }

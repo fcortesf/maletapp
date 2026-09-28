@@ -93,3 +93,20 @@ As a traveler, I want trip deletion to fail clearly when the trip does not belon
 - **SC-002**: 100% of successful trip deletion requests also remove the deleted trip's baggages and items from subsequent retrieval attempts.
 - **SC-003**: In acceptance testing, 100% of delete requests against missing trips return the defined not found outcome, and 100% of delete requests against foreign trips return the defined forbidden outcome.
 - **SC-004**: In acceptance testing, users can complete deletion of an owned obsolete trip in a single request with no follow-up cleanup required.
+
+## Complete-operation serialization and constitution check
+
+Every trip/item read and write acquires the same singleton application operation
+gate before repository access, including ownership and item-to-trip resolution,
+through SaveChanges and DTO snapshot; response transport remains outside.
+If deletion executes first, queued item/lifecycle work returns typed 404 and
+cannot resurrect data. If update executes first, update and deletion succeed
+and final reads return 404. Disjoint changes accumulate; same-field changes
+are last-executed-wins, with no stale-editor/version/409 or durable rollback
+guarantee. Cancellation and exceptions release only successfully acquired leases.
+Cross-endpoint deterministic integration coverage lives in
+`tests/Trip.API.IntegrationTests/Concurrency/`, using barriers/hooks instead of sleeps;
+default baggage uniqueness is observed through item baggageIds.
+Constitution 1.1.0: compliant, contract-first; containment-only coupling, repository
+and gate abstractions, EF persistence, typed errors and cancellation. No new
+production dependency or exception is required.

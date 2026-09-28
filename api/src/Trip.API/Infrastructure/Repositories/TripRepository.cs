@@ -33,7 +33,7 @@ public sealed class TripRepository : ITripRepository
 
         if (existingTrip is null)
         {
-            throw new InvalidOperationException($"Trip {tripId.Value} was not found for deletion.");
+            throw new Trip.API.Application.Exceptions.NotFoundException($"Trip {tripId.Value} was not found for deletion.");
         }
 
         _dbContext.Items.RemoveRange(existingTrip.Baggages.SelectMany(baggage => baggage.Items).ToList());
@@ -53,13 +53,14 @@ public sealed class TripRepository : ITripRepository
 
         if (existingTrip is null)
         {
-            throw new InvalidOperationException($"Trip {trip.Id.Value} was not found for update.");
+            throw new Trip.API.Application.Exceptions.NotFoundException($"Trip {trip.Id.Value} was not found for update.");
         }
 
         existingTrip.OwnerId = trip.OwnerId.Value;
         existingTrip.Destination = trip.Destination;
         existingTrip.StartDate = trip.StartDate;
         existingTrip.EndDate = trip.EndDate;
+        existingTrip.IsFinished = trip.IsFinished;
 
         _dbContext.Items.RemoveRange(existingTrip.Baggages.SelectMany(baggage => baggage.Items).ToList());
         _dbContext.Baggages.RemoveRange(existingTrip.Baggages.ToList());
@@ -143,7 +144,8 @@ public sealed class TripRepository : ITripRepository
             trip.Destination,
             trip.StartDate,
             trip.EndDate,
-            trip.Baggages.Select(MapBaggage));
+            trip.Baggages.Select(MapBaggage),
+            trip.IsFinished);
     }
 
     private static Baggage MapBaggage(BaggageDataModel baggage)
@@ -166,7 +168,8 @@ public sealed class TripRepository : ITripRepository
             item.DefaultItemId,
             item.IsPacked,
             item.Notes,
-            item.ItemCount);
+            item.ItemCount,
+            ItemCategory.Parse(item.Category));
     }
 
     private static TripDataModel MapTripDataModel(TripEntity trip)
@@ -178,6 +181,7 @@ public sealed class TripRepository : ITripRepository
             Destination = trip.Destination,
             StartDate = trip.StartDate,
             EndDate = trip.EndDate,
+            IsFinished = trip.IsFinished,
             Baggages = MapBaggageDataModels(trip).ToList()
         };
     }
@@ -196,6 +200,7 @@ public sealed class TripRepository : ITripRepository
                 TripId = item.TripId.Value,
                 BaggageId = item.BaggageId.Value,
                 Name = item.Name,
+                Category = item.Category.Value,
                 IsPacked = item.IsPacked,
                 Notes = item.Notes,
                 ItemCount = item.ItemCount,

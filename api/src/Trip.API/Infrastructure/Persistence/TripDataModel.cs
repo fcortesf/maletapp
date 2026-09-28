@@ -4,6 +4,8 @@ public sealed class TripDataModel
 {
     public Guid Id { get; set; }
 
+    public bool IsFinished { get; set; }
+
     public Guid OwnerId { get; set; }
 
     public string Destination { get; set; } = string.Empty;

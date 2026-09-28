@@ -8,15 +8,18 @@ public sealed class ListItemsByTripHandler
 {
     private readonly ILogger<ListItemsByTripHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public ListItemsByTripHandler(ITripRepository tripRepository, ILogger<ListItemsByTripHandler> logger)
+    public ListItemsByTripHandler(ITripRepository tripRepository, ILogger<ListItemsByTripHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<ListItemsByTripResult> HandleAsync(ListItemsByTripQuery query, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation("Listing items for trip {TripId} and user {UserId}", query.TripId.Value, query.UserId.Value);
 
         var trip = await _tripRepository.GetByIdAsync(query.TripId, cancellationToken).ConfigureAwait(false);
@@ -40,7 +43,8 @@ public sealed class ListItemsByTripHandler
                 item.IsPacked,
                 item.DefaultItemId,
                 item.Notes,
-                item.ItemCount))
+                item.ItemCount,
+            item.Category.Value))
             .ToArray());
     }
 }

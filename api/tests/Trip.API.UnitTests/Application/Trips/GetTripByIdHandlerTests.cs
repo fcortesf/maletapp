@@ -18,7 +18,7 @@ public sealed class GetTripByIdHandlerTests
         var trip = TripFixtures.CreateTrip(userId, "Valencia");
         var handler = new GetTripByIdHandler(
             new InMemoryTripRepository(trip),
-            NullLogger<GetTripByIdHandler>.Instance);
+            NullLogger<GetTripByIdHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(new GetTripByIdQuery(userId, trip.Id), CancellationToken.None);
 
@@ -30,7 +30,7 @@ public sealed class GetTripByIdHandlerTests
     {
         var handler = new GetTripByIdHandler(
             new InMemoryTripRepository(),
-            NullLogger<GetTripByIdHandler>.Instance);
+            NullLogger<GetTripByIdHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new GetTripByIdQuery(TripFixtures.CreateUserId(), TripId.CreateUnique()),
@@ -43,7 +43,7 @@ public sealed class GetTripByIdHandlerTests
         var trip = TripFixtures.CreateTrip(TripFixtures.CreateUserId(), "Oslo");
         var handler = new GetTripByIdHandler(
             new InMemoryTripRepository(trip),
-            NullLogger<GetTripByIdHandler>.Instance);
+            NullLogger<GetTripByIdHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new GetTripByIdQuery(TripFixtures.CreateUserId(), trip.Id),

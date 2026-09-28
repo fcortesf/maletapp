@@ -8,6 +8,7 @@ public static class TripEndpointRouteBuilderExtensions
         endpoints.MapDeleteTrip();
         endpoints.MapGetTrips();
         endpoints.MapGetTripById();
+        endpoints.MapTripLifecycle();
 
         return endpoints;
     }

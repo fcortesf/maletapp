@@ -84,3 +84,31 @@ tests/
 ## Complexity Tracking
 
 No constitutional violations or justified exceptions are required for this plan.
+
+## Web PoC contract extension (Items 0.0.3)
+
+All create/get/list/patch item responses include required non-null category:
+`documents`, `clothing`, `toiletries`, `electronics`, `health`, `accessories`, `other`.
+Creation omission defaults to `other`; PATCH omission preserves, explicit `other`
+resets. Null, empty, numeric, unknown and differently cased codes return 400
+problem details without partial mutation. Labels are client translations.
+Notes and positive int32 quantity remain nullable: omitted PATCH fields preserve,
+explicit null clears. defaultItemId and explicit packed state retain their semantics.
+Item deletion preserves siblings/baggage; baggage routes are unimplemented.
+
+## Complete-operation serialization and constitution check
+
+Every trip/item read and write acquires the same singleton application operation
+gate before repository access, including ownership and item-to-trip resolution,
+through SaveChanges and DTO snapshot; response transport remains outside.
+If deletion executes first, queued item/lifecycle work returns typed 404 and
+cannot resurrect data. If update executes first, update and deletion succeed
+and final reads return 404. Disjoint changes accumulate; same-field changes
+are last-executed-wins, with no stale-editor/version/409 or durable rollback
+guarantee. Cancellation and exceptions release only successfully acquired leases.
+Cross-endpoint deterministic integration coverage lives in
+`tests/Trip.API.IntegrationTests/Concurrency/`, using barriers/hooks instead of sleeps;
+default baggage uniqueness is observed through item baggageIds.
+Constitution 1.1.0: compliant, contract-first; containment-only coupling, repository
+and gate abstractions, EF persistence, typed errors and cancellation. No new
+production dependency or exception is required.

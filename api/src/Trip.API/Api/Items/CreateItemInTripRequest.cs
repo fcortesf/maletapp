@@ -5,4 +5,4 @@ public sealed record CreateItemInTripRequest(
     Guid? DefaultItemId,
     string? Notes = null,
     [property: System.Text.Json.Serialization.JsonNumberHandling(System.Text.Json.Serialization.JsonNumberHandling.Strict)]
-    int? ItemCount = null);
+    int? ItemCount = null, string Category = "other");

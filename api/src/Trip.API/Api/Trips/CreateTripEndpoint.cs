@@ -31,7 +31,7 @@ public static class CreateTripEndpoint
                         cancellationToken);
 
                     var trip = result.Trip;
-                    return Results.Created($"/trips/{trip.Id}", new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate));
+                    return Results.Created($"/trips/{trip.Id}", new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate, trip.IsFinished));
                 })
             .WithName(TripEndpointNames.CreateTrip)
             .WithTags("Trips");

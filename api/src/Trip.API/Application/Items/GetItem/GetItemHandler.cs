@@ -8,15 +8,18 @@ public sealed class GetItemHandler
 {
     private readonly ILogger<GetItemHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public GetItemHandler(ITripRepository tripRepository, ILogger<GetItemHandler> logger)
+    public GetItemHandler(ITripRepository tripRepository, ILogger<GetItemHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<GetItemResult> HandleAsync(GetItemQuery query, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation("Retrieving item {ItemId} for user {UserId}", query.ItemId.Value, query.UserId.Value);
 
         var trip = await _tripRepository.GetTripByItemIdAsync(query.ItemId, cancellationToken).ConfigureAwait(false);
@@ -42,6 +45,7 @@ public sealed class GetItemHandler
             item.IsPacked,
             item.DefaultItemId,
             item.Notes,
-            item.ItemCount));
+            item.ItemCount,
+            item.Category.Value));
     }
 }

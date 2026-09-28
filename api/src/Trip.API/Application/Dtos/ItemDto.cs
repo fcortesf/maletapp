@@ -8,4 +8,4 @@ public sealed record ItemDto(
     bool IsPacked,
     Guid? DefaultItemId,
     string? Notes,
-    int? ItemCount);
+    int? ItemCount, string Category = "other");

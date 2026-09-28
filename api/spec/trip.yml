@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Trips API
   description: Maletapp Trips api
-  version: 0.0.1
+  version: 0.0.2
 paths:
   /trips:
     get:
@@ -101,10 +101,72 @@ paths:
         500:
           description: Internal server error
     
+  /trips/{tripId}/finish:
+    post:
+      tags: [Trips]
+      operationId: finishTrip
+      summary: Finish an owned trip
+      description: Bodyless idempotent desired-state command; preserves dates and items, including empty and incomplete trips.
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Desired state applied or already present
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trip'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Trip not found
+        '500':
+          description: Internal server error
+  /trips/{tripId}/reopen:
+    post:
+      tags: [Trips]
+      operationId: reopenTrip
+      summary: Reopen an owned trip
+      description: Bodyless idempotent desired-state command; preserves dates and items, including empty and incomplete trips.
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Desired state applied or already present
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trip'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Trip not found
+        '500':
+          description: Internal server error
+
 security:
   - bearerAuth: []
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     NewTrip: 
       allOf:
@@ -116,10 +178,16 @@ components:
         - $ref: '#/components/schemas/TripProperties'
         - required:
           - id
+          - isFinished
           - destination
     TripProperties: 
       type: object
       properties:
+        isFinished:
+          type: boolean
+          readOnly: true
+          default: false
+          description: Explicit lifecycle state, independent of dates and packing; finished trips remain editable.
         id:
           readOnly: true
           type: string

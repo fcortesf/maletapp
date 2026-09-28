@@ -6,14 +6,17 @@ namespace Trip.API.Application.Items.DeleteItem;
 public sealed class DeleteItemHandler
 {
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public DeleteItemHandler(ITripRepository tripRepository)
+    public DeleteItemHandler(ITripRepository tripRepository, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
     }
 
     public async Task HandleAsync(DeleteItemCommand command, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         var trip = await _tripRepository.GetTripByItemIdAsync(command.ItemId, cancellationToken).ConfigureAwait(false)
             ?? throw new NotFoundException($"Item {command.ItemId.Value} was not found.");
 

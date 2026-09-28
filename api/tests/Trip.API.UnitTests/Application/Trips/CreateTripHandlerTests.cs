@@ -15,7 +15,7 @@ public sealed class CreateTripHandlerTests
     public async Task HandleAsync_CreatesTrip_WhenCommandIsValid()
     {
         var repository = new InMemoryTripRepository();
-        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance);
+        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
         var userId = TripFixtures.CreateUserId();
 
         var result = await handler.HandleAsync(
@@ -33,7 +33,7 @@ public sealed class CreateTripHandlerTests
     public async Task HandleAsync_ThrowsValidationException_WhenDestinationIsMissing()
     {
         var repository = new InMemoryTripRepository();
-        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance);
+        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ValidationException>(() => handler.HandleAsync(
             new CreateTripCommand(TripFixtures.CreateUserId(), TripFixtures.CreateNewTripDto(" ")),
@@ -44,7 +44,7 @@ public sealed class CreateTripHandlerTests
     public async Task HandleAsync_ThrowsValidationException_WhenDatesAreInvalid()
     {
         var repository = new InMemoryTripRepository();
-        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance);
+        var handler = new CreateTripHandler(repository, NullLogger<CreateTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ValidationException>(() => handler.HandleAsync(
             new CreateTripCommand(

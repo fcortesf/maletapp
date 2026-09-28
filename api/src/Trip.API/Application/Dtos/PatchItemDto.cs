@@ -10,4 +10,6 @@ public sealed record PatchItemDto(
     string? Notes = null,
     bool HasNotes = false,
     int? ItemCount = null,
-    bool HasItemCount = false);
+    bool HasItemCount = false,
+    string? Category = null,
+    bool HasCategory = false);
