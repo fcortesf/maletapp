@@ -1,0 +1,86 @@
+:root{
+  /* Color */
+  --color-background: #F7F5EF;
+  --color-background-alt: #EDECE3;
+  --color-surface: #FFFEFA;
+  --color-surface-sunken: #EDECE3;
+  --color-text: #293C35;
+  --color-text-soft: #394B42;
+  --color-muted: #59675F;
+  --color-border: #DCDED2;
+  --color-border-strong: #7E8B82;
+
+  --color-primary: #A6442F;
+  --color-primary-strong: #8C3524;
+  --color-primary-soft: #F6E8DF;
+
+  --color-accent: #C47856;
+  --color-accent-strong: #A95B3C;
+  --color-accent-soft: #F6E8DF;
+
+  --color-success: #32604B;
+  --color-success-soft: #E5EDDF;
+  --color-warning: #7C5C21;
+  --color-warning-soft: #F6ECD1;
+  --color-danger: #A33335;
+  --color-danger-soft: #FBE9E7;
+
+  --color-focus: #146B7A;
+  --color-illustration-sky: #E0E9DC;
+  --color-illustration-light: #FAF0CD;
+  --color-illustration-mid: #A9BCA4;
+  --color-illustration-dark: #526F5D;
+  --color-illustration-clay: #C47856;
+
+  /* Type */
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.75rem;
+  --space-8: 3.5rem;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(29,43,51,0.08);
+  --shadow-md: 0 6px 20px -4px rgba(29,43,51,0.16);
+  --shadow-lg: 0 18px 40px -12px rgba(29,43,51,0.28);
+
+  /* Border widths */
+  --border-thin: 1px;
+  --border-thick: 1.5px;
+
+  /* Breakpoints (referencia, usados en media queries) */
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-wide: 1440px;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+}

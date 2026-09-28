@@ -212,15 +212,17 @@ sanitized message. Input errors fail before HTTP operations.
 | `list_trips` | none | `GET /trips` |
 | `create_trip` | `destination`, optional nullable `startDate`, `endDate` | `POST /trips` |
 | `get_trip` | `tripId` | `GET /trips/{tripId}` |
+| `finish_trip` | `tripId` | `POST /trips/{tripId}/finish` (no body) |
+| `reopen_trip` | `tripId` | `POST /trips/{tripId}/reopen` (no body) |
 | `list_items` | `tripId` | `GET /trips/{tripId}/items` |
-| `add_item` | `tripId`, `name`, optional nullable `defaultItemId`, `notes`, `itemCount` | `POST /trips/{tripId}/items` |
+| `add_item` | `tripId`, `name`, optional `category`, nullable `defaultItemId`, `notes`, `itemCount` | `POST /trips/{tripId}/items` |
 | `get_item` | `itemId` | `GET /items/{itemId}` |
-| `edit_item` | `itemId`, at least one of `name`, nullable `defaultItemId`, `notes`, `itemCount` | `PATCH /items/{itemId}` |
+| `edit_item` | `itemId`, at least one of `name`, `category`, nullable `defaultItemId`, `notes`, `itemCount` | `PATCH /items/{itemId}` |
 | `set_item_packed` | `itemId`, boolean `isPacked` | `PATCH /items/{itemId}` |
 | `delete_item` | `itemId` | `DELETE /items/{itemId}` |
 
-Trips return `id`, `destination`, `startDate`, `endDate`. Items return `id`,
-`tripId`, `baggageId`, `name`, `defaultItemId`, `isPacked`, nullable `notes` and `itemCount`.
+Trips return `id`, `destination`, `startDate`, `endDate`, `isFinished`. Items return `id`,
+`tripId`, `baggageId`, `name`, `defaultItemId`, `isPacked`, `category`, nullable `notes` and `itemCount`.
 `isPacked` means prepared/packed. `notes` holds item comments; `itemCount` is a
 positive int32 quantity (1–2147483647). Null means unspecified, not one.
 On create, omitted values remain null; on edit, omission preserves and null clears.

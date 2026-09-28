@@ -152,15 +152,15 @@ npm run dev
 
 The example `.env` sets `PORT=5000` so host development uses the same Swagger callback as Compose (which continues to use container port 3000). For a gateway running on the host, run the domain separately using `dotnet run --project ../api/src/Trip.API --launch-profile http` (port 5110), and start Keycloak with `docker compose up keycloak`. Host development bypasses the Compose network isolation and is for local testing only. `npm start` serves compiled code and expects environment variables from the launcher; `npm run dev` loads `.env`.
 
-Tests generate temporary RSA keys and exercise real loopback OIDC/JWKS and upstream HTTP servers. They verify invalid tokens never reach upstream, identity replacement, adapter routing, methods/bodies/query strings, upstream errors and fail-closed outages. Build/typecheck and all 18 tests passed in the implementation environment, including documentation access, production denial, OAuth configuration, gateway targets, and startup recovery. UI initialization is tested in a JavaScript VM; Compose/image builds and live discovery/OpenAPI checks now pass; browser tools are unavailable, so the real Keycloak login → callback → authenticated browser API flow remains unverified.
+Tests generate temporary RSA keys and exercise real loopback OIDC/JWKS and upstream HTTP servers. They verify invalid tokens never reach upstream, identity replacement, adapter routing, methods/bodies/query strings, upstream errors and fail-closed outages. Check/build and all 29 tests pass, including documentation access, OAuth configuration, startup recovery, exact-origin CORS and authenticated stream limits/cleanup. Real Keycloak login → callback → browser API and same-user MCP updates are covered by [web acceptance](../web/docs/acceptance.md).
 
 Discovery metadata is cached until process restart; JWKS is fetched on every authenticated request, allowing key rotation without restarts at the cost of IdP latency/availability. Identity fetches time out after 5 seconds and proxy fetches after 30 seconds. Invalid authentication and domain 401/403 responses use `{ "error": "unauthorized" }`; upstream connection failures use 502 `{ "error": "bad_gateway" }`. Redirects are returned without following them. Credentials, cookies, forwarded headers and spoofed user headers are removed before proxying. Email forwarding is omitted because the domain defines no email header contract.
 
 Hono's supported JWKS API is documented in [JWK authentication](https://hono.dev/docs/middleware/builtin/jwk). The task's `jwt({ secret: { jwks: ... } })` example is not a supported configuration in the pinned Hono version.
 
-## Local Docker verification (2026-09-07)
+## Historical local Docker verification (2026-09-07)
 
-`docker compose up --build -d` now builds and starts all three services successfully. The gateway-owned `docker/domain-api.Dockerfile.dockerignore` excludes host `bin`/`obj` artifacts so they cannot overwrite container NuGet restore metadata. Runtime checks confirmed `/docs` and `/docs/openapi.json` return 200 with the actual domain routes and discovered Keycloak endpoints; `/trips` without a token returns structured 401. The domain port remains unpublished. Real browser login/callback/API execution remains unverified because browser tools are unavailable.
+`docker compose up --build -d` now builds and starts all three services successfully. The gateway-owned `docker/domain-api.Dockerfile.dockerignore` excludes host `bin`/`obj` artifacts so they cannot overwrite container NuGet restore metadata. Runtime checks confirmed `/docs` and `/docs/openapi.json` return 200 with the actual domain routes and discovered Keycloak endpoints; `/trips` without a token returns structured 401. The domain port remains unpublished. At that date browser login/callback/API execution had not been exercised; current web acceptance supersedes that limitation.
 
 No Windows or WSL hosts-file entry is needed with the localhost configuration. The local admin password is stored only in ignored `.env`.
 
@@ -172,7 +172,7 @@ No Windows or WSL hosts-file entry is needed with the localhost configuration. T
 
 For an existing stack, update the old authority in `.env` to `http://localhost:8080/realms/maletapp`, then run `docker compose up --build -d`. This retains the Keycloak volume, users, clients and passwords. Swagger's callback and web origin remain unchanged. Reload Swagger and authorize again because previously issued tokens have the old issuer.
 
-Live verification after the localhost migration: internal discovery and JWKS returned 200 with the exact public issuer; Swagger and callback assets returned 200 on host port 5000; a real authorization-code/S256 request reached Keycloak's login form with localhost form URLs. Missing and invalid API tokens returned structured 401. The interactive username/password → callback → authenticated API flow has not been exercised with a browser.
+Live verification after the localhost migration: internal discovery and JWKS returned 200 with the exact public issuer; Swagger and callback assets returned 200 on host port 5000; a real authorization-code/S256 request reached Keycloak's login form with localhost form URLs. Missing and invalid API tokens returned structured 401. That migration check stopped before interactive login; current web acceptance also exercises username/password → callback → authenticated API.
 
 ## Separate MCP service
 

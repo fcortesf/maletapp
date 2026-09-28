@@ -71,7 +71,7 @@ Outside development, the `/docs` namespace and upstream `/swagger` paths (includ
 - [Compose topology](../docker-compose.yml)
 - [Integration tests](../test/gateway.test.ts)
 
-TypeScript build/typecheck and all 18 tests passed using local OIDC/JWKS and upstream HTTP servers plus a VM check of UI initialization. Docker startup and live schema/discovery checks pass. Browser tools are unavailable; real interactive login/callback/API requests remain unverified.
+TypeScript check/build and all 29 gateway tests pass using loopback OIDC/JWKS and upstream fixtures, including CORS and stream bounds. Real Keycloak PKCE login, browser API calls and same-user MCP invalidations are exercised in the web acceptance suite; see [current evidence](../../web/docs/acceptance.md).
 
 ## Browser invalidations
 

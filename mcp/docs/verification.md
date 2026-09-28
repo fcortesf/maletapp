@@ -1,3 +1,17 @@
+# Current shared web PoC verification — 2026-09-28
+
+The service exposes eleven tools, including category-aware item creation/editing
+and idempotent finish_trip/reopen_trip. Typecheck/build and 14 tests pass; the
+optional fixture-domain test is skipped in the default command. The web suite
+uses two isolated users on the existing real Keycloak realm, official MCP SDK
+calls and actual token exchange through gateway/domain. See [current acceptance
+evidence](../../web/docs/acceptance.md). This does not claim a manual Codex login
+or production/DCR verification.
+
+The dated sections below preserve previous verification evidence. Their tool
+counts, deployment and unavailable-browser statements describe that historical
+state; current acceptance supersedes those gates for the local web PoC.
+
 # Live deployment verification — 2026-09-09
 
 The local domain was rebuilt from main `5207afb` and the complete Compose stack
@@ -88,7 +102,7 @@ this live deployment supersedes the earlier undeployed/single-user-login status.
   preservation, recovery after interrupted creation, unmanaged-name conflicts,
   restricted policy attachment and private/idempotent environment-file updates.
 
-## Pending manual gates
+## Historical pending manual gates (superseded for local web acceptance)
 
 - Complete real-user PKCE login, exchange and tools with two existing users.
   No real Keycloak user tokens were available or issued during this task.
@@ -98,7 +112,7 @@ this live deployment supersedes the earlier undeployed/single-user-login status.
   No such restart was performed. Until loaded, live `delete_item` will receive a
   gateway/domain operation error; it has no simulated-success fallback.
 
-Authenticated CRUD on the existing live realm is therefore **not yet verified**.
+At that point authenticated CRUD on the existing live realm was **not yet verified**.
 The smoke and login scripts make those remaining steps repeatable without
 printing tokens or touching pre-existing trips/items.
 

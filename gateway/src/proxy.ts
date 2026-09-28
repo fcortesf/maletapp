@@ -44,7 +44,8 @@ export function proxy(domainApiUrl: string, prefix = '', subscribers?: Subscribe
         return c.json({ error: 'unauthorized' }, response.status)
       }
       const change = classifyChange(c.req.method, target.pathname, response.status)
-      if (change) subscribers?.publish(c.get('userId'), change)
+      // Notification delivery must never change the result of a committed write.
+      if (change) { try { subscribers?.publish(c.get('userId'), change) } catch {} }
       const outgoing = cleanHeaders(response.headers)
       // Node fetch decodes compressed upstream responses.
       outgoing.delete('content-encoding')

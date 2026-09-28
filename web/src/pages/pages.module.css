@@ -1,0 +1,26 @@
+.heading { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; margin: 1rem 0 2rem; }
+.heading p { color: var(--color-muted); max-width: 540px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(min(100%,300px),1fr)); gap: 1.5rem; }
+.card { border: 1px solid var(--color-border); background: var(--color-surface); border-radius: var(--radius-lg); overflow: hidden; }
+.card a { display: block; text-decoration: none; }
+.cardBody { padding: 1.3rem; }
+.card h2 { font-size: 1.6rem; overflow-wrap: anywhere; }
+.card p { color: var(--color-muted); font-size: .9rem; }
+.card progress, .progress progress { width: 100%; height: .45rem; appearance: none; border: none; border-radius: var(--radius-pill); overflow: hidden; background: var(--color-background-alt); color: var(--color-success); }
+.card progress::-webkit-progress-bar, .progress progress::-webkit-progress-bar { background: var(--color-background-alt); border-radius: var(--radius-pill); }
+.card progress::-webkit-progress-value, .progress progress::-webkit-progress-value { background: var(--color-success); border-radius: var(--radius-pill); }
+.card progress::-moz-progress-bar, .progress progress::-moz-progress-bar { background: var(--color-success); border-radius: var(--radius-pill); }
+.empty { text-align: center; padding: 3rem 1rem; background: var(--color-surface); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); }
+.detail { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; margin-top: 2rem; align-items: start; }
+.progress { padding: 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+.toolbar { display: flex; gap: .5rem; justify-content: space-between; flex-wrap: wrap; margin: 1rem 0; }
+.row { display: flex; align-items: center; gap: .8rem; padding: 1rem; border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
+.row input[type=checkbox] { width: 22px; min-height: 22px; flex-shrink: 0; accent-color: var(--color-success); }
+.rowBody { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.rowBody button { border: none; padding: 0; background: none; text-align: left; font-weight: 600; }
+.rowBody p { margin: .3rem 0; font-size: .875rem; color: var(--color-muted); }
+.rowBody[data-packed=true] button { text-decoration: line-through; color: var(--color-muted); }
+.category { border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 1rem; overflow: hidden; }
+.category summary { cursor: pointer; padding: 1rem; font-weight: 600; background: var(--color-success-soft); }
+.suggestions { display: flex; gap: .5rem; flex-wrap: wrap; }
+@media(max-width:768px) { .detail { grid-template-columns: 1fr; gap: 1rem; } .heading { align-items: flex-start; flex-direction: column; } .heading h1 { margin-bottom: .7rem; } }

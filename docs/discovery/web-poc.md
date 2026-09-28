@@ -1,6 +1,7 @@
 # Web PoC discovery
 
-Status: product discovery approved; implementation has not started.
+Status: implemented and verified by OpenSpec implement-web-poc (51/51 tasks); awaiting separate archive/review.
+Evidence: [web acceptance](../../web/docs/acceptance.md).
 Date: 2026-09-28.
 
 ## Objective
@@ -10,9 +11,10 @@ their trips and packing lists through the gateway and authenticate with the
 Keycloak instance deployed alongside it. Changes made by an authenticated AI
 agent through MCP appear automatically in an open browser for the same user.
 
-This document records the agreed direction and provides the handoff for an
-implementation proposal. Implementation details explicitly listed as pending
-must be resolved in that proposal rather than treated as approved contracts.
+This document preserves the approved discovery and original handoff. The
+OpenSpec design and implementation resolve its pending contract/concurrency
+decisions; [acceptance evidence](../../web/docs/acceptance.md) records verification.
+Baseline and suggested-next-step sections below describe the discovery stage.
 
 ## Approved decisions
 
@@ -30,7 +32,7 @@ must be resolved in that proposal rather than treated as approved contracts.
 | Product extensions | Add item categories and trip finish/reopen behavior to the domain contracts and implementation, and expose them through MCP. |
 | Persistence | Keep the current in-memory domain store for this work. Durable storage is a future evolution and a prerequisite for VPS deployment, outside this scope. |
 
-## Repository baseline
+## Repository baseline at discovery
 
 - `api/` is a .NET domain API with EF Core InMemory. Restarting it loses trips
   and items. Keycloak has its own persistent volume.
@@ -213,9 +215,9 @@ to domain `isPacked` and `itemCount`; prefer contract names in application data.
 - Preserve user-authored destinations, names and notes in their original language.
 - Configure the Keycloak login experience to use English initially.
 
-## Concurrency: unresolved implementation requirement
+## Concurrency: requirement identified at discovery
 
-`api/src/Trip.API/Infrastructure/Repositories/TripRepository.cs` currently loads
+At discovery, `api/src/Trip.API/Infrastructure/Repositories/TripRepository.cs` loaded
 and rewrites a trip's baggage/item collection during updates. Concurrent agent
 and browser writes can overwrite each other's changes. SSE does not solve this.
 
@@ -330,5 +332,6 @@ Suggested prompt:
 > Resolve the explicitly pending contract and concurrency details. Do not
 > implement application code yet.
 
-No application code, runtime configuration or infrastructure was changed as part
-of this discovery. No implementation tests were run for this documentation task.
+The original discovery task changed documentation only. The subsequent
+implement-web-poc change supplies the application, contracts, runtime settings
+and checks documented in the component guides and acceptance evidence.

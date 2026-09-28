@@ -48,8 +48,8 @@ New browser dependencies and exact pins are specified in `design.md`; no new
 production .NET dependency is planned. Domain additions preserve existing client
 requests. Process-local serialization trades throughput for correctness at PoC scale.
 
-This proposal contains planning artifacts only. It does not change application
-code, live OpenAPI contracts, runtime configuration, dependencies or infrastructure.
+This proposal records the approved scope. Implementation and its verification
+are tracked in tasks.md and [acceptance evidence](../../../web/docs/acceptance.md).
 No database migration, VPS/static-host deployment, broker, multi-replica support,
 cookie BFF, identity-mapping migration, offline editing, embedded chat, published
 design system or complete Spanish translation is included.
