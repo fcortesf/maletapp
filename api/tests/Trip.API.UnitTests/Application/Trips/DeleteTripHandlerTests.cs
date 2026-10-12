@@ -16,7 +16,7 @@ public sealed class DeleteTripHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var repository = new InMemoryTripRepository(trip);
-        var handler = new DeleteTripHandler(repository, NullLogger<DeleteTripHandler>.Instance);
+        var handler = new DeleteTripHandler(repository, NullLogger<DeleteTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await handler.HandleAsync(new DeleteTripCommand(trip.OwnerId, trip.Id), CancellationToken.None);
 
@@ -29,7 +29,7 @@ public sealed class DeleteTripHandlerTests
     {
         var trip = TripFixtures.CreateTripWithItem();
         var repository = new InMemoryTripRepository(trip);
-        var handler = new DeleteTripHandler(repository, NullLogger<DeleteTripHandler>.Instance);
+        var handler = new DeleteTripHandler(repository, NullLogger<DeleteTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await handler.HandleAsync(new DeleteTripCommand(trip.OwnerId, trip.Id), CancellationToken.None);
 
@@ -40,7 +40,7 @@ public sealed class DeleteTripHandlerTests
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenTripDoesNotExist()
     {
-        var handler = new DeleteTripHandler(new InMemoryTripRepository(), NullLogger<DeleteTripHandler>.Instance);
+        var handler = new DeleteTripHandler(new InMemoryTripRepository(), NullLogger<DeleteTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new DeleteTripCommand(TripFixtures.CreateUserId(), TripId.CreateUnique()),
@@ -51,7 +51,7 @@ public sealed class DeleteTripHandlerTests
     public async Task HandleAsync_ThrowsForbidden_WhenTripBelongsToDifferentUser()
     {
         var trip = TripFixtures.CreateTrip();
-        var handler = new DeleteTripHandler(new InMemoryTripRepository(trip), NullLogger<DeleteTripHandler>.Instance);
+        var handler = new DeleteTripHandler(new InMemoryTripRepository(trip), NullLogger<DeleteTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new DeleteTripCommand(TripFixtures.CreateUserId(), trip.Id),

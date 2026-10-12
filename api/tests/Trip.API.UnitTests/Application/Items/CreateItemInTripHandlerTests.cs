@@ -17,7 +17,7 @@ public sealed class CreateItemInTripHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var repository = new InMemoryTripRepository(trip);
-        var handler = new CreateItemInTripHandler(repository, NullLogger<CreateItemInTripHandler>.Instance);
+        var handler = new CreateItemInTripHandler(repository, NullLogger<CreateItemInTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(
             new CreateItemInTripCommand(trip.OwnerId, trip.Id, new NewItemDto("Passport", null)),
@@ -30,7 +30,7 @@ public sealed class CreateItemInTripHandlerTests
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenTripIsMissing()
     {
-        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(), NullLogger<CreateItemInTripHandler>.Instance);
+        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(), NullLogger<CreateItemInTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new CreateItemInTripCommand(TripFixtures.CreateUserId(), TripId.CreateUnique(), new NewItemDto("Passport", null)),
@@ -41,7 +41,7 @@ public sealed class CreateItemInTripHandlerTests
     public async Task HandleAsync_ThrowsForbidden_WhenTripBelongsToDifferentUser()
     {
         var trip = TripFixtures.CreateTrip();
-        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(trip), NullLogger<CreateItemInTripHandler>.Instance);
+        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(trip), NullLogger<CreateItemInTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new CreateItemInTripCommand(TripFixtures.CreateUserId(), trip.Id, new NewItemDto("Passport", null)),
@@ -52,7 +52,7 @@ public sealed class CreateItemInTripHandlerTests
     public async Task HandleAsync_ThrowsValidationException_WhenNameIsBlank()
     {
         var trip = TripFixtures.CreateTrip();
-        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(trip), NullLogger<CreateItemInTripHandler>.Instance);
+        var handler = new CreateItemInTripHandler(new InMemoryTripRepository(trip), NullLogger<CreateItemInTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ValidationException>(() => handler.HandleAsync(
             new CreateItemInTripCommand(trip.OwnerId, trip.Id, new NewItemDto(" ", null)),

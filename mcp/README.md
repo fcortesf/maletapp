@@ -212,15 +212,17 @@ sanitized message. Input errors fail before HTTP operations.
 | `list_trips` | none | `GET /trips` |
 | `create_trip` | `destination`, optional nullable `startDate`, `endDate` | `POST /trips` |
 | `get_trip` | `tripId` | `GET /trips/{tripId}` |
+| `finish_trip` | `tripId` | `POST /trips/{tripId}/finish` (no body) |
+| `reopen_trip` | `tripId` | `POST /trips/{tripId}/reopen` (no body) |
 | `list_items` | `tripId` | `GET /trips/{tripId}/items` |
-| `add_item` | `tripId`, `name`, optional nullable `defaultItemId`, `notes`, `itemCount` | `POST /trips/{tripId}/items` |
+| `add_item` | `tripId`, `name`, optional `category`, nullable `defaultItemId`, `notes`, `itemCount` | `POST /trips/{tripId}/items` |
 | `get_item` | `itemId` | `GET /items/{itemId}` |
-| `edit_item` | `itemId`, at least one of `name`, nullable `defaultItemId`, `notes`, `itemCount` | `PATCH /items/{itemId}` |
+| `edit_item` | `itemId`, at least one of `name`, `category`, nullable `defaultItemId`, `notes`, `itemCount` | `PATCH /items/{itemId}` |
 | `set_item_packed` | `itemId`, boolean `isPacked` | `PATCH /items/{itemId}` |
 | `delete_item` | `itemId` | `DELETE /items/{itemId}` |
 
-Trips return `id`, `destination`, `startDate`, `endDate`. Items return `id`,
-`tripId`, `baggageId`, `name`, `defaultItemId`, `isPacked`, nullable `notes` and `itemCount`.
+Trips return `id`, `destination`, `startDate`, `endDate`, `isFinished`. Items return `id`,
+`tripId`, `baggageId`, `name`, `defaultItemId`, `isPacked`, `category`, nullable `notes` and `itemCount`.
 `isPacked` means prepared/packed. `notes` holds item comments; `itemCount` is a
 positive int32 quantity (1–2147483647). Null means unspecified, not one.
 On create, omitted values remain null; on edit, omission preserves and null clears.
@@ -299,3 +301,18 @@ retrying because the write may have succeeded.
 
 The notes/quantity API replaces the retired check-counter action. The matching
 domain and MCP versions are deployed locally as of 2026-09-09.
+
+## Shared browser/agent product behavior
+
+Items expose category codes documents/clothing/toiletries/electronics/health/
+accessories/other. add_item omission defaults to other; edit_item omission
+preserves, including category-only edits. Reads return category and isFinished.
+finish_trip and reopen_trip delegate the same user through bodyless API routes;
+both are idempotent desired-state commands and require user-authorized intent.
+Dates or packing completion never authorize finishing. Finished trips stay editable.
+Only intended fields are written. The single API instance serializes complete
+operations; disjoint fields accumulate, same-field stale intent is last-executed
+wins without version conflicts. No durable rollback is guaranteed. Never blindly
+retry uncertain writes: read authoritative state before deliberate resubmission.
+Same-user gateway SSE invalidations support browser synchronization; delivery is
+best effort and the browser must reconcile authoritative reads.

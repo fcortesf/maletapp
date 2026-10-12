@@ -18,7 +18,7 @@ public sealed class ListItemsByTripHandlerTests
         trip.AddItemToDefaultBaggage("Passport");
         trip.AddItemToDefaultBaggage("Shoes");
 
-        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(trip), NullLogger<ListItemsByTripHandler>.Instance);
+        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(trip), NullLogger<ListItemsByTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(new ListItemsByTripQuery(trip.OwnerId, trip.Id), CancellationToken.None);
 
@@ -28,7 +28,7 @@ public sealed class ListItemsByTripHandlerTests
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenTripIsMissing()
     {
-        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(), NullLogger<ListItemsByTripHandler>.Instance);
+        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(), NullLogger<ListItemsByTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new ListItemsByTripQuery(TripFixtures.CreateUserId(), TripId.CreateUnique()),
@@ -39,7 +39,7 @@ public sealed class ListItemsByTripHandlerTests
     public async Task HandleAsync_ThrowsForbidden_WhenTripBelongsToDifferentUser()
     {
         var trip = TripFixtures.CreateTrip();
-        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(trip), NullLogger<ListItemsByTripHandler>.Instance);
+        var handler = new ListItemsByTripHandler(new InMemoryTripRepository(trip), NullLogger<ListItemsByTripHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new ListItemsByTripQuery(TripFixtures.CreateUserId(), trip.Id),

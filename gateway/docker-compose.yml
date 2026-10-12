@@ -27,6 +27,7 @@ services:
       KEYCLOAK_AUTHORITY: ${KEYCLOAK_AUTHORITY:-http://localhost:8080/realms/maletapp}
       KEYCLOAK_INTERNAL_ORIGIN: ${KEYCLOAK_INTERNAL_ORIGIN-http://keycloak:8080}
       KEYCLOAK_AUDIENCE: ${KEYCLOAK_AUDIENCE:-api://maletapp}
+      WEB_ALLOWED_ORIGINS: ${WEB_ALLOWED_ORIGINS:-http://localhost:5173}
       DOMAIN_API_URL: http://domain-api:5110
     depends_on:
       - keycloak

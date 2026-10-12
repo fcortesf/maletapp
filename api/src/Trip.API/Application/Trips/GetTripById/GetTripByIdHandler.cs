@@ -8,15 +8,18 @@ public sealed class GetTripByIdHandler
 {
     private readonly ILogger<GetTripByIdHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public GetTripByIdHandler(ITripRepository tripRepository, ILogger<GetTripByIdHandler> logger)
+    public GetTripByIdHandler(ITripRepository tripRepository, ILogger<GetTripByIdHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<GetTripByIdResult> HandleAsync(GetTripByIdQuery query, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation(
             "Retrieving trip {TripId} for user {UserId}",
             query.TripId.Value,
@@ -38,6 +41,6 @@ public sealed class GetTripByIdHandler
             trip.Id.Value,
             trip.Destination,
             trip.StartDate,
-            trip.EndDate));
+            trip.EndDate, trip.IsFinished));
     }
 }

@@ -41,7 +41,9 @@ public static class PatchItemEndpoint
                                 request.Notes,
                                 request.HasNotes,
                                 request.ItemCount,
-                                request.HasItemCount)),
+                                request.HasItemCount,
+                                request.Category,
+                                request.HasCategory)),
                         cancellationToken);
 
                     var item = result.Item;
@@ -53,7 +55,8 @@ public static class PatchItemEndpoint
                         item.IsPacked,
                         item.DefaultItemId,
                         item.Notes,
-                        item.ItemCount));
+                        item.ItemCount,
+                        item.Category));
                 })
             .WithName(ItemEndpointNames.PatchItem)
             .Accepts<PatchItemRequest>("application/json")

@@ -1,0 +1,5 @@
+import { readFileSync, existsSync } from 'node:fs'
+import { defineConfig } from '@playwright/test'
+const endpointFile = new URL('./.local/browser-endpoint', import.meta.url)
+const wsEndpoint = process.env.PLAYWRIGHT_WS_ENDPOINT ?? (existsSync(endpointFile) ? readFileSync(endpointFile, 'utf8').trim() : undefined)
+export default defineConfig({ testDir: './tests/e2e', outputDir: process.env.E2E_STATIC ? 'test-results-static' : 'test-results', ...(process.env.E2E_STATIC ? { testMatch: '**/static.spec.ts' } : { testIgnore: '**/static.spec.ts' }), timeout: 45_000, expect: { timeout: 8000 }, fullyParallel: false, workers: 1, use: { baseURL: 'http://localhost:5173', headless: true, ...(wsEndpoint ? { connectOptions: { wsEndpoint } } : {}), trace: 'off', screenshot: 'off', launchOptions: { args: ['--disable-third-party-cookies'] } }, webServer: { command: process.env.E2E_DEV ? 'npm run dev' : 'node scripts/static-server.mjs', url: 'http://localhost:5173', reuseExistingServer: !!process.env.E2E_DEV }, reporter: [['list']] })

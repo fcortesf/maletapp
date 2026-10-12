@@ -16,7 +16,7 @@ public sealed class GetItemHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance);
+        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(new GetItemQuery(trip.OwnerId, item.Id), CancellationToken.None);
 
@@ -26,7 +26,7 @@ public sealed class GetItemHandlerTests
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenItemDoesNotExist()
     {
-        var handler = new GetItemHandler(new InMemoryTripRepository(), NullLogger<GetItemHandler>.Instance);
+        var handler = new GetItemHandler(new InMemoryTripRepository(), NullLogger<GetItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new GetItemQuery(TripFixtures.CreateUserId(), ItemId.CreateUnique()),
@@ -38,7 +38,7 @@ public sealed class GetItemHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance);
+        var handler = new GetItemHandler(new InMemoryTripRepository(trip), NullLogger<GetItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new GetItemQuery(TripFixtures.CreateUserId(), item.Id),

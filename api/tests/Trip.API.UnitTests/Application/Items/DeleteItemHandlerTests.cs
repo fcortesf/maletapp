@@ -16,7 +16,7 @@ public sealed class DeleteItemHandlerTests
         var item = trip.AddItemToDefaultBaggage("Remove");
         var kept = trip.AddItemToDefaultBaggage("Keep");
         var repository = new InMemoryTripRepository(trip);
-        var handler = new DeleteItemHandler(repository);
+        var handler = new DeleteItemHandler(repository, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
         await handler.HandleAsync(new DeleteItemCommand(trip.OwnerId, item.Id), CancellationToken.None);
         Assert.Null(trip.FindItem(item.Id));
         Assert.Same(kept, trip.FindItem(kept.Id));
@@ -29,7 +29,7 @@ public sealed class DeleteItemHandlerTests
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Keep");
         var repository = new InMemoryTripRepository(trip);
-        var handler = new DeleteItemHandler(repository);
+        var handler = new DeleteItemHandler(repository, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new DeleteItemCommand(TripFixtures.CreateUserId(), item.Id), CancellationToken.None));
         Assert.Same(item, trip.FindItem(item.Id));
@@ -39,7 +39,7 @@ public sealed class DeleteItemHandlerTests
     [Fact]
     public async Task HandleAsync_RejectsMissingItemAsync()
     {
-        var handler = new DeleteItemHandler(new InMemoryTripRepository());
+        var handler = new DeleteItemHandler(new InMemoryTripRepository(), new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new DeleteItemCommand(TripFixtures.CreateUserId(), ItemId.CreateUnique()), CancellationToken.None));
     }

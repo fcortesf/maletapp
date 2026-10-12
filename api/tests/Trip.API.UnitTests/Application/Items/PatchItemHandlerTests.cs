@@ -18,7 +18,7 @@ public sealed class PatchItemHandlerTests
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
         var repository = new InMemoryTripRepository(trip);
-        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
         var newDefaultItemId = Guid.NewGuid();
 
         var result = await handler.HandleAsync(
@@ -37,7 +37,7 @@ public sealed class PatchItemHandlerTests
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
         var repository = new InMemoryTripRepository(trip);
-        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(
             new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(null, false, null, false, true, true)),
@@ -56,7 +56,7 @@ public sealed class PatchItemHandlerTests
         var item = trip.AddItemToDefaultBaggage("Passport");
         item.SetPackedState(true);
         var repository = new InMemoryTripRepository(trip);
-        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(repository, NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         var result = await handler.HandleAsync(
             new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(null, false, null, false, false, true)),
@@ -70,7 +70,7 @@ public sealed class PatchItemHandlerTests
     [Fact]
     public async Task HandleAsync_ThrowsNotFound_WhenItemIsMissing()
     {
-        var handler = new PatchItemHandler(new InMemoryTripRepository(), NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(new InMemoryTripRepository(), NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.HandleAsync(
             new PatchItemCommand(TripFixtures.CreateUserId(), ItemId.CreateUnique(), new PatchItemDto("Passport", true, null, false, false, false)),
@@ -82,7 +82,7 @@ public sealed class PatchItemHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ForbiddenException>(() => handler.HandleAsync(
             new PatchItemCommand(TripFixtures.CreateUserId(), item.Id, new PatchItemDto("Passport", true, null, false, true, true)),
@@ -96,7 +96,7 @@ public sealed class PatchItemHandlerTests
     {
         var trip = TripFixtures.CreateTrip();
         var item = trip.AddItemToDefaultBaggage("Passport");
-        var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance);
+        var handler = new PatchItemHandler(new InMemoryTripRepository(trip), NullLogger<PatchItemHandler>.Instance, new Trip.API.Infrastructure.Concurrency.DomainOperationGate());
 
         await Assert.ThrowsAsync<ValidationException>(() => handler.HandleAsync(
             new PatchItemCommand(trip.OwnerId, item.Id, new PatchItemDto(" ", true, null, false, false, false)),

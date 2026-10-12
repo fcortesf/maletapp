@@ -24,7 +24,7 @@ public static class GetTripsEndpoint
 
                     var result = await handler.HandleAsync(new GetTripsQuery(userId), cancellationToken);
                     var response = result.Trips
-                        .Select(trip => new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate));
+                        .Select(trip => new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate, trip.IsFinished));
 
                     return Results.Ok(response);
                 })

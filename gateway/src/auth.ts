@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from 'hono'
 import type { Config } from './config.ts'
 import { oidcDiscovery } from './oidc.ts'
 
-export type GatewayEnv = { Variables: { userId: string } }
+export type GatewayEnv = { Variables: { userId: string; tokenExpiresAt: number } }
 const guid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export function authentication(config: Config, discover = oidcDiscovery(config)): MiddlewareHandler<GatewayEnv> {
@@ -15,6 +15,7 @@ export function authentication(config: Config, discover = oidcDiscovery(config))
       return c.json({ error: 'unauthorized' }, 401)
     }
     let subject: string
+    let tokenExpiresAt: number
     try {
       const payload = await verifyWithJwks(token, {
         jwks_uri: (await discover()).jwks_uri, allowedAlgorithms: ['RS256'],
@@ -23,13 +24,15 @@ export function authentication(config: Config, discover = oidcDiscovery(config))
       if (typeof payload.exp !== 'number' || !Number.isFinite(payload.exp) ||
           typeof payload.sub !== 'string' || !payload.sub) throw new Error('Missing claims')
       subject = payload.sub
+      tokenExpiresAt = payload.exp * 1000
     } catch {
       c.header('WWW-Authenticate', 'Bearer')
       return c.json({ error: 'unauthorized' }, 401)
     }
     // The unchanged .NET accessor accepts GUIDs only.
     if (!guid.test(subject)) return c.json({ error: 'unauthorized' }, 403)
-    c.set('userId', subject)
+    c.set('userId', subject.toLowerCase())
+    c.set('tokenExpiresAt', tokenExpiresAt)
     await next()
   }
 }

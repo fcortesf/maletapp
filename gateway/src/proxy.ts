@@ -1,4 +1,5 @@
 import type { Handler } from 'hono'
+import { classifyChange, type Subscribers } from './events.ts'
 import type { GatewayEnv } from './auth.ts'
 
 // Confirmed: maletapp/src/Trip.API/Infrastructure/UserContext/UserContextHeaderNames.cs:7
@@ -14,7 +15,7 @@ export function cleanHeaders(source: Headers): Headers {
   return headers
 }
 
-export function proxy(domainApiUrl: string, prefix = ''): Handler<GatewayEnv> {
+export function proxy(domainApiUrl: string, prefix = '', subscribers?: Subscribers): Handler<GatewayEnv> {
   return async (c) => {
     const incoming = new URL(c.req.url)
     const target = new URL(domainApiUrl)
@@ -42,6 +43,9 @@ export function proxy(domainApiUrl: string, prefix = ''): Handler<GatewayEnv> {
         if (response.status === 401) c.header('WWW-Authenticate', 'Bearer')
         return c.json({ error: 'unauthorized' }, response.status)
       }
+      const change = classifyChange(c.req.method, target.pathname, response.status)
+      // Notification delivery must never change the result of a committed write.
+      if (change) { try { subscribers?.publish(c.get('userId'), change) } catch {} }
       const outgoing = cleanHeaders(response.headers)
       // Node fetch decodes compressed upstream responses.
       outgoing.delete('content-encoding')

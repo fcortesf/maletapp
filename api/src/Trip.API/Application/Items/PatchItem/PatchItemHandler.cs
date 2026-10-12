@@ -8,15 +8,18 @@ public sealed class PatchItemHandler
 {
     private readonly ILogger<PatchItemHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public PatchItemHandler(ITripRepository tripRepository, ILogger<PatchItemHandler> logger)
+    public PatchItemHandler(ITripRepository tripRepository, ILogger<PatchItemHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<PatchItemResult> HandleAsync(PatchItemCommand command, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation("Patching item {ItemId} for user {UserId}", command.ItemId.Value, command.UserId.Value);
 
         var trip = await _tripRepository.GetTripByItemIdAsync(command.ItemId, cancellationToken).ConfigureAwait(false);
@@ -37,6 +40,8 @@ public sealed class PatchItemHandler
         if (command.Item.HasItemCount && command.Item.ItemCount is <= 0)
             throw new ValidationException("Item count must be positive.");
 
+        var category = command.Item.HasCategory ? ParseCategory(command.Item.Category) : null;
+
         if (command.Item.HasName)
         {
             if (string.IsNullOrWhiteSpace(command.Item.Name))
@@ -46,6 +51,8 @@ public sealed class PatchItemHandler
 
             item.Rename(command.Item.Name!);
         }
+
+        if (category is not null) item.SetCategory(category);
 
         if (command.Item.HasDefaultItemId)
         {
@@ -70,6 +77,12 @@ public sealed class PatchItemHandler
             item.IsPacked,
             item.DefaultItemId,
             item.Notes,
-            item.ItemCount));
+            item.ItemCount,
+            item.Category.Value));
+    }
+    private static Trip.API.Domain.ValueObjects.ItemCategory ParseCategory(string? value)
+    {
+        try { return Trip.API.Domain.ValueObjects.ItemCategory.Parse(value); }
+        catch (ArgumentException) { throw new ValidationException("Category must be a supported lowercase code."); }
     }
 }

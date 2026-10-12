@@ -7,15 +7,18 @@ public sealed class DeleteTripHandler
 {
     private readonly ILogger<DeleteTripHandler> _logger;
     private readonly ITripRepository _tripRepository;
+    private readonly IDomainOperationGate _operationGate;
 
-    public DeleteTripHandler(ITripRepository tripRepository, ILogger<DeleteTripHandler> logger)
+    public DeleteTripHandler(ITripRepository tripRepository, ILogger<DeleteTripHandler> logger, IDomainOperationGate operationGate)
     {
         _tripRepository = tripRepository;
+        _operationGate = operationGate;
         _logger = logger;
     }
 
     public async Task<DeleteTripResult> HandleAsync(DeleteTripCommand command, CancellationToken cancellationToken)
     {
+        using var operation = await _operationGate.AcquireAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation(
             "Deleting trip {TripId} for user {UserId}",
             command.TripId.Value,

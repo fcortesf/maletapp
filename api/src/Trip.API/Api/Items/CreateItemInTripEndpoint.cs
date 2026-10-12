@@ -30,7 +30,7 @@ public static class CreateItemInTripEndpoint
                         new CreateItemInTripCommand(
                             userId,
                             TripId.FromGuid(tripId),
-                            new NewItemDto(request.Name, request.DefaultItemId, request.Notes, request.ItemCount)),
+                            new NewItemDto(request.Name, request.DefaultItemId, request.Notes, request.ItemCount, request.Category)),
                         cancellationToken);
 
                     var item = result.Item;
@@ -42,7 +42,8 @@ public static class CreateItemInTripEndpoint
                         item.IsPacked,
                         item.DefaultItemId,
                         item.Notes,
-                        item.ItemCount));
+                        item.ItemCount,
+                        item.Category));
                 })
             .WithName(ItemEndpointNames.CreateItemInTrip)
             .Produces<ItemResponse>(201)

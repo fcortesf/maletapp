@@ -15,6 +15,10 @@ public sealed class PatchItemRequest
     [System.Text.Json.Serialization.JsonIgnore]
     public bool HasIsPacked { get; init; }
 
+    public string? Category { get; init; }
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool HasCategory { get; init; }
+
     public string? Notes { get; init; }
     [System.Text.Json.Serialization.JsonIgnore]
     public bool HasNotes { get; init; }
@@ -36,10 +40,21 @@ public sealed class PatchItemRequest
         if (root.ValueKind != JsonValueKind.Object)
             throw new BadHttpRequestException("The request body must be a JSON object.");
 
+        var hasCategory = root.TryGetProperty("category", out var categoryElement);
+        string? category = null;
+        if (hasCategory)
+        {
+            if (categoryElement.ValueKind != JsonValueKind.String)
+                throw new BadHttpRequestException("Category must be a string.");
+            category = categoryElement.GetString();
+        }
+
         string? name = null;
         var hasName = root.TryGetProperty("name", out var nameElement);
         if (hasName && nameElement.ValueKind != JsonValueKind.Null)
         {
+            if (nameElement.ValueKind != JsonValueKind.String)
+                throw new BadHttpRequestException("Name must be a string.");
             name = nameElement.GetString();
         }
 
@@ -88,6 +103,8 @@ public sealed class PatchItemRequest
 
         return new PatchItemRequest
         {
+            Category = category,
+            HasCategory = hasCategory,
             Name = name,
             HasName = hasName,
             DefaultItemId = defaultItemId,

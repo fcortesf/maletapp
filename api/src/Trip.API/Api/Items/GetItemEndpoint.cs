@@ -37,7 +37,8 @@ public static class GetItemEndpoint
                         item.IsPacked,
                         item.DefaultItemId,
                         item.Notes,
-                        item.ItemCount));
+                        item.ItemCount,
+                        item.Category));
                 })
             .WithName(ItemEndpointNames.GetItem)
             .Produces<ItemResponse>(200)

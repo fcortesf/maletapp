@@ -29,7 +29,7 @@ public static class GetTripByIdEndpoint
                         cancellationToken);
 
                     var trip = result.Trip;
-                    return Results.Ok(new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate));
+                    return Results.Ok(new TripResponse(trip.Id, trip.Destination, trip.StartDate, trip.EndDate, trip.IsFinished));
                 })
             .WithName(TripEndpointNames.GetTripById)
             .WithTags("Trips");

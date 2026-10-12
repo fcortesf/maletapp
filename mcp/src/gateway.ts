@@ -19,7 +19,7 @@ export class Gateway {
         await response.body?.cancel();
         const messages: Record<number, string> = { 400: 'The domain rejected these values.', 401: 'The gateway rejected the delegated credentials.',
           403: 'You do not have permission to access this trip or item.', 404: 'The trip, item or API operation was not found.', 409: 'The operation conflicts with the current resource state.' };
-        throw new ServiceError('gateway_error', messages[response.status] ?? 'The gateway could not complete the operation.', response.status);
+        throw new ServiceError('gateway_error', (messages[response.status] ?? 'The gateway could not complete the operation.') + (method !== 'GET' && response.status >= 500 ? ' The write outcome is unknown; read the current state before retrying.' : ''), response.status);
       }
       return response.status === 204 ? { deleted: true } : await response.json();
     } catch (error) {

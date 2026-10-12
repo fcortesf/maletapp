@@ -37,7 +37,8 @@ public static class ListItemsByTripEndpoint
                             item.IsPacked,
                             item.DefaultItemId,
                             item.Notes,
-                            item.ItemCount)));
+                            item.ItemCount,
+                        item.Category)));
                 })
             .WithName(ItemEndpointNames.ListItemsByTrip)
             .Produces<ItemResponse[]>(200)

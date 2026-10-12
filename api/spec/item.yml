@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   title: Items API
-  description: Maletapp Items API
-  version: 0.0.2
+  description: Maletapp Items API. Baggage routes are reserved and unimplemented; clients must use trip/item routes.
+  version: 0.0.3
 
 paths:
   /baggages/{baggageId}/items:
@@ -240,6 +240,11 @@ components:
     NewItem:
       type: object
       properties:
+        category:
+          default: other
+          type: string
+          enum: [documents, clothing, toiletries, electronics, health, accessories, other]
+          description: Non-null lowercase code. Creation omission defaults to other; PATCH omission preserves. Null or invalid codes return 400 problem details without partial mutation.
         notes:
           type: string
           nullable: true
@@ -264,6 +269,10 @@ components:
     PatchItem:
       type: object
       properties:
+        category:
+          type: string
+          enum: [documents, clothing, toiletries, electronics, health, accessories, other]
+          description: Non-null lowercase code. Creation omission defaults to other; PATCH omission preserves. Null or invalid codes return 400 problem details without partial mutation.
         notes:
           type: string
           nullable: true
@@ -289,6 +298,10 @@ components:
     Item:
       type: object
       properties:
+        category:
+          type: string
+          enum: [documents, clothing, toiletries, electronics, health, accessories, other]
+          description: Non-null lowercase code. Creation omission defaults to other; PATCH omission preserves. Null or invalid codes return 400 problem details without partial mutation.
         id:
           type: string
           format: uuid
@@ -330,3 +343,4 @@ components:
         - id
         - name
         - isPacked
+        - category

@@ -27,11 +27,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TripDbContext>(options =>
     options.UseInMemoryDatabase("maletapp-trips"));
 
+builder.Services.AddSingleton<IDomainOperationGate, Trip.API.Infrastructure.Concurrency.DomainOperationGate>();
 builder.Services.AddScoped<ITripRepository, TripRepository>();
 // Keep identity resolution behind the abstraction so application handlers stay
 // independent from HTTP transport details and any future auth provider choice.
 builder.Services.AddScoped<IUserContextAccessor, HttpUserContextAccessor>();
 builder.Services.AddScoped<CreateTripHandler>();
+builder.Services.AddScoped<Trip.API.Application.Trips.SetTripFinished.SetTripFinishedHandler>();
 builder.Services.AddScoped<DeleteTripHandler>();
 builder.Services.AddScoped<GetTripsHandler>();
 builder.Services.AddScoped<GetTripByIdHandler>();
