@@ -1,0 +1,27 @@
+name: Prepare pilot infrastructure
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: maletapp-pilot
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+jobs:
+  provision:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconcile VPS infrastructure
+        run: bash deploy/pilot/remote.sh infra
+        env:
+          VPS_HOST: ${{ vars.VPS_HOST }}
+          VPS_USER: ${{ vars.VPS_USER }}
+          SSH_KEY: ${{ secrets.PILOT_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.SSH_KNOWN_HOSTS }}
+          API_HOST: ${{ vars.API_HOST }}
+          AUTH_HOST: ${{ vars.AUTH_HOST }}
+          MCP_HOST: ${{ vars.MCP_HOST }}
+          WEB_HOST: ${{ vars.WEB_HOST }}

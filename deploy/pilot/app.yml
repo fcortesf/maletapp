@@ -1,0 +1,35 @@
+name: maletapp-pilot
+services:
+  domain-api:
+    image: ${IMAGE_PREFIX:?}/domain-api:${RELEASE:?}
+    restart: unless-stopped
+    env_file: /etc/maletapp/secrets/domain.env
+    networks: [database, backend]
+  gateway:
+    image: ${IMAGE_PREFIX:?}/gateway:${RELEASE:?}
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_AUTHORITY: https://${AUTH_HOST:?}/realms/maletapp
+      KEYCLOAK_AUDIENCE: api://maletapp
+      DOMAIN_API_URL: http://domain-api:5110
+      WEB_ALLOWED_ORIGINS: https://${WEB_HOST:?}
+    networks: [backend, edge]
+  mcp:
+    image: ${IMAGE_PREFIX:?}/mcp:${RELEASE:?}
+    restart: unless-stopped
+    env_file: /etc/maletapp/secrets/mcp.env
+    environment:
+      KEYCLOAK_AUTHORITY: https://${AUTH_HOST:?}/realms/maletapp
+      MCP_RESOURCE_URL: https://${MCP_HOST:?}/mcp
+      MCP_ADVERTISE_OFFLINE_ACCESS: "true"
+      GATEWAY_URL: http://gateway:3000
+    networks: [edge]
+networks:
+  backend:
+    internal: true
+  database:
+    external: true
+    name: maletapp-pilot-database
+  edge:
+    external: true
+    name: maletapp-pilot-edge

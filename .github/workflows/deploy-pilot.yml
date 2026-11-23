@@ -1,0 +1,76 @@
+name: Deploy pilot release
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: maletapp-pilot
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+jobs:
+  deploy:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16-bookworm
+        env:
+          POSTGRES_PASSWORD: ci-only
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify services and build frontend
+        env:
+          VITE_GATEWAY_BASE_URL: https://${{ vars.API_HOST }}/web
+          VITE_KEYCLOAK_URL: https://${{ vars.AUTH_HOST }}
+          VITE_KEYCLOAK_REALM: maletapp
+          VITE_KEYCLOAK_CLIENT_ID: maletapp-web
+        run: |
+          dotnet test api/Maletapp.sln
+          for component in gateway mcp web; do
+            (cd "$component" && npm ci && npm run check && npm test && npm run build)
+          done
+          (cd web && npm run check:contracts)
+          export ConnectionStrings__Trips='Host=localhost;Database=postgres;Username=postgres;Password=ci-only'
+          dotnet api/src/Trip.API/bin/Debug/net10.0/Trip.API.dll --migrate
+          dotnet api/src/Trip.API/bin/Debug/net10.0/Trip.API.dll --migrate
+          (cd mcp && RUN_DOMAIN_STACK=1 npm test)
+      - name: Publish release images
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          prefix="ghcr.io/${GITHUB_REPOSITORY,,}"
+          docker build -t "$prefix/domain-api:$GITHUB_SHA" -f gateway/docker/domain-api.Dockerfile .
+          for service in gateway mcp; do
+            docker build -t "$prefix/$service:$GITHUB_SHA" "$service"
+          done
+          for service in domain-api gateway mcp; do docker push "$prefix/$service:$GITHUB_SHA"; done
+      - name: Back up, migrate, deploy and check the backend
+        run: bash deploy/pilot/remote.sh deploy
+        env:
+          VPS_HOST: ${{ vars.VPS_HOST }}
+          VPS_USER: ${{ vars.VPS_USER }}
+          SSH_KEY: ${{ secrets.PILOT_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.SSH_KNOWN_HOSTS }}
+          API_HOST: ${{ vars.API_HOST }}
+          AUTH_HOST: ${{ vars.AUTH_HOST }}
+          MCP_HOST: ${{ vars.MCP_HOST }}
+          WEB_HOST: ${{ vars.WEB_HOST }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish verified static assets
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy web/dist --project-name=${{ vars.PAGES_PROJECT }} --branch=${{ github.event.repository.default_branch }}

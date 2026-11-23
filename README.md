@@ -41,3 +41,6 @@ gateway/   TypeScript gateway, Keycloak configuration, and Compose stack
 mcp/       TypeScript MCP server
 web/       React/Vite web PoC and preserved design prototypes
 ```
+
+The manual [pilot deployment workflows](deploy/pilot/README.md) target an Ubuntu
+VPS with PostgreSQL and a separate Cloudflare Pages frontend.
