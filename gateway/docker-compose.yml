@@ -9,7 +9,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Set KEYCLOAK_ADMIN_PASSWORD in .env}
       KC_FEATURES: ${KEYCLOAK_FEATURES:-}
       KC_DB: dev-file
-      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME: ${KC_HOSTNAME:-http://localhost:8080}
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "false"
     ports:
       - "127.0.0.1:8080:8080"
@@ -43,7 +43,8 @@ services:
       NODE_ENV: development
       HOST: 0.0.0.0
       PORT: 5001
-      MCP_RESOURCE_URL: http://localhost:5001/mcp
+      MCP_RESOURCE_URL: ${MCP_RESOURCE_URL:-http://localhost:5001/mcp}
+      MCP_ADVERTISE_OFFLINE_ACCESS: ${MCP_ADVERTISE_OFFLINE_ACCESS:-false}
       KEYCLOAK_AUTHORITY: ${KEYCLOAK_AUTHORITY:-http://localhost:8080/realms/maletapp}
       KEYCLOAK_INTERNAL_ORIGIN: ${KEYCLOAK_INTERNAL_ORIGIN-http://keycloak:8080}
       GATEWAY_URL: http://gateway:3000

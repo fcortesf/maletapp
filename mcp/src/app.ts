@@ -8,6 +8,8 @@ export function createApp(config: Config) {
   const app = express();
   app.disable('x-powered-by');
   const identity = new Identity(config);
+  const scopes = ['openid', 'email', 'profile'];
+  if (config.advertiseOfflineAccess) scopes.push('offline_access');
   const metadataUrl = new URL('/.well-known/oauth-protected-resource/mcp', config.resource).href;
   app.use((req, res, next) => {
     if (!config.allowedHosts.includes(req.headers.host ?? '')) { res.status(403).json({ error: 'invalid_host' }); return; }
@@ -26,7 +28,7 @@ export function createApp(config: Config) {
   });
   app.get('/health', (_req, res) => { res.json({ status: 'ok', delegationConfigured: Boolean(config.exchangeClientSecret) }); });
   app.get(['/.well-known/oauth-protected-resource/mcp', '/.well-known/oauth-protected-resource'], (_req, res) => {
-    res.json({ resource: config.resource, resource_name: 'Maletapp MCP', authorization_servers: [config.issuer], bearer_methods_supported: ['header'], scopes_supported: ['openid', 'email', 'profile'] });
+    res.json({ resource: config.resource, resource_name: 'Maletapp MCP', authorization_servers: [config.issuer], bearer_methods_supported: ['header'], scopes_supported: scopes });
   });
   app.all('/mcp', async (req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');

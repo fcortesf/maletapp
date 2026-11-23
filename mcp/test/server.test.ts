@@ -72,7 +72,7 @@ before(async () => {
   // Reserve the port before deriving the canonical resource URL.
   const server = createServer(); const origin = await listen(server); endpoint = `${origin}/mcp`;
   config = readConfig({ NODE_ENV: 'development', MCP_RESOURCE_URL: endpoint, KEYCLOAK_AUTHORITY: issuer, GATEWAY_URL: gateway,
-    EXCHANGE_CLIENT_SECRET: 'test-only-secret', ALLOWED_ORIGINS: 'http://allowed.example' });
+    MCP_ADVERTISE_OFFLINE_ACCESS: 'true', EXCHANGE_CLIENT_SECRET: 'test-only-secret', ALLOWED_ORIGINS: 'http://allowed.example' });
   server.on('request', createApp(config));
 });
 after(async () => {
@@ -83,6 +83,7 @@ test('resource discovery, challenges, host and explicit browser origin protectio
   const response = await fetch(endpoint); assert.equal(response.status, 401);
   assert.match(response.headers.get('www-authenticate')!, /resource_metadata=".*oauth-protected-resource\/mcp"/);
   const metadata = await (await fetch(new URL('/.well-known/oauth-protected-resource/mcp', endpoint))).json();
+  assert.ok(metadata.scopes_supported.includes('offline_access'));
   assert.equal(metadata.resource, endpoint); assert.deepEqual(metadata.authorization_servers, [issuer]);
   assert.equal((await fetch(endpoint, { headers: { origin: 'http://evil.example' } })).status, 403);
   const badHost = await new Promise<number | undefined>((resolve, reject) => {
