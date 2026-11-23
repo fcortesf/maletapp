@@ -14,6 +14,9 @@ function mapper(name: string, audience: string, client = false): Mapper {
   return { name: `maletapp-mcp:${name}`, protocol: 'openid-connect', protocolMapper: 'oidc-audience-mapper',
     config: { [client ? 'included.client.audience' : 'included.custom.audience']: audience, 'access.token.claim': 'true', 'id.token.claim': 'false', 'introspection.token.claim': 'true' } };
 }
+export function loginAudienceMappers(resource: string): Mapper[] {
+  return [mapper('resource-audience', resource), mapper('exchange-client-audience', 'maletapp-mcp', true)];
+}
 export function desiredClients(settings = localSettings): Client[] {
   const base = { protocol: 'openid-connect', enabled: true, bearerOnly: false, clientAuthenticatorType: 'client-secret',
     implicitFlowEnabled: false, directAccessGrantsEnabled: false, serviceAccountsEnabled: false, fullScopeAllowed: false,
@@ -26,7 +29,7 @@ export function desiredClients(settings = localSettings): Client[] {
       ...base, clientId: clientId!, name: clientId!, publicClient: true, standardFlowEnabled: true,
       optionalClientScopes: clientId === 'maletapp-codex' ? ['offline_access'] : [],
       redirectUris: [callback!], attributes: { [marker]: markerValue, 'pkce.code.challenge.method': 'S256' },
-      protocolMappers: [mapper('resource-audience', settings.resource), mapper('exchange-client-audience', 'maletapp-mcp', true)],
+      protocolMappers: loginAudienceMappers(settings.resource),
     })),
   ];
 }

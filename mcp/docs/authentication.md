@@ -119,3 +119,32 @@ wins without version conflicts. No durable rollback is guaranteed. Never blindly
 retry uncertain writes: read authoritative state before deliberate resubmission.
 Same-user gateway SSE invalidations support browser synchronization; delivery is
 best effort and the browser must reconcile authoritative reads.
+
+## Connect the hosted pilot to ChatGPT
+
+Deploy the existing realm and its restricted MCP-to-API exchange permission first.
+Set the public Keycloak origin in `KC_HOSTNAME`, the public realm issuer in
+`KEYCLOAK_AUTHORITY`, the canonical HTTPS endpoint in `MCP_RESOURCE_URL`, and
+`MCP_ADVERTISE_OFFLINE_ACCESS=true` in the hosted MCP service. Preserve the
+public Host at the reverse proxy and forward both /mcp and the protected-resource
+discovery routes to MCP. The checked-in Compose defaults target local development.
+
+In ChatGPT web, open Plugins → + → Add custom MCP server, enter the public MCP
+URL and select OAuth with predefined client credentials. Copy the exact callback
+shown for the connection. From the mcp directory generate the client import,
+replacing the sample URL and callback with the deployment values.
+
+```sh
+node scripts/chatgpt-client.ts https://mcp.example.com/mcp https://chatgpt.com/connector_platform_oauth_redirect > /tmp/maletapp-chatgpt.json
+```
+
+In the pilot realm, open Clients → Import client and import that JSON. For an
+existing maletapp-chatgpt client, reconcile the settings in place to preserve
+its secret. Copy the secret from that client's Credentials tab to the ChatGPT
+OAuth form. The maletapp-mcp exchange credential belongs only on the MCP server.
+Check the realm discovery document advertises S256 and offline_access, then
+connect with a pilot account and call list_trips. Repeat after the first access
+token expires. On a write-enabled workspace, set a test item packed and check
+the result in the web UI. Each tester signs in with their own Maletapp identity.
+
+[OpenAI connection guide](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt) · [OAuth and callback selection](https://developers.openai.com/plugins/build/auth)
