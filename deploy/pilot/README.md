@@ -21,14 +21,15 @@ the Vite bundle separately. This procedure starts a new pilot realm.
 
 | GitHub variables | Value |
 | --- | --- |
-| VPS_HOST, VPS_USER | SSH hostname or IPv4 address, deployment username |
-| SSH_KNOWN_HOSTS | Verified OpenSSH known_hosts line for VPS_HOST |
 | AUTH_HOST, API_HOST, MCP_HOST | Three distinct DNS names, without schemes or paths |
 | WEB_HOST | Production Pages hostname, without scheme or path |
 | CLOUDFLARE_ACCOUNT_ID, PAGES_PROJECT | Pages account ID and existing project name |
 
 | GitHub secrets | Purpose |
 | --- | --- |
+| VPS_HOST, VPS_USER | SSH hostname or IPv4 address, deployment username |
+| VPS_PORT | Configured SSH port (1–65535) |
+| SSH_KNOWN_HOSTS | Verified host key line. Use HOST for port 22 and [HOST]:PORT for other ports. |
 | PILOT_SSH_KEY | Private deployment key, including line breaks |
 | CLOUDFLARE_API_TOKEN | Pages edit permission scoped to the Pages account |
 

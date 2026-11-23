@@ -17,10 +17,11 @@ jobs:
       - name: Reconcile VPS infrastructure
         run: bash deploy/pilot/remote.sh infra
         env:
-          VPS_HOST: ${{ vars.VPS_HOST }}
-          VPS_USER: ${{ vars.VPS_USER }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
           SSH_KEY: ${{ secrets.PILOT_SSH_KEY }}
-          SSH_KNOWN_HOSTS: ${{ vars.SSH_KNOWN_HOSTS }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
           API_HOST: ${{ vars.API_HOST }}
           AUTH_HOST: ${{ vars.AUTH_HOST }}
           MCP_HOST: ${{ vars.MCP_HOST }}

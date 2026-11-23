@@ -8,10 +8,14 @@ for key in API_HOST AUTH_HOST MCP_HOST WEB_HOST VPS_HOST; do
   [[ ${!key} =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*$ ]] || { echo "Invalid $key"; exit 1; }
 done
 [[ $VPS_USER =~ ^[a-z_][a-z0-9_-]*$ ]]
+if ! [[ $VPS_PORT =~ ^[1-9][0-9]{0,4}$ ]] || (( VPS_PORT > 65535 )); then
+  echo "Invalid VPS_PORT" >&2
+  exit 1
+fi
 install -dm700 ~/.ssh
 printf '%s\n' "$SSH_KEY" > ~/.ssh/pilot
 printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/pilot_hosts
-remote=(ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/pilot_hosts" -i "$HOME/.ssh/pilot" "$VPS_USER@$VPS_HOST")
+remote=(ssh -p "$VPS_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/pilot_hosts" -i "$HOME/.ssh/pilot" "$VPS_USER@$VPS_HOST")
 work=$("${remote[@]}" 'mktemp -d /tmp/maletapp-release-XXXXXXXX')
 [[ $work =~ ^/tmp/maletapp-release-[a-zA-Z0-9]+$ ]]
 trap '"${remote[@]}" "sudo -n rm -rf -- $work"' EXIT
