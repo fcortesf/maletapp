@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, renameSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, chmodSync } from 'node:fs';
 import { KeycloakAdmin } from './keycloak/admin.ts';
 import { localSettings, reconcile } from './keycloak/reconcile.ts';
 
@@ -9,5 +9,7 @@ const result = await reconcile(api, true, console.info, {
   ...localSettings, includeLocalClients: false, resource: process.env.MCP_RESOURCE_URL!,
 });
 if (!result.secret || !/^[a-zA-Z0-9._-]+$/.test(result.secret)) throw Error('Invalid exchange credential');
-writeFileSync(dir + '/mcp.env.next', 'EXCHANGE_CLIENT_SECRET=' + result.secret + '\n', { mode: 0o600 });
-renameSync(dir + '/mcp.env.next', dir + '/mcp.env');
+writeFileSync(dir + '/exchange-secret.next', result.secret + '\n', { mode: 0o600 });
+// The host directory is root-only. The MCP container reads the bind-mounted file as node.
+chmodSync(dir + '/exchange-secret.next', 0o444);
+renameSync(dir + '/exchange-secret.next', dir + '/exchange-secret');

@@ -148,3 +148,5 @@ token expires. On a write-enabled workspace, set a test item packed and check
 the result in the web UI. Each tester signs in with their own Maletapp identity.
 
 [OpenAI connection guide](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt) · [OAuth and callback selection](https://developers.openai.com/plugins/build/auth)
+
+Hosted deployments can set `EXCHANGE_CLIENT_SECRET_FILE` to a mounted secret file. The MCP process reads it at startup; restart MCP after rotation.

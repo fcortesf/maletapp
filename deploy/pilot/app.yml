@@ -17,10 +17,11 @@ services:
   mcp:
     image: ${IMAGE_PREFIX:?}/mcp:${RELEASE:?}
     restart: unless-stopped
-    env_file: /etc/maletapp/secrets/mcp.env
+    secrets: [exchange-secret]
     environment:
       KEYCLOAK_AUTHORITY: https://${AUTH_HOST:?}/realms/maletapp
       MCP_RESOURCE_URL: https://${MCP_HOST:?}/mcp
+      EXCHANGE_CLIENT_SECRET_FILE: /run/secrets/exchange-secret
       MCP_ADVERTISE_OFFLINE_ACCESS: "true"
       GATEWAY_URL: http://gateway:3000
     networks: [edge]
@@ -33,3 +34,7 @@ networks:
   edge:
     external: true
     name: maletapp-pilot-edge
+
+secrets:
+  exchange-secret:
+    file: /etc/maletapp/secrets/exchange-secret

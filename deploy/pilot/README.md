@@ -58,7 +58,7 @@ changes because the previous API is still serving during migration.
 
 Host-only credentials are generated once under /etc/maletapp/secrets with
 root-only directory access. Compose injects separate credentials into each
-service using env_file. Docker administrators can inspect container environments.
+service using env_file for PostgreSQL and Keycloak, and a read-only secret file for MCP. Docker administrators can inspect container environments.
 If credential files disappear, recover the originals before provisioning again.
 Keep an encrypted copy of this directory outside the VPS and the recovery key in
 your password manager. The frontend receives only public URLs and client IDs.

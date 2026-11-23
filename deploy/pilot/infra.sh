@@ -43,8 +43,6 @@ compose=(docker compose -f /opt/maletapp/infra/infra.yml)
 bash postgres.sh
 "${compose[@]}" up -d keycloak
 "${compose[@]}" up -d --force-recreate caddy
-# Reapply the Caddyfile even if Compose kept the running container.
-"${compose[@]}" exec -T caddy caddy reload --config /etc/caddy/Caddyfile
 curl -fsS --retry 40 --retry-delay 3 --retry-all-errors -o /dev/null http://127.0.0.1:18080/realms/maletapp/.well-known/openid-configuration
 docker run --rm --network host -e MCP_RESOURCE_URL="https://$MCP_HOST/mcp" \
   -v "$PWD:/setup:ro" -v "$state/secrets:$state/secrets" node:24-alpine node /setup/identity.ts
