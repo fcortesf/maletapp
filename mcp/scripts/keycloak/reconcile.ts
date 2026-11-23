@@ -5,7 +5,7 @@ const markerValue = 'v1';
 const policyName = 'maletapp-mcp:exchange-to-api';
 export interface Mapper { id?: string; name: string; protocol: string; protocolMapper: string; config: Record<string, string> }
 export interface Client extends JsonObject { id?: string; clientId: string; attributes?: Record<string, string>; protocolMappers?: Mapper[] }
-export interface Settings { resource: string; apiAudience: string; cliCallback: string; codexCallback: string }
+export interface Settings { resource: string; apiAudience: string; cliCallback: string; codexCallback: string; includeLocalClients?: boolean }
 export const localSettings: Settings = {
   resource: 'http://localhost:5001/mcp', apiAudience: 'api://maletapp',
   cliCallback: 'http://127.0.0.1:49152/callback', codexCallback: 'http://127.0.0.1:49153/callback',
@@ -25,7 +25,7 @@ export function desiredClients(settings = localSettings): Client[] {
     { ...base, clientId: 'maletapp-mcp', name: 'Maletapp MCP token exchange', publicClient: false, standardFlowEnabled: false },
     { ...base, clientId: 'maletapp-api', name: 'Maletapp gateway API target', publicClient: false, standardFlowEnabled: false,
       protocolMappers: [mapper('api-audience', settings.apiAudience)] },
-    ...[['maletapp-mcp-cli', settings.cliCallback], ['maletapp-codex', settings.codexCallback]].map(([clientId, callback]) => ({
+    ...(settings.includeLocalClients === false ? [] : [['maletapp-mcp-cli', settings.cliCallback], ['maletapp-codex', settings.codexCallback]]).map(([clientId, callback]) => ({
       ...base, clientId: clientId!, name: clientId!, publicClient: true, standardFlowEnabled: true,
       optionalClientScopes: clientId === 'maletapp-codex' ? ['offline_access'] : [],
       redirectUris: [callback!], attributes: { [marker]: markerValue, 'pkce.code.challenge.method': 'S256' },

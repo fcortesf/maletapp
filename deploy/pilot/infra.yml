@@ -1,0 +1,56 @@
+name: maletapp-infra
+services:
+  postgres:
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    env_file: /etc/maletapp/secrets/postgres.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [database]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.6
+    command: start --import-realm
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: /etc/maletapp/secrets/keycloak.env
+    environment:
+      KC_HOSTNAME: https://${AUTH_HOST:?}
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+    ports: ["127.0.0.1:18080:8080"]
+    volumes:
+      - /etc/maletapp/realm.json:/opt/keycloak/data/import/maletapp.json:ro
+    networks: [edge, database]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      AUTH_HOST: ${AUTH_HOST:?}
+      API_HOST: ${API_HOST:?}
+      MCP_HOST: ${MCP_HOST:?}
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - tls:/data
+    networks: [edge]
+volumes:
+  pgdata:
+    name: maletapp-pilot-postgres
+  tls:
+networks:
+  database:
+    name: maletapp-pilot-database
+    internal: true
+  edge:
+    name: maletapp-pilot-edge
