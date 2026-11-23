@@ -24,8 +24,18 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var connectionString = builder.Configuration.GetConnectionString("Trips");
 builder.Services.AddDbContext<TripDbContext>(options =>
-    options.UseInMemoryDatabase("maletapp-trips"));
+{
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        options.UseInMemoryDatabase("maletapp-trips");
+    }
+    else
+    {
+        options.UseNpgsql(connectionString);
+    }
+});
 
 builder.Services.AddSingleton<IDomainOperationGate, Trip.API.Infrastructure.Concurrency.DomainOperationGate>();
 builder.Services.AddScoped<ITripRepository, TripRepository>();
@@ -44,6 +54,14 @@ builder.Services.AddScoped<DeleteItemHandler>();
 builder.Services.AddScoped<PatchItemHandler>();
 
 var app = builder.Build();
+
+if (args.Contains("--migrate"))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var database = scope.ServiceProvider.GetRequiredService<TripDbContext>();
+    await database.Database.MigrateAsync();
+    return;
+}
 
 if (app.Environment.IsDevelopment())
 {
