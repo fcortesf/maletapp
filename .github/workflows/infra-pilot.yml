@@ -8,12 +8,19 @@ concurrency:
 
 permissions:
   contents: read
+  id-token: write
 jobs:
   provision:
     if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Join the pilot tailnet
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ vars.TS_CLIENT_ID }}
+          audience: ${{ vars.TS_AUDIENCE }}
+          tags: tag:maletapp-ci
       - name: Reconcile VPS infrastructure
         run: bash deploy/pilot/remote.sh infra
         env:

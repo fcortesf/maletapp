@@ -4,12 +4,19 @@ set -euo pipefail
 umask 077
 mode=$1
 [[ $mode == infra || $mode == deploy ]]
-for key in API_HOST AUTH_HOST MCP_HOST WEB_HOST VPS_HOST; do
+for key in API_HOST AUTH_HOST MCP_HOST WEB_HOST; do
   [[ ${!key} =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*$ ]] || { echo "Invalid $key"; exit 1; }
 done
 [[ $VPS_USER =~ ^[a-z_][a-z0-9_-]*$ ]]
 if ! [[ $VPS_PORT =~ ^[1-9][0-9]{0,4}$ ]] || (( VPS_PORT > 65535 )); then
   echo "Invalid VPS_PORT" >&2
+  exit 1
+fi
+# Use the VPS address reported by tailscale ip -4. Require the tunnel route
+# before loading the deploy key or contacting the remote host.
+if ! [[ $VPS_HOST =~ ^[0-9]+(\.[0-9]+){3}$ ]] ||
+   ! ip -o -4 route get "$VPS_HOST" 2>/dev/null | grep -Eq ' dev tailscale0( |$)'; then
+  echo "VPS_HOST must be the VPS IPv4 address routed through tailscale0." >&2
   exit 1
 fi
 install -dm700 ~/.ssh

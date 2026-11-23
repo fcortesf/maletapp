@@ -8,8 +8,9 @@ the Vite bundle separately. This procedure starts a new pilot realm.
 ## First setup
 
 1. Provision the VPS, create a deployment user with SSH key access and noninteractive
-   sudo, and verify its host key fingerprint through the OVH console. Permit SSH,
-   TCP 80 and TCP 443. Point three public DNS names at the VPS. Only publish AAAA
+   sudo, and verify its host key fingerprint through the OVH console. From KVM,
+   install Tailscale on the VPS and enroll it with the tag `tag:maletapp-vps`.
+   Keep HTTPS and TCP 80 available publicly. Point three public DNS names at the VPS. Only publish AAAA
    records if IPv6 works. Allow containers to reach the public identity hostname.
 2. Create a Cloudflare Pages **direct upload** project. Use the repository default
    branch as its production branch. Choose its pages.dev name or configure a custom
@@ -21,13 +22,14 @@ the Vite bundle separately. This procedure starts a new pilot realm.
 
 | GitHub variables | Value |
 | --- | --- |
+| TS_CLIENT_ID, TS_AUDIENCE | Client ID and audience from the Tailscale federated identity for GitHub Actions |
 | AUTH_HOST, API_HOST, MCP_HOST | Three distinct DNS names, without schemes or paths |
 | WEB_HOST | Production Pages hostname, without scheme or path |
 | CLOUDFLARE_ACCOUNT_ID, PAGES_PROJECT | Pages account ID and existing project name |
 
 | GitHub secrets | Purpose |
 | --- | --- |
-| VPS_HOST, VPS_USER | SSH hostname or IPv4 address, deployment username |
+| VPS_HOST, VPS_USER | VPS Tailscale IPv4 (from `tailscale ip -4`), deployment username |
 | VPS_PORT | Configured SSH port (1–65535) |
 | SSH_KNOWN_HOSTS | Verified host key line. Use HOST for port 22 and [HOST]:PORT for other ports. |
 | PILOT_SSH_KEY | Private deployment key, including line breaks |
@@ -36,6 +38,26 @@ the Vite bundle separately. This procedure starts a new pilot realm.
 GHCR uses the temporary workflow token. Allow package publication and give the
 repository access to any pre-existing packages with the same names. Container
 names use ghcr.io/OWNER/REPOSITORY/SERVICE and the full Git commit SHA.
+
+## Runner access over Tailscale
+
+Define `tag:maletapp-ci` and `tag:maletapp-vps` in the tailnet policy with
+administrator tag ownership. Grant the CI tag access to the VPS tag on
+`tcp:22` (or the configured VPS_PORT). Check for broader grants including
+the default allow-all rule. The service on the VPS is ordinary OpenSSH.
+
+Create a federated identity in the Tailscale admin console using GitHub Actions
+as issuer. Match the exact GitHub OIDC subject for this repository and its
+default branch, and select Auth Keys > Write for `tag:maletapp-ci`. Store the
+client ID and audience as the repository variables above. Each workflow joins
+as an ephemeral runner immediately before SSH and verifies the route uses
+tailscale0. The private SSH key and pinned host key still authenticate the
+connection. [Tailscale GitHub Action](https://tailscale.com/docs/integrations/github/github-action)
+
+Run the infra workflow over the private address first. With OVH KVM available,
+permit the SSH port on tailscale0 and close it on public interfaces (IPv4 and
+IPv6). Run the deploy workflow with public SSH closed. Clients keep using the
+public web, gateway, MCP and identity endpoints.
 
 ## Run the workflows
 

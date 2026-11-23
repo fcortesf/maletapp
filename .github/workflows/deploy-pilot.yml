@@ -8,6 +8,7 @@ concurrency:
 
 permissions:
   contents: read
+  id-token: write
   packages: write
 jobs:
   deploy:
@@ -56,6 +57,12 @@ jobs:
             docker build -t "$prefix/$service:$GITHUB_SHA" "$service"
           done
           for service in domain-api gateway mcp; do docker push "$prefix/$service:$GITHUB_SHA"; done
+      - name: Join the pilot tailnet
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ vars.TS_CLIENT_ID }}
+          audience: ${{ vars.TS_AUDIENCE }}
+          tags: tag:maletapp-ci
       - name: Back up, migrate, deploy and check the backend
         run: bash deploy/pilot/remote.sh deploy
         env:
