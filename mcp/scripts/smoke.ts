@@ -13,7 +13,10 @@ export async function exercise(owner: Client, other?: Client) {
     if (result.isError) throw new Error(`Tool ${name} failed: ${JSON.stringify(result.structuredContent)}`);
     return (result.structuredContent as { result: any }).result;
   }
-  assert.equal((await owner.listTools()).tools.length, 9);
+  assert.deepEqual(new Set((await owner.listTools()).tools.map(tool => tool.name)), new Set([
+    'list_trips', 'create_trip', 'get_trip', 'finish_trip', 'reopen_trip',
+    'list_items', 'add_item', 'get_item', 'edit_item', 'set_item_packed', 'delete_item',
+  ]));
   assert.equal((await owner.listPrompts()).prompts[0]?.name, 'preparar_equipaje');
   await call(owner, 'list_trips');
   const trip = await call(owner, 'create_trip', { destination: `MCP-TEST-${new Date().toISOString()}`, startDate: '2026-12-01', endDate: '2026-12-05' });

@@ -169,3 +169,7 @@ update-first followed by deletion leaves the resource absent. Cancellation and
 exceptions release acquired leases. Cross-endpoint deterministic tests are in
 tests/Trip.API.IntegrationTests/Concurrency/. EF InMemory remains single-instance
 and loses data on restart; this is not durable storage or multi-instance support.
+
+The hosted pilot sets `ConnectionStrings__Trips` to use PostgreSQL. Run the
+same API image with `--migrate` before starting a new release. Local runs
+without that setting retain the existing in-memory provider.

@@ -1,8 +1,9 @@
+import { readFileSync } from 'node:fs';
 export interface Config {
   port: number; host: string; resource: string; issuer: string; internalIdentityOrigin?: string;
   gateway: string; gatewayAudience: string; exchangeClientId: string; exchangeClientSecret?: string;
   exchangeAudience: string; timeoutMs: number; allowedOrigins: string[]; allowedHosts: string[];
-  development: boolean;
+  development: boolean; advertiseOfflineAccess: boolean;
 }
 export function readConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const development = env.NODE_ENV === 'development';
@@ -28,13 +29,16 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env): Config {
   url(issuer);
   const gatewayAudience = env.GATEWAY_AUDIENCE ?? 'api://maletapp';
   if (gatewayAudience === resource.href) throw new Error('MCP and gateway audiences must differ');
+  const exchangeClientSecret = env.EXCHANGE_CLIENT_SECRET_FILE
+    ? readFileSync(env.EXCHANGE_CLIENT_SECRET_FILE, 'utf8').trim()
+    : env.EXCHANGE_CLIENT_SECRET;
   return {
-    development, port: integer(env.PORT ?? '5001', 65535), host: env.HOST ?? '127.0.0.1',
+    development, advertiseOfflineAccess: env.MCP_ADVERTISE_OFFLINE_ACCESS === 'true', port: integer(env.PORT ?? '5001', 65535), host: env.HOST ?? '127.0.0.1',
     resource: resource.href, issuer,
     internalIdentityOrigin: env.KEYCLOAK_INTERNAL_ORIGIN ? origin(env.KEYCLOAK_INTERNAL_ORIGIN) : undefined,
     gateway: origin(env.GATEWAY_URL ?? 'http://localhost:5000', true), gatewayAudience,
     exchangeClientId: env.EXCHANGE_CLIENT_ID ?? 'maletapp-mcp',
-    exchangeClientSecret: env.EXCHANGE_CLIENT_SECRET || undefined,
+    exchangeClientSecret: exchangeClientSecret || undefined,
     exchangeAudience: env.EXCHANGE_AUDIENCE ?? 'maletapp-api',
     timeoutMs: integer(env.HTTP_TIMEOUT_MS ?? '10000', 120000),
     allowedOrigins: (env.ALLOWED_ORIGINS ?? '').split(',').filter(Boolean).map(v => origin(v.trim())),
